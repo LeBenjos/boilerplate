@@ -1,4 +1,5 @@
 import { AssetId } from "../../constants/experiences/AssetId";
+import DebugManager from "../../managers/DebugManager";
 import ModelBase from "./bases/ModelBase";
 
 export default class TemplateModel extends ModelBase {
@@ -8,6 +9,11 @@ export default class TemplateModel extends ModelBase {
             castShadow: true,
             receiveShadow: true,
         });
+
+        if (DebugManager.IsActive) {
+            const templateModelFolder = DebugManager.Gui.addFolder("Template Model");
+            templateModelFolder.add(this._model.position, "y", -1, 1, 0.01).name("positionY");
+        }
     }
 
     public update(_dt: number): void {

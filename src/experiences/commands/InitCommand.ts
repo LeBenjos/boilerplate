@@ -1,4 +1,7 @@
 import { AssetId } from "../constants/experiences/AssetId";
+import CursorManager from "../managers/CursorManager";
+import DebugManager from "../managers/DebugManager";
+import { KeyboardManager } from "../managers/KeyboardManager";
 import { ResizeManager } from "../managers/ResizeManager";
 import ThreeAssetsManager from "../managers/ThreeAssetsManager";
 import Ticker from "../tools/Ticker";
@@ -23,6 +26,9 @@ export default class InitCommand {
     }
 
     private static async _initManagers(): Promise<void> {
+        CursorManager.Init();
+        DebugManager.Init();
+        KeyboardManager.Init();
         ResizeManager.Init();
         ThreeAssetsManager.Init();
         ThreeAssetsManager.OnFinishLoad.add(InitCommand._initAfterLoad)

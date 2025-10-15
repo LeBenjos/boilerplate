@@ -1,38 +1,18 @@
-import { PerspectiveCamera, Scene } from "three";
+import { Scene } from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
-import { ResizeManager } from "../managers/ResizeManager";
+import Ticker from "../tools/Ticker";
+import CameraControllerBase, { type ICameraOption } from "./bases/CameraControllerBase";
 
-interface ICameraOption {
-    fov?: number;
-    aspect?: number;
-    near?: number;
-    far?: number;
-}
-
-export default class MainCamera extends PerspectiveCamera {
+export default class MainCameraController extends CameraControllerBase {
     private declare _controls: OrbitControls;
 
-    constructor(scene: Scene, cameraOption: ICameraOption = { fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }) {
-        super(cameraOption.fov, cameraOption.aspect, cameraOption.near, cameraOption.far);
-        this.position.set(0, 0, 3);
-        scene.add(this);
-
-        // this._setControls();
-        this.resize();
+    constructor(scene: Scene, cameraOption: ICameraOption) {
+        super(scene, cameraOption);
+        this._cameraContainer.position.set(0, 0, 3);
     }
 
-    private _setControls(): void {
-        this._controls = new OrbitControls(this, document.body);
-        this._controls.enableDamping = true;
-    }
-
-    public resize(): void {
-        this.aspect = ResizeManager.Width / ResizeManager.Height;
-        this.updateProjectionMatrix();
-    }
-
-    public update(dt: number): void {
-        if (this._controls) this._controls.update();
-        // else this.position.y = Math.sin(Ticker.ElapsedTime);
+    public override update(dt: number): void {
+        super.update(dt);
+        this._cameraContainer.position.y = Math.sin(Ticker.ElapsedTime);
     }
 }

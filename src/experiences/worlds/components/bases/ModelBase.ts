@@ -5,9 +5,8 @@ import ActorBase from "./ActorBase";
 
 interface IAnimation {
     mixer?: AnimationMixer;
-    actions?: AnimationAction;
-    activeAction?: Group | null;
-    previousAction?: Group | null;
+    actions?: { [key: string]: AnimationAction };
+    play?: (name: string) => void;
 }
 
 interface IModelBaseParams {
@@ -17,14 +16,22 @@ interface IModelBaseParams {
 }
 
 export default class ModelBase extends ActorBase {
+    protected _assetId: AssetId;
     protected _parameters: IModelBaseParams;
     protected declare _model: Group;
     protected declare _animation: IAnimation;
 
     constructor(assetId: AssetId, params: IModelBaseParams = {}) {
         super();
+        this._assetId = assetId;
         this._parameters = params || {};
-        this._model = ThreeAssetsManager.GetModel(assetId).scene.clone();
+
+        this._generateModel();
+        this._generateAnimations();
+    }
+
+    private _generateModel = (): void => {
+        this._model = ThreeAssetsManager.GetModel(this._assetId).scene.clone();
         this._model.traverse((child: any) => {
             if (child.isMesh) {
                 if (this._parameters.castShadow) child.castShadow = true;
@@ -32,14 +39,32 @@ export default class ModelBase extends ActorBase {
             }
         });
         this.add(this._model);
+    }
 
-        if (this._parameters.isAnimated) {
-            const mixer = new AnimationMixer(this._model);
-            this._animation = {
-                mixer: mixer,
-                actions: mixer.clipAction(ThreeAssetsManager.GetModel(assetId).animations[0]),
-            };
-        }
+    private _generateAnimations(): void {
+        if (!this._parameters.isAnimated) return;
+        const mixer = new AnimationMixer(this._model);
+        this._animation = {
+            mixer: mixer,
+            actions: {},
+            play: this._onAnimationPlay,
+        };
+    }
+
+    private _addAnimationAction(name: string, action: AnimationAction): void {
+        if (!this._animation.actions) return;
+        this._animation.actions[name] = action;
+    }
+
+    private _onAnimationPlay = (name: string): void => {
+        if (!this._animation.actions) return;
+        const newAction = this._animation.actions[name];
+        const oldAction = this._animation.actions.current || null;
+
+        newAction.reset();
+        newAction.play();
+        if (oldAction) newAction.crossFadeFrom(oldAction, 1);
+        this._animation.actions.current = newAction;
     }
 
     public update(dt: number): void {
