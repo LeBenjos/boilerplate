@@ -1,4 +1,5 @@
-import { Object3D, OrthographicCamera, PerspectiveCamera, Scene } from "three";
+import { Object3D, OrthographicCamera, PerspectiveCamera } from "three";
+import Experience from "../../Experience";
 import { ResizeManager } from "../../managers/ResizeManager";
 
 export interface ICameraOption {
@@ -17,7 +18,7 @@ export default class CameraControllerBase extends Object3D {
     protected _camera: PerspectiveCamera | OrthographicCamera;
     protected _cameraContainer: Object3D;
 
-    constructor(scene: Scene, cameraOption: ICameraOption = { type: "perspective", fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }) {
+    constructor(cameraOption: ICameraOption = { type: "perspective", fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }) {
         super();
         this._cameraContainer = new Object3D();
         if (cameraOption.type === "perspective") this._camera = new PerspectiveCamera(cameraOption.fov, cameraOption.aspect, cameraOption.near, cameraOption.far);
@@ -25,7 +26,7 @@ export default class CameraControllerBase extends Object3D {
 
         this._cameraContainer.add(this._camera);
         this.add(this._cameraContainer);
-        scene.add(this);
+        Experience.Scene.add(this);
     }
 
     public resize(): void {

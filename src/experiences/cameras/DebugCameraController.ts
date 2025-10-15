@@ -1,12 +1,11 @@
-import { Scene } from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import CameraControllerBase, { type ICameraOption } from "./bases/CameraControllerBase";
 
 export default class DebugCameraController extends CameraControllerBase {
     private declare _controls: OrbitControls;
 
-    constructor(scene: Scene, cameraOption: ICameraOption = { type: "perspective", fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }) {
-        super(scene, cameraOption);
+    constructor(cameraOption: ICameraOption = { type: "perspective", fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }) {
+        super(cameraOption);
         this._camera.position.set(0, 0, 3);
         this._setControls();
     }

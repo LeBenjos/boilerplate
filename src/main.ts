@@ -10,9 +10,6 @@ InitCommand.begin();
 //
 //#endregion
 
-const canvas = document.createElement('canvas')!;
-canvas.id = 'webgl';
-document.querySelector("#app")!.appendChild(canvas);
-
-const experience = new Experience(canvas);
+Experience.Init();
+const experience = new Experience();
 Ticker.Add(experience);

@@ -1,11 +1,11 @@
-import { Camera, CineonToneMapping, PCFSoftShadowMap, Scene, SRGBColorSpace, WebGLRenderer, type WebGLRendererParameters } from "three";
+import { Camera, CineonToneMapping, PCFSoftShadowMap, SRGBColorSpace, WebGLRenderer, type WebGLRendererParameters } from "three";
 import { ResizeManager } from "../managers/ResizeManager";
+import Experience from "../Experience";
 
 export default class Renderer extends WebGLRenderer {
-    private _scene: Scene;
     private _camera: Camera;
 
-    constructor(scene: Scene, camera: Camera, parameters: WebGLRendererParameters) {
+    constructor(camera: Camera, parameters: WebGLRendererParameters) {
         super(parameters);
         this.outputColorSpace = SRGBColorSpace;
         this.toneMapping = CineonToneMapping;
@@ -13,7 +13,6 @@ export default class Renderer extends WebGLRenderer {
         this.shadowMap.type = PCFSoftShadowMap;
         this.setClearColor(0xFAFAFA, 0);
 
-        this._scene = scene;
         this._camera = camera;
 
         this.resize();
@@ -25,6 +24,6 @@ export default class Renderer extends WebGLRenderer {
     }
 
     public update(dt: number): void {
-        this.render(this._scene, this._camera);
+        this.render(Experience.Scene, this._camera);
     }
 }

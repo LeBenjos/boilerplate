@@ -1,31 +1,29 @@
-import { Scene } from "three";
+import Experience from "../Experience";
 import Environment from "./Environment";
 import TemplateMesh from "./components/TemplateMesh";
 import TemplateModel from "./components/TemplateModel";
 import type ActorBase from "./components/bases/ActorBase";
 
 export default class World {
-    private _scene: Scene;
     private declare _environment: Environment;
     private readonly _actors: ActorBase[];
 
-    constructor(scene: Scene) {
-        this._scene = scene;
-        this._generateEnvironment(scene);
+    constructor() {
+        this._generateEnvironment();
 
         this._actors = [];
         this._generateActors();
     }
 
-    private _generateEnvironment(scene: Scene): void {
-        this._environment = new Environment(scene);
-        this._scene.add(this._environment);
+    private _generateEnvironment(): void {
+        this._environment = new Environment();
+        Experience.Scene.add(this._environment);
     }
 
     private _generateActors(): void {
         this._actors.push(new TemplateMesh());
         this._actors.push(new TemplateModel());
-        for (const actor of this._actors) this._scene.add(actor);
+        for (const actor of this._actors) Experience.Scene.add(actor);
     }
 
     public update(dt: number): void {

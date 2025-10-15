@@ -1,5 +1,6 @@
-import { DataTexture, DirectionalLight, Object3D, Scene } from "three";
+import { DataTexture, DirectionalLight, Object3D } from "three";
 import { AssetId } from "../constants/experiences/AssetId";
+import Experience from "../Experience";
 import DebugManager from "../managers/DebugManager";
 import ThreeAssetsManager from "../managers/ThreeAssetsManager";
 
@@ -11,11 +12,9 @@ interface IEnvironmentMap {
 export default class Environment extends Object3D {
     public declare _environmentMap: IEnvironmentMap;
     private declare _sunLight: DirectionalLight;
-    private _scene: Scene;
 
-    constructor(scene: Scene) {
+    constructor() {
         super();
-        this._scene = scene;
 
         this._generateEnvironmentMap();
         this._generateSunLight();
@@ -27,13 +26,13 @@ export default class Environment extends Object3D {
         this._environmentMap.texture = ThreeAssetsManager.GetHDR(AssetId.TEMPLATE_HDR);
         this._environmentMap.texture.needsUpdate = true;
 
-        this._scene.environment = this._environmentMap.texture;
-        this._scene.environmentIntensity = this._environmentMap.intensity!;
+        Experience.Scene.environment = this._environmentMap.texture;
+        Experience.Scene.environmentIntensity = this._environmentMap.intensity!;
 
         if (DebugManager.IsActive) {
             const environmentFolder = DebugManager.Gui.addFolder("Environment");
             environmentFolder.add(this._environmentMap, "intensity", 0, 10, 0.01).onChange(() => {
-                this._scene.environmentIntensity = this._environmentMap.intensity!;
+                Experience.Scene.environmentIntensity = this._environmentMap.intensity!;
             });
         }
     }
