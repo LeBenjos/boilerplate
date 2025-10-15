@@ -1,24 +1,18 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import './styles/style.scss';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+import InitCommand from './experiences/commands/InitCommand';
+import Experience from './experiences/Experience';
+import Ticker from './experiences/tools/Ticker';
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+//#region Commands
+//
+InitCommand.begin();
+//
+//#endregion
+
+const canvas = document.createElement('canvas')!;
+canvas.id = 'webgl';
+document.querySelector("#app")!.appendChild(canvas);
+
+const experience = new Experience(canvas);
+Ticker.Add(experience);
