@@ -1,4 +1,5 @@
 import { Object3D, OrthographicCamera, PerspectiveCamera } from "three";
+import type { CameraId } from "../../constants/experiences/CameraId";
 import Experience from "../../Experience";
 import { ResizeManager } from "../../managers/ResizeManager";
 
@@ -14,12 +15,14 @@ export interface ICameraOption {
     bottom?: number;
 }
 
-export default class CameraControllerBase extends Object3D {
+export default abstract class CameraControllerBase extends Object3D {
+    private readonly _cameraId: CameraId;
     protected _camera: PerspectiveCamera | OrthographicCamera;
     protected _cameraContainer: Object3D;
 
-    constructor(cameraOption: ICameraOption = { type: "perspective", fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }) {
+    constructor(cameraId: CameraId, cameraOption: ICameraOption = { type: "perspective", fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }) {
         super();
+        this._cameraId = cameraId;
         this._cameraContainer = new Object3D();
         if (cameraOption.type === "perspective") this._camera = new PerspectiveCamera(cameraOption.fov, cameraOption.aspect, cameraOption.near, cameraOption.far);
         else this._camera = new OrthographicCamera(cameraOption.left, cameraOption.right, cameraOption.top, cameraOption.bottom, cameraOption.near, cameraOption.far);
@@ -40,6 +43,7 @@ export default class CameraControllerBase extends Object3D {
 
     //#region Getters
     //
+    public get cameraId(): CameraId { return this._cameraId; }
     public get camera(): PerspectiveCamera | OrthographicCamera { return this._camera; }
     //
     //#endregion

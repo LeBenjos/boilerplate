@@ -1,4 +1,5 @@
 import { AssetId } from "../constants/experiences/AssetId";
+import CameraControllerManager from "../managers/CameraControllerManager";
 import CursorManager from "../managers/CursorManager";
 import DebugManager from "../managers/DebugManager";
 import { KeyboardManager } from "../managers/KeyboardManager";
@@ -26,11 +27,12 @@ export default class InitCommand {
     }
 
     private static async _initManagers(): Promise<void> {
-        CursorManager.Init();
         DebugManager.Init();
         KeyboardManager.Init();
+        CursorManager.Init();
         ResizeManager.Init();
         ThreeAssetsManager.Init();
+        CameraControllerManager.Init();
         ThreeAssetsManager.OnFinishLoad.add(InitCommand._initAfterLoad)
     }
 

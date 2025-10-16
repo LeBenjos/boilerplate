@@ -9,6 +9,7 @@ export default class TemplateModel extends ModelBase {
             castShadow: true,
             receiveShadow: true,
         });
+        this._model.position.set(0, 1, 0);
 
         if (DebugManager.IsActive) {
             const templateModelFolder = DebugManager.Gui.addFolder("Template Model");

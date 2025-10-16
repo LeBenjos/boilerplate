@@ -1,6 +1,6 @@
 import { Camera, CineonToneMapping, PCFSoftShadowMap, SRGBColorSpace, WebGLRenderer, type WebGLRendererParameters } from "three";
-import { ResizeManager } from "../managers/ResizeManager";
 import Experience from "../Experience";
+import { ResizeManager } from "../managers/ResizeManager";
 
 export default class Renderer extends WebGLRenderer {
     private _camera: Camera;
@@ -16,6 +16,10 @@ export default class Renderer extends WebGLRenderer {
         this._camera = camera;
 
         this.resize();
+    }
+
+    public setCamera(camera: Camera) {
+        this._camera = camera;
     }
 
     public resize(): void {
