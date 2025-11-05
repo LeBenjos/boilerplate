@@ -1,5 +1,6 @@
 export default class AssetUtils {
     public static GetPath(path: string): string {
-        return `/assets/${path}`;
+        let url = `./assets/${path}`;
+        return url;
     }
 }

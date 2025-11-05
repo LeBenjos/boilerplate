@@ -23,7 +23,7 @@ export default class Environment extends Object3D {
     private _generateEnvironmentMap = (): void => {
         this._environmentMap = {};
         this._environmentMap.intensity = 1;
-        this._environmentMap.texture = ThreeAssetsManager.GetHDR(AssetId.TEMPLATE_HDR);
+        this._environmentMap.texture = ThreeAssetsManager.GetHDR(AssetId.HDR_TEMPLATE);
         this._environmentMap.texture.needsUpdate = true;
 
         Experience.Scene.environment = this._environmentMap.texture;

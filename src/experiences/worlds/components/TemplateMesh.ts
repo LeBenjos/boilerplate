@@ -12,7 +12,7 @@ export default class TemplateMesh extends ActorBase {
         super();
         this._geometry = new SphereGeometry(1, 64, 64);
 
-        const normalMat = ThreeAssetsManager.GetTexture(AssetId.TEMPLATE_TEXTURE);
+        const normalMat = ThreeAssetsManager.GetTexture(AssetId.TEXTURE_TEMPLATE);
         normalMat.repeat.set(1.5, 1.5);
         normalMat.wrapS = normalMat.wrapT = RepeatWrapping;
 

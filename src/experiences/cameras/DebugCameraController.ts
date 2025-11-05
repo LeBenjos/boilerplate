@@ -10,12 +10,23 @@ export default class DebugCameraController extends CameraControllerBase {
         super(CameraId.DEBUG, cameraOption);
         this._camera.position.set(0, 0, 3);
         this._setControls();
+        this.disable();
     }
 
     private _setControls(): void {
         this._controls = new OrbitControls(this._camera, Experience.DomElementContainer);
         this._controls.enableDamping = true;
         this._controls.dampingFactor = 0.05;
+    }
+
+    public override enable(): void {
+        super.enable();
+        this._controls.enabled = true;
+    }
+
+    public override disable(): void {
+        super.disable();
+        this._controls.enabled = false;
     }
 
     public update(dt: number): void {

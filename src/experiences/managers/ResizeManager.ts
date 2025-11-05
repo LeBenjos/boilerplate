@@ -1,5 +1,5 @@
-import { DomEvent } from "../constants/doms/DomEvent";
 import { Action } from "../tools/Action";
+import Ticker from "../tools/Ticker";
 
 export class ResizeManager {
   private static _Width: number = 0;
@@ -11,11 +11,13 @@ export class ResizeManager {
   public static Init(): void {
     this.Reset();
     this.Resize();
-    window.addEventListener(DomEvent.RESIZE, this.Resize);
+    // window.addEventListener(DomEvent.RESIZE, this.Resize);
+    Ticker.Add(this);
   }
 
   public static Reset(): void {
-    window.removeEventListener(DomEvent.RESIZE, this.Resize);
+    // window.removeEventListener(DomEvent.RESIZE, this.Resize);
+    Ticker.Remove(this);
   }
 
   public static Resize = (): void => {
@@ -27,6 +29,10 @@ export class ResizeManager {
 
     this.OnResize.execute();
   };
+
+  public static update(): void {
+    if (this._Width != window.innerWidth || this._Height != window.innerHeight) this.Resize();
+  }
 
   //#region Getters
   //

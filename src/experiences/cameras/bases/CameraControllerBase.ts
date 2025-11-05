@@ -16,7 +16,7 @@ export interface ICameraOption {
 }
 
 export default abstract class CameraControllerBase extends Object3D {
-    private readonly _cameraId: CameraId;
+    protected readonly _cameraId: CameraId;
     protected _camera: PerspectiveCamera | OrthographicCamera;
     protected _cameraContainer: Object3D;
 
@@ -30,6 +30,14 @@ export default abstract class CameraControllerBase extends Object3D {
         this._cameraContainer.add(this._camera);
         this.add(this._cameraContainer);
         Experience.Scene.add(this);
+    }
+
+    public enable(): void {
+        //
+    }
+
+    public disable(): void {
+        //
     }
 
     public resize(): void {

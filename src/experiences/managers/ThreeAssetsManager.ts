@@ -1,4 +1,4 @@
-import { DataTexture, EquirectangularRefractionMapping, LinearSRGBColorSpace, Texture, TextureLoader } from "three";
+import { DataTexture, EquirectangularRefractionMapping, LinearSRGBColorSpace, RepeatWrapping, SRGBColorSpace, Texture, TextureLoader } from "three";
 import { GLTFLoader, HDRLoader, type GLTF } from "three/examples/jsm/Addons.js";
 import type { AssetId } from "../constants/experiences/AssetId";
 import { Action } from "../tools/Action";
@@ -21,7 +21,10 @@ export default class ThreeAssetsManager {
     public static AddTexture(id: AssetId, asset: string): void {
         ThreeAssetsManager._ToLoad++;
         ThreeAssetsManager._TextureLoader.load(asset, (texture) => {
-            texture.colorSpace = LinearSRGBColorSpace;
+            texture.colorSpace = SRGBColorSpace;
+            texture.wrapS = texture.wrapT = RepeatWrapping;
+            texture.repeat.set(1, 1);
+            texture.center.set(0.5, 0.5);
             ThreeAssetsManager._onLoad(id, texture);
         });
     }

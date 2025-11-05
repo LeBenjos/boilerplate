@@ -1,5 +1,6 @@
-import { AnimationAction, AnimationMixer, type Group } from "three";
+import { AnimationAction, AnimationMixer, Mesh, Object3D, type Group } from "three";
 import { AssetId } from "../../../constants/experiences/AssetId";
+import type { Object3DId } from "../../../constants/experiences/Object3dId";
 import ThreeAssetsManager from "../../../managers/ThreeAssetsManager";
 import ActorBase from "./ActorBase";
 
@@ -10,6 +11,7 @@ interface IAnimation {
 }
 
 interface IModelBaseParams {
+    object3DId?: Object3DId;
     isAnimated?: boolean;
     castShadow?: boolean;
     receiveShadow?: boolean;
@@ -18,7 +20,7 @@ interface IModelBaseParams {
 export default class ModelBase extends ActorBase {
     protected _assetId: AssetId;
     protected _parameters: IModelBaseParams;
-    protected declare _model: Group;
+    protected declare _model: Group | Object3D | Mesh;
     protected declare _animation: IAnimation;
 
     constructor(assetId: AssetId, params: IModelBaseParams = {}) {
@@ -30,8 +32,14 @@ export default class ModelBase extends ActorBase {
         this._generateAnimations();
     }
 
-    private _generateModel = (): void => {
-        this._model = ThreeAssetsManager.GetModel(this._assetId).scene.clone();
+    protected _generateModel(): void {
+        const model = ThreeAssetsManager.GetModel(this._assetId).scene.clone();
+        model.traverse((child: Group | Object3D | Mesh) => {
+            if (this._parameters.object3DId && child.name === this._parameters.object3DId) {
+                this._model = child;
+            }
+        });
+        if (!this._parameters.object3DId) this._model = model;
         this._model.traverse((child: any) => {
             if (child.isMesh) {
                 if (this._parameters.castShadow) child.castShadow = true;

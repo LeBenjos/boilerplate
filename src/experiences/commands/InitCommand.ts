@@ -9,7 +9,6 @@ import Ticker from "../tools/Ticker";
 import AssetUtils from "../Utils/AssetUtils";
 
 export default class InitCommand {
-
     public static async begin(): Promise<void> {
         this._initProxies();
         this._initCommon();
@@ -33,7 +32,7 @@ export default class InitCommand {
         ResizeManager.Init();
         ThreeAssetsManager.Init();
         CameraControllerManager.Init();
-        ThreeAssetsManager.OnFinishLoad.add(InitCommand._initAfterLoad)
+        ThreeAssetsManager.OnFinishLoad.add(InitCommand._initAfterLoad);
     }
 
     private static async _initCommon(): Promise<void> {
@@ -41,9 +40,9 @@ export default class InitCommand {
     }
 
     private static async _initThree(): Promise<void> {
-        ThreeAssetsManager.AddTexture(AssetId.TEMPLATE_TEXTURE, AssetUtils.GetPath("textures/template.jpg"));
-        ThreeAssetsManager.AddHDR(AssetId.TEMPLATE_HDR, AssetUtils.GetPath("hdrs/template.hdr"));
-        ThreeAssetsManager.AddModel(AssetId.TEMPLATE_MODEL, AssetUtils.GetPath("models/template.glb"));
+        ThreeAssetsManager.AddHDR(AssetId.HDR_TEMPLATE, AssetUtils.GetPath("hdrs/template.hdr"));
+        ThreeAssetsManager.AddModel(AssetId.MODEL_TEMPLATE, AssetUtils.GetPath("models/template.glb"));
+        ThreeAssetsManager.AddTexture(AssetId.TEXTURE_TEMPLATE, AssetUtils.GetPath("textures/template.jpg"));
     }
 
     private static _initAfterLoad = (): void => {
@@ -53,4 +52,4 @@ export default class InitCommand {
     private static async _end(): Promise<void> {
         // 
     }
-} 
+}

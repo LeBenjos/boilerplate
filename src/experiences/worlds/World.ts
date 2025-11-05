@@ -29,7 +29,6 @@ export default class World {
     public update(dt: number): void {
         if (!this._environment) return;
         this._environment.update(dt);
-
         for (const actor of this._actors) actor.update(dt);
     }
 }

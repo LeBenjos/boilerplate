@@ -27,7 +27,9 @@ export default class CameraControllerManager {
             console.warn(`CameraControllerManager: No camera controller found with id ${cameraId}`);
             return;
         }
+        CameraControllerManager._ActiveCameraController?.disable();
         CameraControllerManager._ActiveCameraController = cameraController;
+        CameraControllerManager._ActiveCameraController.enable();
         CameraControllerManager.OnActiveCameraChange.execute(CameraControllerManager._ActiveCameraController);
     }
 

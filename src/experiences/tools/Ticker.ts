@@ -67,6 +67,7 @@ export default class Ticker {
     public static get StartTime(): number { return this._StartTime; }
     public static get CurrentTime(): number { return this._CurrentTime; }
     public static get ElapsedTime(): number { return this._ElapsedTime; }
+    public static get DeltaTime(): number { return this._DeltaTime; }
     //
     //#endregion
 }

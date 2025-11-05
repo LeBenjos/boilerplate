@@ -10,6 +10,7 @@ import { KeyboardManager } from "./managers/KeyboardManager";
 import { ResizeManager } from "./managers/ResizeManager";
 import ThreeAssetsManager from "./managers/ThreeAssetsManager";
 import Renderer from "./renderers/Renderer";
+import Ticker from "./tools/Ticker";
 import World from "./worlds/World";
 
 export default class Experience {
@@ -21,6 +22,7 @@ export default class Experience {
 
     public static Init(): void {
         window.experience = Experience;
+        Ticker.Add(Experience);
 
         Experience._Scene = new Scene();
 
@@ -64,7 +66,7 @@ export default class Experience {
         Experience._Renderer.resize();
     }
 
-    public update(dt: number): void {
+    public static update(dt: number): void {
         Experience._CameraController.update(dt);
         Experience._Renderer.update(dt);
         if (Experience._World) Experience._World.update(dt);
@@ -74,6 +76,7 @@ export default class Experience {
     //
     public static get Scene(): Scene { return this._Scene; }
     public static get DomElementContainer(): HTMLElement { return this._DomElementContainer; }
+    public static get CameraController(): CameraControllerBase { return this._CameraController; }
     //
     //#endregion
 }

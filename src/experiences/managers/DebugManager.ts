@@ -6,6 +6,7 @@ export default class DebugManager {
     public static Init(): void {
         if (window.location.hash === "#debug") {
             this._Gui = new GUI();
+            this._Gui.close();
         }
     }
 

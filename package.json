@@ -1,7 +1,7 @@
 {
   "name": "boilerplate",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,10 +12,13 @@
     "sass-embedded": "^1.93.2",
     "typescript": "~5.9.3",
     "vite": "^7.1.7",
-    "vite-plugin-glsl": "^1.5.4"
+    "vite-plugin-glsl": "^1.5.4",
+    "@types/howler": "^2.2.12",
+    "@types/three": "^0.180.0"
   },
   "dependencies": {
-    "@types/three": "^0.180.0",
+    "gsap": "^3.13.0",
+    "howler": "^2.2.4",
     "lil-gui": "^0.21.0",
     "three": "^0.180.0"
   }
