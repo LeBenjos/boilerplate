@@ -4,13 +4,14 @@ import DebugCameraController from "./cameras/DebugCameraController";
 import MainCameraController from "./cameras/MainCameraController";
 import { KeyboardConstant } from "./constants/doms/KeyboardConstant";
 import { CameraId } from "./constants/experiences/CameraId";
+import { CameraType } from "./constants/experiences/CameraType";
 import CameraControllerManager from "./managers/CameraControllerManager";
 import DebugManager from "./managers/DebugManager";
 import { KeyboardManager } from "./managers/KeyboardManager";
 import { ResizeManager } from "./managers/ResizeManager";
 import ThreeAssetsManager from "./managers/ThreeAssetsManager";
+import TickerManager from "./managers/TickerManager";
 import Renderer from "./renderers/Renderer";
-import Ticker from "./tools/Ticker";
 import World from "./worlds/World";
 
 export default class Experience {
@@ -22,24 +23,15 @@ export default class Experience {
 
     public static Init(): void {
         window.experience = Experience;
-        Ticker.Add(Experience);
+        TickerManager.Add(Experience.Update);
 
-        Experience._Scene = new Scene();
+        Experience._GenerateScene();
+        Experience._GenerateCameras();
+        Experience._GenerateRenderer();
 
-        Experience._CameraController = new MainCameraController({ type: "perspective", fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 });
-        CameraControllerManager.Add(Experience._CameraController, true);
-        if (DebugManager.IsActive) {
-            CameraControllerManager.Add(new DebugCameraController({ type: "perspective", fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }));
-            KeyboardManager.OnKeyUp.add(Experience._OnKeyUp);
-        }
-        CameraControllerManager.OnActiveCameraChange.add(Experience._OnActiveCameraChange);
-
-        Experience._Renderer = new Renderer(Experience._CameraController.camera, { antialias: true });
-        Experience._DomElementContainer.appendChild(Experience._Renderer.domElement);
-
-        Experience._onResize();
-        ResizeManager.OnResize.add(Experience._onResize);
-        ThreeAssetsManager.OnFinishLoad.add(Experience._generateWorld);
+        Experience._OnResize();
+        ResizeManager.OnResize.add(Experience._OnResize);
+        ThreeAssetsManager.OnFinishLoad.add(Experience._GenerateWorld);
     }
 
     private static readonly _OnKeyUp = (e: KeyboardEvent): void => {
@@ -48,17 +40,36 @@ export default class Experience {
         }
     };
 
-    private static _generateWorld = (): void => {
+    private static _GenerateScene = (): void => {
+        Experience._Scene = new Scene();
+    }
+
+    private static _GenerateCameras = (): void => {
+        Experience._CameraController = new MainCameraController({ type: CameraType.PERSPECTIVE, fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 });
+        CameraControllerManager.Add(Experience._CameraController, true);
+        if (DebugManager.IsActive) {
+            CameraControllerManager.Add(new DebugCameraController({ type: CameraType.PERSPECTIVE, fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }));
+            KeyboardManager.OnKeyUp.add(Experience._OnKeyUp);
+        }
+        CameraControllerManager.OnActiveCameraChange.add(Experience._OnActiveCameraChange);
+    }
+
+    private static _GenerateRenderer = (): void => {
+        Experience._Renderer = new Renderer(Experience._CameraController.camera, { antialias: true });
+        Experience._DomElementContainer.appendChild(Experience._Renderer.domElement);
+    }
+
+    private static _GenerateWorld = (): void => {
         Experience._World = new World();
     }
 
     private static _OnActiveCameraChange = (): void => {
         Experience._CameraController = CameraControllerManager.ActiveCameraController;
         Experience._Renderer.setCamera(Experience._CameraController.camera);
-        Experience._onResize();
+        Experience._OnResize();
     }
 
-    private static _onResize = (): void => {
+    private static _OnResize = (): void => {
         Experience._Renderer.domElement.width = window.innerWidth;
         Experience._Renderer.domElement.height = window.innerHeight;
 
@@ -66,7 +77,7 @@ export default class Experience {
         Experience._Renderer.resize();
     }
 
-    public static update(dt: number): void {
+    public static Update = (dt: number): void => {
         Experience._CameraController.update(dt);
         Experience._Renderer.update(dt);
         if (Experience._World) Experience._World.update(dt);

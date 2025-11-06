@@ -10,6 +10,10 @@ export default class DebugManager {
         }
     }
 
+    //#region Getters
+    //
     public static get IsActive(): boolean { return !!this._Gui; }
     public static get Gui(): GUI { return this._Gui; }
+    //
+    //#endregion
 }

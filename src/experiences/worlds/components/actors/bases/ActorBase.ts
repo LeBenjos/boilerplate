@@ -5,5 +5,5 @@ export default class ActorBase extends Object3D {
         super();
     }
 
-    public update(_dt: number): void { }
+    public update(dt: number): void { }
 }

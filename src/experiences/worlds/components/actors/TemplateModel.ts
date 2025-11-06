@@ -1,5 +1,5 @@
-import { AssetId } from "../../constants/experiences/AssetId";
-import DebugManager from "../../managers/DebugManager";
+import { AssetId } from "../../../constants/experiences/AssetId";
+import DebugManager from "../../../managers/DebugManager";
 import ModelBase from "./bases/ModelBase";
 
 export default class TemplateModel extends ModelBase {
@@ -17,8 +17,8 @@ export default class TemplateModel extends ModelBase {
         }
     }
 
-    public update(_dt: number): void {
-        super.update(_dt);
-        this._model.rotation.y += _dt * 0.25;
+    public update(dt: number): void {
+        super.update(dt);
+        this._model.rotation.y += dt * 0.25;
     }
 }

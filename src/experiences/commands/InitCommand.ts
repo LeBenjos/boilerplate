@@ -1,11 +1,12 @@
 import { AssetId } from "../constants/experiences/AssetId";
+import Experience from "../Experience";
 import CameraControllerManager from "../managers/CameraControllerManager";
 import CursorManager from "../managers/CursorManager";
 import DebugManager from "../managers/DebugManager";
 import { KeyboardManager } from "../managers/KeyboardManager";
 import { ResizeManager } from "../managers/ResizeManager";
 import ThreeAssetsManager from "../managers/ThreeAssetsManager";
-import Ticker from "../tools/Ticker";
+import TickerManager from "../managers/TickerManager";
 import AssetUtils from "../Utils/AssetUtils";
 
 export default class InitCommand {
@@ -15,6 +16,8 @@ export default class InitCommand {
         this._initThree();
         this._initManagers();
         this._initUtils();
+
+        Experience.Init();
     }
 
     private static async _initProxies(): Promise<void> {
@@ -22,10 +25,11 @@ export default class InitCommand {
     }
 
     private static async _initUtils(): Promise<void> {
-        Ticker.Init();
+        //
     }
 
     private static async _initManagers(): Promise<void> {
+        TickerManager.Init();
         DebugManager.Init();
         KeyboardManager.Init();
         CursorManager.Init();
@@ -43,6 +47,8 @@ export default class InitCommand {
         ThreeAssetsManager.AddHDR(AssetId.HDR_TEMPLATE, AssetUtils.GetPath("hdrs/template.hdr"));
         ThreeAssetsManager.AddModel(AssetId.MODEL_TEMPLATE, AssetUtils.GetPath("models/template.glb"));
         ThreeAssetsManager.AddTexture(AssetId.TEXTURE_TEMPLATE, AssetUtils.GetPath("textures/template.jpg"));
+
+        ThreeAssetsManager.LoadAssets();
     }
 
     private static _initAfterLoad = (): void => {

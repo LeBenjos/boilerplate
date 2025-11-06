@@ -1,6 +1,6 @@
 import { Mesh, MeshStandardMaterial, RepeatWrapping, SphereGeometry } from "three";
-import { AssetId } from "../../constants/experiences/AssetId";
-import ThreeAssetsManager from "../../managers/ThreeAssetsManager";
+import { AssetId } from "../../../constants/experiences/AssetId";
+import ThreeAssetsManager from "../../../managers/ThreeAssetsManager";
 import ActorBase from "./bases/ActorBase";
 
 export default class TemplateMesh extends ActorBase {

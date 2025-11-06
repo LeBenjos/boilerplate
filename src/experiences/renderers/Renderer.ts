@@ -1,5 +1,6 @@
-import { Camera, CineonToneMapping, PCFSoftShadowMap, SRGBColorSpace, WebGLRenderer, type WebGLRendererParameters } from "three";
+import { ACESFilmicToneMapping, AgXToneMapping, Camera, CineonToneMapping, CustomToneMapping, LinearSRGBColorSpace, LinearToneMapping, NeutralToneMapping, NoToneMapping, PCFSoftShadowMap, ReinhardToneMapping, SRGBColorSpace, WebGLRenderer, type ColorSpace, type ToneMapping, type WebGLRendererParameters } from "three";
 import Experience from "../Experience";
+import DebugManager from "../managers/DebugManager";
 import { ResizeManager } from "../managers/ResizeManager";
 
 export default class Renderer extends WebGLRenderer {
@@ -7,8 +8,9 @@ export default class Renderer extends WebGLRenderer {
 
     constructor(camera: Camera, parameters: WebGLRendererParameters) {
         super(parameters);
-        this.outputColorSpace = SRGBColorSpace;
         this.toneMapping = CineonToneMapping;
+        this.toneMappingExposure = 1;
+        this.outputColorSpace = SRGBColorSpace;
         this.shadowMap.enabled = true;
         this.shadowMap.type = PCFSoftShadowMap;
         this.setClearColor(0xFAFAFA, 0);
@@ -16,6 +18,17 @@ export default class Renderer extends WebGLRenderer {
         this._camera = camera;
 
         this.resize();
+
+        if (DebugManager.IsActive) {
+            const rendererFolder = DebugManager.Gui.addFolder("Renderer");
+            rendererFolder.add(this, "toneMapping", { NoToneMapping, LinearToneMapping, ReinhardToneMapping, CineonToneMapping, ACESFilmicToneMapping, CustomToneMapping, AgXToneMapping, NeutralToneMapping }).onChange((value: ToneMapping) => {
+                this.toneMapping = value;
+            });
+            rendererFolder.add(this, "toneMappingExposure", 0, 10, 0.001);
+            rendererFolder.add(this, "outputColorSpace", { SRGBColorSpace, LinearSRGBColorSpace }).onChange((value: ColorSpace) => {
+                this.outputColorSpace = value;
+            });
+        }
     }
 
     public setCamera(camera: Camera) {
