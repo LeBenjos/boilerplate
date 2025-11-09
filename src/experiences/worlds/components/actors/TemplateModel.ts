@@ -4,7 +4,7 @@ import ModelBase from "./bases/ModelBase";
 
 export default class TemplateModel extends ModelBase {
     constructor() {
-        super(AssetId.MODEL_TEMPLATE, {
+        super(AssetId.GLTF_TEMPLATE, {
             isAnimated: false,
             castShadow: true,
             receiveShadow: true,

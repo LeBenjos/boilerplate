@@ -1,8 +1,9 @@
 import { DataTexture, EquirectangularRefractionMapping, LinearSRGBColorSpace, RepeatWrapping, SRGBColorSpace, Texture, TextureLoader } from "three";
-import { GLTFLoader, HDRLoader, type GLTF } from "three/examples/jsm/Addons.js";
+import { DRACOLoader, GLTFLoader, HDRLoader, type GLTF } from "three/examples/jsm/Addons.js";
 import type { AssetId } from "../constants/experiences/AssetId";
 import { AssetType } from "../constants/experiences/AssetType";
 import { Action } from "../tools/Action";
+import AssetUtils from "../Utils/AssetUtils";
 
 export default class ThreeAssetsManager {
     private static _assets: Map<string, Texture | DataTexture | GLTF> = new Map<string, Texture | GLTF>();
@@ -12,11 +13,13 @@ export default class ThreeAssetsManager {
     private static _TextureLoader = new TextureLoader();
     private static _HDRLoader = new HDRLoader();
     private static _GltfLoader = new GLTFLoader();
+    private static _DracoLoader = new DRACOLoader();
 
     public static OnFinishLoad = new Action();
 
     public static Init(): void {
-        //
+        ThreeAssetsManager._DracoLoader.setDecoderPath(AssetUtils.GetPath("loaders/draco/"));
+        ThreeAssetsManager._GltfLoader.setDRACOLoader(ThreeAssetsManager._DracoLoader);
     }
 
     public static AddTexture(id: AssetId, path: string) {
