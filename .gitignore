@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+assets_source/*
+!assets_source/.gitkeep
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
