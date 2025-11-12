@@ -1,0 +1,58 @@
+import { AnimationAction, AnimationMixer } from "three";
+import type { AnimationId } from "../../../../constants/experiences/AnimationId";
+import { AssetId } from "../../../../constants/experiences/AssetId";
+import ThreeAssetsManager from "../../../../managers/ThreeAssetsManager";
+import ModelBase, { type IModelBaseParams } from "./ModelBase";
+
+export default class AnimatedModelBase extends ModelBase {
+    private declare _mixer: AnimationMixer;
+    private declare _actions: AnimationAction[];
+    private declare _currentAction: AnimationAction | null;
+
+    constructor(assetId: AssetId, params: IModelBaseParams = {}) {
+        super(assetId, params);
+
+        this._generateAnimations();
+    }
+
+    protected _generateAnimations(): void {
+        const animations = ThreeAssetsManager.GetModel(this._assetId).animations;
+        this._mixer = new AnimationMixer(this._model);
+        this._actions = [];
+        this._currentAction = null;
+
+        for (const clip of animations) {
+            const action = this._mixer.clipAction(clip);
+            this._addAnimationAction(action);
+        }
+    }
+
+    private _addAnimationAction(action: AnimationAction): void {
+        this._actions.push(action);
+    }
+
+    protected _playAnimation = (animationId: AnimationId): void => {
+        if (!this._actions) return;
+        const newAction = this._getAnimationAction(animationId);
+        const oldAction = this._currentAction || null;
+
+        newAction.reset();
+        newAction.play();
+        if (oldAction) newAction.crossFadeFrom(oldAction, 1);
+        this._currentAction = newAction;
+    }
+
+    private _getAnimationAction = (animationId: AnimationId): AnimationAction => {
+        for (const action of this._actions) {
+            if (action.getClip().name === animationId) {
+                return action;
+            }
+        }
+        throw new Error(`Animation action not found for animationId: ${animationId}`);
+    }
+
+    public update(dt: number): void {
+        super.update(dt);
+        if (this._mixer) this._mixer.update(dt);
+    }
+}
