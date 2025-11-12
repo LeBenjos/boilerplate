@@ -6,6 +6,7 @@ import { KeyboardManager } from "../managers/KeyboardManager";
 import MouseManager from "../managers/MouseManager";
 import { ResizeManager } from "../managers/ResizeManager";
 import ThreeAssetsManager from "../managers/ThreeAssetsManager";
+import ThreeRaycasterManager from "../managers/ThreeRaycasterManager";
 import TickerManager from "../managers/TickerManager";
 import AssetUtils from "../Utils/AssetUtils";
 
@@ -30,6 +31,7 @@ export default class InitCommand {
         DebugManager.Init();
         ResizeManager.Init();
         ThreeAssetsManager.Init();
+        ThreeRaycasterManager.Init();
         CameraControllerManager.Init();
 
         ThreeAssetsManager.OnFinishLoad.add(InitCommand._InitAfterLoad);
