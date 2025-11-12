@@ -41,6 +41,9 @@ export default class Renderer extends WebGLRenderer {
     }
 
     public update(dt: number): void {
+        const isDebug = DebugManager.IsActive;
+        if (isDebug) DebugManager.BeginThreePerf();
         this.render(Experience.Scene, this._camera);
+        if (isDebug) DebugManager.EndThreePerf();
     }
 }

@@ -1,12 +1,12 @@
 import { DataTexture, EquirectangularRefractionMapping, LinearSRGBColorSpace, RepeatWrapping, SRGBColorSpace, Texture, TextureLoader } from "three";
-import { DRACOLoader, GLTFLoader, HDRLoader, type GLTF } from "three/examples/jsm/Addons.js";
+import { DRACOLoader, Font, FontLoader, GLTFLoader, HDRLoader, type GLTF } from "three/examples/jsm/Addons.js";
 import type { AssetId } from "../constants/experiences/AssetId";
 import { AssetType } from "../constants/experiences/AssetType";
 import { Action } from "../tools/Action";
 import AssetUtils from "../Utils/AssetUtils";
 
 export default class ThreeAssetsManager {
-    private static _assets: Map<string, Texture | DataTexture | GLTF> = new Map<string, Texture | GLTF>();
+    private static _assets: Map<string, Texture | DataTexture | GLTF | Font> = new Map<string, Texture | GLTF | Font>();
     private static _ToLoadList: { id: AssetId; type: AssetType; path: string }[] = [];
     private static _Loaded: number = 0;
 
@@ -14,6 +14,7 @@ export default class ThreeAssetsManager {
     private static _HDRLoader = new HDRLoader();
     private static _GltfLoader = new GLTFLoader();
     private static _DracoLoader = new DRACOLoader();
+    private static _FontLoader = new FontLoader();
 
     public static OnFinishLoad = new Action();
 
@@ -34,17 +35,22 @@ export default class ThreeAssetsManager {
         ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.MODEL, path });
     }
 
+    public static AddFont(id: AssetId, path: string) {
+        ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.FONT, path });
+    }
+
     public static LoadAssets(): void {
         for (const asset of ThreeAssetsManager._ToLoadList) {
             if (asset.type === AssetType.TEXTURE) ThreeAssetsManager._LoadTexture(asset.id, asset.path);
             else if (asset.type === AssetType.HDR) ThreeAssetsManager._LoadHDR(asset.id, asset.path);
             else if (asset.type === AssetType.MODEL) ThreeAssetsManager._LoadModel(asset.id, asset.path);
+            else if (asset.type === AssetType.FONT) ThreeAssetsManager._LoadFont(asset.id, asset.path);
         }
     }
 
-    private static _LoadTexture(id: AssetId, asset: string): void {
+    private static _LoadTexture(id: AssetId, path: string): void {
         ThreeAssetsManager._TextureLoader.load(
-            asset,
+            path,
             (texture) => {
                 texture.colorSpace = SRGBColorSpace;
                 texture.wrapS = texture.wrapT = RepeatWrapping;
@@ -53,29 +59,38 @@ export default class ThreeAssetsManager {
                 ThreeAssetsManager._onLoad(id, texture);
             },
             undefined,
-            () => ThreeAssetsManager._LoadFailed(AssetType.TEXTURE, id, asset),
+            () => ThreeAssetsManager._LoadFailed(AssetType.TEXTURE, id, path),
         );
     }
 
-    private static _LoadHDR(id: AssetId, asset: string): void {
+    private static _LoadHDR(id: AssetId, path: string): void {
         ThreeAssetsManager._HDRLoader.load(
-            asset,
+            path,
             (dataTexture) => {
                 dataTexture.mapping = EquirectangularRefractionMapping;
                 dataTexture.colorSpace = LinearSRGBColorSpace;
                 ThreeAssetsManager._onLoad(id, dataTexture);
             },
             undefined,
-            () => ThreeAssetsManager._LoadFailed(AssetType.HDR, id, asset),
+            () => ThreeAssetsManager._LoadFailed(AssetType.HDR, id, path),
         );
     }
 
-    private static _LoadModel(id: AssetId, asset: string): void {
+    private static _LoadModel(id: AssetId, path: string): void {
         ThreeAssetsManager._GltfLoader.load(
-            asset,
+            path,
             (model) => ThreeAssetsManager._onLoad(id, model),
             undefined,
-            () => ThreeAssetsManager._LoadFailed(AssetType.MODEL, id, asset),
+            () => ThreeAssetsManager._LoadFailed(AssetType.MODEL, id, path),
+        );
+    }
+
+    private static _LoadFont(id: AssetId, path: string): void {
+        ThreeAssetsManager._FontLoader.load(
+            path,
+            (font) => ThreeAssetsManager._onLoad(id, font),
+            undefined,
+            () => ThreeAssetsManager._LoadFailed(AssetType.FONT, id, path),
         );
     }
 
@@ -83,7 +98,7 @@ export default class ThreeAssetsManager {
         console.error(`ThreeAssetsManager: Failed to load ${type} with id '${id}' from path '${path}'`);
     }
 
-    private static _onLoad(id: AssetId, asset: Texture | GLTF): void {
+    private static _onLoad(id: AssetId, asset: Texture | GLTF | Font): void {
         ThreeAssetsManager._assets.set(id, asset);
         ThreeAssetsManager._Loaded++;
 
@@ -111,6 +126,12 @@ export default class ThreeAssetsManager {
     public static GetModel(id: AssetId): GLTF {
         const asset = ThreeAssetsManager._assets.get(id)! as GLTF;
         if (!asset) throw new Error(`Model with id '${id}' not found!`);
+        return asset;
+    }
+
+    public static GetFont(id: AssetId): Font {
+        const asset = ThreeAssetsManager._assets.get(id)! as Font;
+        if (!asset) throw new Error(`Font with id '${id}' not found!`);
         return asset;
     }
 

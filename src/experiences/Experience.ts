@@ -1,4 +1,4 @@
-import { Scene } from "three";
+import { MeshStandardMaterial, Scene } from "three";
 import type CameraControllerBase from "./cameras/bases/CameraControllerBase";
 import DebugCameraController from "./cameras/DebugCameraController";
 import MainCameraController from "./cameras/MainCameraController";
@@ -20,6 +20,7 @@ export default class Experience {
     private static _CameraController: CameraControllerBase;
     private static _Renderer: Renderer;
     private static _World: World;
+    private static _DebugWireframeMaterial: MeshStandardMaterial;
 
     public static Init(): void {
         window.experience = Experience;
@@ -28,29 +29,32 @@ export default class Experience {
         Experience._GenerateScene();
         Experience._GenerateCameras();
         Experience._GenerateRenderer();
+        ThreeAssetsManager.OnFinishLoad.add(Experience._GenerateWorld);
 
         Experience._OnResize();
         ResizeManager.OnResize.add(Experience._OnResize);
-        ThreeAssetsManager.OnFinishLoad.add(Experience._GenerateWorld);
-    }
 
-    private static readonly _OnKeyUp = (e: KeyboardEvent): void => {
-        if (e.shiftKey && (e.code === KeyboardConstant.Codes.KeyC)) {
-            CameraControllerManager.SetActiveCamera(Experience._CameraController.cameraId === CameraId.MAIN ? CameraId.DEBUG : CameraId.MAIN);
+        if (DebugManager.IsActive) {
+            KeyboardManager.OnKeyUp.add(Experience._OnKeyUp);
         }
-    };
+    }
 
     private static _GenerateScene = (): void => {
         Experience._Scene = new Scene();
+
+        if (DebugManager.IsActive) {
+            Experience._DebugWireframeMaterial = new MeshStandardMaterial({ wireframe: true, color: 0x3F79F3 });
+        }
     }
 
     private static _GenerateCameras = (): void => {
-        Experience._CameraController = new MainCameraController({ type: CameraType.PERSPECTIVE, fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 });
-        CameraControllerManager.Add(Experience._CameraController, true);
+        CameraControllerManager.Add(new MainCameraController({ type: CameraType.PERSPECTIVE, fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }), true);
+        Experience._CameraController = CameraControllerManager.Get(CameraId.MAIN);
+
         if (DebugManager.IsActive) {
             CameraControllerManager.Add(new DebugCameraController({ type: CameraType.PERSPECTIVE, fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }));
-            KeyboardManager.OnKeyUp.add(Experience._OnKeyUp);
         }
+
         CameraControllerManager.OnActiveCameraChange.add(Experience._OnActiveCameraChange);
     }
 
@@ -69,6 +73,20 @@ export default class Experience {
         Experience._OnResize();
     }
 
+    private static readonly _OnKeyUp = (e: KeyboardEvent): void => {
+        if (DebugManager.IsActive) {
+            if (KeyboardManager.AreAllKeysDown([KeyboardConstant.Codes.ShiftLeft, KeyboardConstant.Codes.KeyC])) {
+                CameraControllerManager.SetActiveCamera(Experience._CameraController.cameraId === CameraId.MAIN ? CameraId.DEBUG : CameraId.MAIN);
+            } else if (KeyboardManager.AreAllKeysDown([KeyboardConstant.Codes.ShiftLeft, KeyboardConstant.Codes.KeyW])) {
+                if (Experience._Scene.overrideMaterial === null) {
+                    Experience._Scene.overrideMaterial = Experience._DebugWireframeMaterial;
+                } else {
+                    Experience._Scene.overrideMaterial = null;
+                }
+            }
+        }
+    };
+
     private static _OnResize = (): void => {
         Experience._Renderer.domElement.width = window.innerWidth;
         Experience._Renderer.domElement.height = window.innerHeight;
@@ -79,14 +97,15 @@ export default class Experience {
 
     public static Update = (dt: number): void => {
         Experience._CameraController.update(dt);
-        Experience._Renderer.update(dt);
         if (Experience._World) Experience._World.update(dt);
+        Experience._Renderer.update(dt);
     }
 
     //#region Getters
     //
     public static get Scene(): Scene { return this._Scene; }
     public static get DomElementContainer(): HTMLElement { return this._DomElementContainer; }
+    public static get Renderer(): Renderer { return this._Renderer; }
     public static get CameraController(): CameraControllerBase { return this._CameraController; }
     //
     //#endregion

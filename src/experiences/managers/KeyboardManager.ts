@@ -11,78 +11,51 @@ export class KeyboardManager {
     public static Init(): void {
         KeyboardManager._KeyDownsMap.clear();
         KeyboardManager._CodeDownsMap.clear();
-        KeyboardManager.Start();
-    }
-
-    public static Start(): void {
         KeyboardManager._AddCallbacks();
     }
-
-    public static Stop(): void {
-        KeyboardManager._RemoveCallbacks();
-    }
-
-    private static readonly _OnBlur = () => {
-        KeyboardManager._KeyDownsMap.clear();
-        KeyboardManager._CodeDownsMap.clear();
-    };
 
     private static _AddCallbacks() {
         KeyboardManager._RemoveCallbacks();
         window.addEventListener(DomEvent.KEY_DOWN, KeyboardManager._OnKeyDown);
         window.addEventListener(DomEvent.KEY_UP, KeyboardManager._OnKeyUp);
-        window.addEventListener(DomEvent.BLUR, KeyboardManager._OnBlur);
-        window.addEventListener(DomEvent.CONTEXT_MENU, KeyboardManager._OnContextMenu);
-
     }
 
     private static _RemoveCallbacks() {
         window.removeEventListener(DomEvent.KEY_DOWN, KeyboardManager._OnKeyDown);
         window.removeEventListener(DomEvent.KEY_UP, KeyboardManager._OnKeyUp);
-        window.removeEventListener(DomEvent.BLUR, KeyboardManager._OnBlur);
-        window.removeEventListener(DomEvent.CONTEXT_MENU, KeyboardManager._OnContextMenu);
     }
 
-    private static readonly _OnKeyDown = (e: KeyboardEvent): void => {
+    private static _OnKeyDown = (e: KeyboardEvent): void => {
         KeyboardManager._KeyDownsMap.set(e.key, true);
         KeyboardManager._CodeDownsMap.set(e.code, true);
         KeyboardManager.OnKeyDown.execute(e);
     };
 
-    private static readonly _OnKeyUp = (e: KeyboardEvent): void => {
+    private static _OnKeyUp = (e: KeyboardEvent): void => {
         KeyboardManager.OnKeyUp.execute(e);
         KeyboardManager._KeyDownsMap.set(e.key, false);
         KeyboardManager._CodeDownsMap.set(e.code, false);
     };
 
-    private static readonly _OnContextMenu = () => {
-        KeyboardManager._KeyDownsMap.clear();
-        KeyboardManager._CodeDownsMap.clear();
-    };
-
-    public static IsDown(name: string): boolean {
-        if (KeyboardManager._KeyDownsMap.get(name)) return true;
+    public static IsKeyDown(name: string): boolean {
+        if (!KeyboardManager.IsAvailableForControl()) return false;
         if (KeyboardManager._CodeDownsMap.get(name)) return true;
+        if (KeyboardManager._KeyDownsMap.get(name)) return true;
         return false;
     }
 
-    public static IsDowns(names: string[]): boolean {
-        for (let name of names) {
-            if (KeyboardManager.IsDown(name)) return true;
-        }
-        return false;
+    public static IsAnyKeyDown(names: string[]): boolean {
+        if (!KeyboardManager.IsAvailableForControl()) return false;
+        return names.some(name => KeyboardManager.IsKeyDown(name));
     }
 
-    public static GetReadableCode(key: string): string {
-        key = key.replace('Key', '');
-        key = key.replace('Digit', '');
-        key = key.replace('Numpad', '');
-        key = key.replace('Arrow', '');
-        return key;
+    public static AreAllKeysDown(names: string[]): boolean {
+        if (!KeyboardManager.IsAvailableForControl()) return false;
+        return names.every(name => KeyboardManager.IsKeyDown(name));
     }
 
     public static IsAvailableForControl(): boolean {
-        if (document.activeElement instanceof HTMLInputElement) return false;
-        return true;
+        const active = document.activeElement;
+        return !(active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || active?.hasAttribute("contenteditable"));
     }
 }

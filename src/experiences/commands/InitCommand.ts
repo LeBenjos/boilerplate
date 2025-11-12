@@ -1,61 +1,54 @@
 import { AssetId } from "../constants/experiences/AssetId";
 import Experience from "../Experience";
 import CameraControllerManager from "../managers/CameraControllerManager";
-import CursorManager from "../managers/CursorManager";
 import DebugManager from "../managers/DebugManager";
 import { KeyboardManager } from "../managers/KeyboardManager";
+import MouseManager from "../managers/MouseManager";
 import { ResizeManager } from "../managers/ResizeManager";
 import ThreeAssetsManager from "../managers/ThreeAssetsManager";
 import TickerManager from "../managers/TickerManager";
 import AssetUtils from "../Utils/AssetUtils";
 
 export default class InitCommand {
-    public static async begin(): Promise<void> {
-        this._initProxies();
-        this._initCommon();
-        this._initThree();
-        this._initManagers();
-        this._initUtils();
+    public static async Begin(): Promise<void> {
+        this._InitProxies();
+        this._InitManagers();
+        this._InitCommon();
+        this._InitThree();
 
         Experience.Init();
     }
 
-    private static async _initProxies(): Promise<void> {
+    private static async _InitProxies(): Promise<void> {
         // 
     }
 
-    private static async _initUtils(): Promise<void> {
-        //
-    }
-
-    private static async _initManagers(): Promise<void> {
+    private static async _InitManagers(): Promise<void> {
         TickerManager.Init();
-        DebugManager.Init();
         KeyboardManager.Init();
-        CursorManager.Init();
+        MouseManager.Init();
+        DebugManager.Init();
         ResizeManager.Init();
         ThreeAssetsManager.Init();
         CameraControllerManager.Init();
-        ThreeAssetsManager.OnFinishLoad.add(InitCommand._initAfterLoad);
+
+        ThreeAssetsManager.OnFinishLoad.add(InitCommand._InitAfterLoad);
     }
 
-    private static async _initCommon(): Promise<void> {
+    private static async _InitCommon(): Promise<void> {
         // 
     }
 
-    private static async _initThree(): Promise<void> {
+    private static async _InitThree(): Promise<void> {
         ThreeAssetsManager.AddHDR(AssetId.HDR_TEMPLATE, AssetUtils.GetPath("hdrs/template.hdr"));
         ThreeAssetsManager.AddModel(AssetId.GLTF_TEMPLATE, AssetUtils.GetPath("models/template.glb"));
         ThreeAssetsManager.AddTexture(AssetId.TEXTURE_TEMPLATE, AssetUtils.GetPath("textures/template.jpg"));
+        ThreeAssetsManager.AddFont(AssetId.FONT_TEMPLATE, AssetUtils.GetPath("fonts/template.typeface.json"));
 
         ThreeAssetsManager.LoadAssets();
     }
 
-    private static _initAfterLoad = (): void => {
+    private static _InitAfterLoad = (): void => {
         //
-    }
-
-    private static async _end(): Promise<void> {
-        // 
     }
 }

@@ -14,19 +14,19 @@ export default class CameraControllerManager {
 
     public static Add(cameraController: CameraControllerBase, isActive: boolean = false): void {
         CameraControllerManager._CameraControllers.set(cameraController.cameraId, cameraController);
-        if (isActive) CameraControllerManager._ActiveCameraController = cameraController;
+        if (isActive) CameraControllerManager.SetActiveCamera(cameraController.cameraId);
     }
 
-    public static Get(cameraId: CameraId): CameraControllerBase | undefined {
-        return CameraControllerManager._CameraControllers.get(cameraId);
+    public static Get(cameraId: CameraId): CameraControllerBase {
+        const cameraController = CameraControllerManager._CameraControllers.get(cameraId);
+        if (!cameraController) {
+            throw new Error(`CameraControllerManager: No camera found with id ${cameraId}`);
+        }
+        return cameraController;
     }
 
     public static SetActiveCamera(cameraId: CameraId): void {
-        const cameraController = CameraControllerManager._CameraControllers.get(cameraId);
-        if (!cameraController) {
-            console.warn(`CameraControllerManager: No camera controller found with id ${cameraId}`);
-            return;
-        }
+        const cameraController = CameraControllerManager.Get(cameraId);
         CameraControllerManager._ActiveCameraController?.disable();
         CameraControllerManager._ActiveCameraController = cameraController;
         CameraControllerManager._ActiveCameraController.enable();
