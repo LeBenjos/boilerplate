@@ -1,13 +1,46 @@
-import { DataTexture, EquirectangularRefractionMapping, LinearSRGBColorSpace, RepeatWrapping, SRGBColorSpace, Texture, TextureLoader } from "three";
+import { DataTexture, EquirectangularRefractionMapping, LinearSRGBColorSpace, RepeatWrapping, Texture, TextureLoader, type ColorSpace, type Mapping, type Wrapping } from "three";
 import { DRACOLoader, Font, FontLoader, GLTFLoader, HDRLoader, type GLTF } from "three/examples/jsm/Addons.js";
 import type { AssetId } from "../constants/experiences/AssetId";
 import { AssetType } from "../constants/experiences/AssetType";
 import { Action } from "../tools/Action";
 import AssetUtils from "../Utils/AssetUtils";
 
+export interface IAssetToLoad {
+    id: AssetId,
+    type: AssetType,
+    path: string,
+    option?: IAssetOption
+}
+
+export interface IAssetOption {
+    //
+}
+
+export interface ITextureOption extends IAssetOption {
+    colorSpace?: ColorSpace;
+    wrapping?: Wrapping;
+    repeatX?: number;
+    repeatY?: number;
+    centerX?: number;
+    centerY?: number;
+}
+
+export interface IHDROption extends IAssetOption {
+    mapping?: Mapping;
+    colorSpace?: ColorSpace;
+}
+
+export interface IModelOption extends IAssetOption {
+    //
+}
+
+export interface IFontOption extends IAssetOption {
+    //
+}
+
 export default class ThreeAssetsManager {
     private static _assets: Map<string, Texture | DataTexture | GLTF | Font> = new Map<string, Texture | GLTF | Font>();
-    private static _ToLoadList: { id: AssetId; type: AssetType; path: string }[] = [];
+    private static _ToLoadList: IAssetToLoad[] = [];
     private static _Loaded: number = 0;
 
     private static _TextureLoader = new TextureLoader();
@@ -23,74 +56,77 @@ export default class ThreeAssetsManager {
         ThreeAssetsManager._GltfLoader.setDRACOLoader(ThreeAssetsManager._DracoLoader);
     }
 
-    public static AddTexture(id: AssetId, path: string) {
-        ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.TEXTURE, path });
+    public static AddTexture(id: AssetId, path: string, textureOption?: ITextureOption) {
+        ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.TEXTURE, path, option: textureOption });
     }
 
-    public static AddHDR(id: AssetId, path: string) {
-        ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.HDR, path });
+    public static AddHDR(id: AssetId, path: string, hdrOption?: IHDROption) {
+        ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.HDR, path, option: hdrOption });
     }
 
-    public static AddModel(id: AssetId, path: string) {
-        ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.MODEL, path });
+    public static AddModel(id: AssetId, path: string, modelOption?: IModelOption) {
+        ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.MODEL, path, option: modelOption });
     }
 
-    public static AddFont(id: AssetId, path: string) {
-        ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.FONT, path });
+    public static AddFont(id: AssetId, path: string, fontOption?: IFontOption) {
+        ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.FONT, path, option: fontOption });
     }
 
     public static LoadAssets(): void {
         for (const asset of ThreeAssetsManager._ToLoadList) {
-            if (asset.type === AssetType.TEXTURE) ThreeAssetsManager._LoadTexture(asset.id, asset.path);
-            else if (asset.type === AssetType.HDR) ThreeAssetsManager._LoadHDR(asset.id, asset.path);
-            else if (asset.type === AssetType.MODEL) ThreeAssetsManager._LoadModel(asset.id, asset.path);
-            else if (asset.type === AssetType.FONT) ThreeAssetsManager._LoadFont(asset.id, asset.path);
+            if (asset.type === AssetType.TEXTURE) ThreeAssetsManager._LoadTexture(asset);
+            else if (asset.type === AssetType.HDR) ThreeAssetsManager._LoadHDR(asset);
+            else if (asset.type === AssetType.MODEL) ThreeAssetsManager._LoadModel(asset);
+            else if (asset.type === AssetType.FONT) ThreeAssetsManager._LoadFont(asset);
         }
     }
 
-    private static _LoadTexture(id: AssetId, path: string): void {
+    private static _LoadTexture(asset: IAssetToLoad): void {
+        const option = asset.option as ITextureOption | undefined;
+
         ThreeAssetsManager._TextureLoader.load(
-            path,
+            asset.path,
             (texture) => {
-                texture.colorSpace = SRGBColorSpace;
-                texture.wrapS = texture.wrapT = RepeatWrapping;
-                texture.repeat.set(1, 1);
-                texture.center.set(0.5, 0.5);
-                ThreeAssetsManager._onLoad(id, texture);
+                texture.colorSpace = option?.colorSpace || LinearSRGBColorSpace;
+                texture.wrapS = texture.wrapT = option?.wrapping || RepeatWrapping;
+                texture.repeat.set(option?.repeatX || 1, option?.repeatY || 1);
+                texture.center.set(option?.centerX || 0.5, option?.centerY || 0.5);
+                ThreeAssetsManager._onLoad(asset.id, texture);
             },
             undefined,
-            () => ThreeAssetsManager._LoadFailed(AssetType.TEXTURE, id, path),
+            () => ThreeAssetsManager._LoadFailed(AssetType.TEXTURE, asset.id, asset.path),
         );
     }
 
-    private static _LoadHDR(id: AssetId, path: string): void {
+    private static _LoadHDR(asset: IAssetToLoad): void {
+        const option = asset.option as IHDROption | undefined;
         ThreeAssetsManager._HDRLoader.load(
-            path,
+            asset.path,
             (dataTexture) => {
-                dataTexture.mapping = EquirectangularRefractionMapping;
-                dataTexture.colorSpace = LinearSRGBColorSpace;
-                ThreeAssetsManager._onLoad(id, dataTexture);
+                dataTexture.mapping = option?.mapping || EquirectangularRefractionMapping;
+                dataTexture.colorSpace = option?.colorSpace || LinearSRGBColorSpace;
+                ThreeAssetsManager._onLoad(asset.id, dataTexture);
             },
             undefined,
-            () => ThreeAssetsManager._LoadFailed(AssetType.HDR, id, path),
+            () => ThreeAssetsManager._LoadFailed(AssetType.HDR, asset.id, asset.path),
         );
     }
 
-    private static _LoadModel(id: AssetId, path: string): void {
+    private static _LoadModel(asset: IAssetToLoad): void {
         ThreeAssetsManager._GltfLoader.load(
-            path,
-            (model) => ThreeAssetsManager._onLoad(id, model),
+            asset.path,
+            (model) => ThreeAssetsManager._onLoad(asset.id, model),
             undefined,
-            () => ThreeAssetsManager._LoadFailed(AssetType.MODEL, id, path),
+            () => ThreeAssetsManager._LoadFailed(AssetType.MODEL, asset.id, asset.path),
         );
     }
 
-    private static _LoadFont(id: AssetId, path: string): void {
+    private static _LoadFont(asset: IAssetToLoad): void {
         ThreeAssetsManager._FontLoader.load(
-            path,
-            (font) => ThreeAssetsManager._onLoad(id, font),
+            asset.path,
+            (font) => ThreeAssetsManager._onLoad(asset.id, font),
             undefined,
-            () => ThreeAssetsManager._LoadFailed(AssetType.FONT, id, path),
+            () => ThreeAssetsManager._LoadFailed(AssetType.FONT, asset.id, asset.path),
         );
     }
 
