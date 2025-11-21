@@ -41,7 +41,7 @@ export interface IFontOption extends IAssetOption {
 export default class ThreeAssetsManager {
     private static _assets: Map<string, Texture | DataTexture | GLTF | Font> = new Map<string, Texture | GLTF | Font>();
     private static _ToLoadList: IAssetToLoad[] = [];
-    private static _Loaded: number = 0;
+    private static _LoadedCount: number = 0;
 
     private static _TextureLoader = new TextureLoader();
     private static _HDRLoader = new HDRLoader();
@@ -49,7 +49,7 @@ export default class ThreeAssetsManager {
     private static _DracoLoader = new DRACOLoader();
     private static _FontLoader = new FontLoader();
 
-    public static OnFinishLoad = new Action();
+    public static OnLoad = new Action();
 
     public static Init(): void {
         ThreeAssetsManager._DracoLoader.setDecoderPath(AssetUtils.GetPath("loaders/draco/"));
@@ -136,15 +136,8 @@ export default class ThreeAssetsManager {
 
     private static _onLoad(id: AssetId, asset: Texture | GLTF | Font): void {
         ThreeAssetsManager._assets.set(id, asset);
-        ThreeAssetsManager._Loaded++;
-
-        if (ThreeAssetsManager._Loaded === ThreeAssetsManager._ToLoadList.length) {
-            ThreeAssetsManager._onFinishLoad();
-        }
-    }
-
-    private static _onFinishLoad(): void {
-        ThreeAssetsManager.OnFinishLoad.execute();
+        ThreeAssetsManager._LoadedCount++;
+        ThreeAssetsManager.OnLoad.execute();
     }
 
     public static GetTexture(id: AssetId): Texture {
@@ -173,7 +166,8 @@ export default class ThreeAssetsManager {
 
     //#region Getters
     //
-    public static get IsLoaded(): boolean { return ThreeAssetsManager._Loaded === ThreeAssetsManager._ToLoadList.length && ThreeAssetsManager._ToLoadList.length > 0; }
+    public static get IsLoaded(): boolean { return ThreeAssetsManager._LoadedCount === ThreeAssetsManager._ToLoadList.length && ThreeAssetsManager._ToLoadList.length > 0; }
+    public static get ToLoadCount(): number { return ThreeAssetsManager._ToLoadList.length; }
     //
     //#endregion
 }

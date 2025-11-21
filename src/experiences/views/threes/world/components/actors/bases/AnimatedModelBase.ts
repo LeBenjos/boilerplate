@@ -1,7 +1,7 @@
 import { AnimationAction, AnimationMixer } from "three";
-import type { AnimationId } from "../../../../constants/experiences/AnimationId";
-import { AssetId } from "../../../../constants/experiences/AssetId";
-import ThreeAssetsManager from "../../../../managers/ThreeAssetsManager";
+import type { AnimationId } from "../../../../../../constants/experiences/AnimationId";
+import type { AssetId } from "../../../../../../constants/experiences/AssetId";
+import ThreeAssetsManager from "../../../../../../managers/ThreeAssetsManager";
 import ModelBase, { type IModelBaseParams } from "./ModelBase";
 
 export default class AnimatedModelBase extends ModelBase {

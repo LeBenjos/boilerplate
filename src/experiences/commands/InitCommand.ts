@@ -3,6 +3,7 @@ import Experience from "../Experience";
 import CameraControllerManager from "../managers/CameraControllerManager";
 import DebugManager from "../managers/DebugManager";
 import { KeyboardManager } from "../managers/KeyboardManager";
+import LoaderManager from "../managers/LoaderManager";
 import MouseManager from "../managers/MouseManager";
 import { ResizeManager } from "../managers/ResizeManager";
 import ThreeAssetsManager from "../managers/ThreeAssetsManager";
@@ -16,15 +17,16 @@ export default class InitCommand {
         this._InitManagers();
         this._InitCommon();
         this._InitThree();
+        this._InitLoad();
 
         Experience.Init();
     }
 
-    private static async _InitProxies(): Promise<void> {
+    private static _InitProxies(): void {
         // 
     }
 
-    private static async _InitManagers(): Promise<void> {
+    private static _InitManagers(): void {
         TickerManager.Init();
         KeyboardManager.Init();
         MouseManager.Init();
@@ -33,21 +35,23 @@ export default class InitCommand {
         ThreeAssetsManager.Init();
         ThreeRaycasterManager.Init();
         CameraControllerManager.Init();
-
-        ThreeAssetsManager.OnFinishLoad.add(InitCommand._InitAfterLoad);
+        LoaderManager.Init();
     }
 
-    private static async _InitCommon(): Promise<void> {
+    private static _InitCommon(): void {
         // 
     }
 
-    private static async _InitThree(): Promise<void> {
+    private static _InitThree(): void {
         ThreeAssetsManager.AddHDR(AssetId.HDR_TEMPLATE, AssetUtils.GetPath("hdrs/template.hdr"));
         ThreeAssetsManager.AddModel(AssetId.GLTF_TEMPLATE, AssetUtils.GetPath("models/template.glb"));
         ThreeAssetsManager.AddTexture(AssetId.TEXTURE_TEMPLATE, AssetUtils.GetPath("textures/template.jpg"));
         ThreeAssetsManager.AddFont(AssetId.FONT_TEMPLATE, AssetUtils.GetPath("fonts/template.typeface.json"));
+    }
 
-        ThreeAssetsManager.LoadAssets();
+    private static async _InitLoad(): Promise<void> {
+        LoaderManager.OnFinishLoad.add(InitCommand._InitAfterLoad);
+        LoaderManager.LoadAllAssets();
     }
 
     private static _InitAfterLoad = (): void => {

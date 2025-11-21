@@ -1,8 +1,8 @@
 import { DataTexture, DirectionalLight, Object3D } from "three";
-import { AssetId } from "../../constants/experiences/AssetId";
-import Experience from "../../Experience";
-import DebugManager from "../../managers/DebugManager";
-import ThreeAssetsManager from "../../managers/ThreeAssetsManager";
+import { AssetId } from "../../../../constants/experiences/AssetId";
+import Experience from "../../../../Experience";
+import DebugManager from "../../../../managers/DebugManager";
+import ThreeAssetsManager from "../../../../managers/ThreeAssetsManager";
 
 interface IEnvironmentMap {
     intensity?: number;

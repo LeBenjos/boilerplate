@@ -1,0 +1,19 @@
+@use '../abstracts/import.scss' as *;
+
+.loading-bar {
+    z-index: 1;
+    width: 100dvw;
+    height: 0.25rem;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    background-color: $white;
+    transform-origin: top left;
+    transform: translateY(-50%) scaleX(0);
+    transition: transform 0.3s ease-in-out;
+
+    &.ended {
+        transform-origin: top right;
+        transition: transform 1.5s ease-in-out;
+    }
+}

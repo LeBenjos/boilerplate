@@ -1,4 +1,4 @@
-import Experience from "../Experience";
+import Experience from "../../../Experience";
 import Environment from "./components/Environment";
 import TemplateFont from "./components/actors/TemplateFont";
 import TemplateMesh from "./components/actors/TemplateMesh";

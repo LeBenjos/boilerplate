@@ -8,17 +8,19 @@ import { CameraType } from "./constants/experiences/CameraType";
 import CameraControllerManager from "./managers/CameraControllerManager";
 import DebugManager from "./managers/DebugManager";
 import { KeyboardManager } from "./managers/KeyboardManager";
+import LoaderManager from "./managers/LoaderManager";
 import { ResizeManager } from "./managers/ResizeManager";
-import ThreeAssetsManager from "./managers/ThreeAssetsManager";
 import TickerManager from "./managers/TickerManager";
 import Renderer from "./renderers/Renderer";
-import World from "./worlds/World";
+import LoaderThreeView from "./views/threes/LoaderThreeView";
+import World from "./views/threes/world/World";
 
 export default class Experience {
     private static _DomElementContainer: HTMLElement = document.querySelector("#app")!;
     private static _Scene: Scene;
     private static _CameraController: CameraControllerBase;
     private static _Renderer: Renderer;
+    private static _Loader: LoaderThreeView;
     private static _World: World;
     private static _DebugWireframeMaterial: MeshStandardMaterial;
 
@@ -27,9 +29,10 @@ export default class Experience {
         TickerManager.Add(Experience.Update);
 
         Experience._GenerateScene();
+        Experience._GenerateLoaders();
         Experience._GenerateCameras();
         Experience._GenerateRenderer();
-        ThreeAssetsManager.OnFinishLoad.add(Experience._GenerateWorld);
+        LoaderManager.OnFinishLoad.add(Experience._GenerateWorld);
 
         Experience._OnResize();
         ResizeManager.OnResize.add(Experience._OnResize);
@@ -39,7 +42,7 @@ export default class Experience {
         }
     }
 
-    private static _GenerateScene = (): void => {
+    private static _GenerateScene(): void {
         Experience._Scene = new Scene();
 
         if (DebugManager.IsActive) {
@@ -47,7 +50,12 @@ export default class Experience {
         }
     }
 
-    private static _GenerateCameras = (): void => {
+    private static _GenerateLoaders(): void {
+        Experience._Loader = new LoaderThreeView();
+        Experience._Scene.add(Experience._Loader);
+    }
+
+    private static _GenerateCameras(): void {
         CameraControllerManager.Add(new MainCameraController({ type: CameraType.PERSPECTIVE, fov: 75, aspect: window.innerWidth / window.innerHeight, near: 0.1, far: 1000 }), true);
         Experience._CameraController = CameraControllerManager.Get(CameraId.MAIN);
 
@@ -58,12 +66,12 @@ export default class Experience {
         CameraControllerManager.OnActiveCameraChange.add(Experience._OnActiveCameraChange);
     }
 
-    private static _GenerateRenderer = (): void => {
+    private static _GenerateRenderer(): void {
         Experience._Renderer = new Renderer(Experience._CameraController.camera, { antialias: true });
         Experience._DomElementContainer.appendChild(Experience._Renderer.domElement);
     }
 
-    private static _GenerateWorld = (): void => {
+    private static _GenerateWorld(): void {
         Experience._World = new World();
     }
 

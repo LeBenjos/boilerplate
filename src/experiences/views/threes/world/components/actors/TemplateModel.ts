@@ -1,5 +1,5 @@
-import { AssetId } from "../../../constants/experiences/AssetId";
-import DebugManager from "../../../managers/DebugManager";
+import { AssetId } from "../../../../../constants/experiences/AssetId";
+import DebugManager from "../../../../../managers/DebugManager";
 import ModelBase from "./bases/ModelBase";
 
 export default class TemplateModel extends ModelBase {
