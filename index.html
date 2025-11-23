@@ -10,7 +10,12 @@
 </head>
 
 <body>
-  <div class="loading-bar" style="transform: translateY(-50%) scaleX(0);"></div>
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-progress" style="opacity: 0; transform: translate(-50%, -50%);">
+      <span class="loading-number">0</span><span>%</span>
+    </div>
+    <div class="loading-bar" style="transform: translateY(-50%) scaleX(0);"></div>
+  </div>
   <div id="app"></div>
   <script type="module" src="/src/main.ts"></script>
 </body>
