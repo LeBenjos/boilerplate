@@ -2,17 +2,24 @@ export type Tickable = (dt: number) => void;
 
 export default class TickerManager {
     private static _IsRunning: boolean = false;
-    private static readonly _Tickables: Tickable[] = [];
+    private static readonly _Tickables = new Set<Tickable>();
     private static _StartTime: number = performance.now();
     private static _CurrentTime: number = TickerManager._StartTime;
-    private static _ElapsedTime: number = 0;
-    private static _DeltaTime: number = 0.016;
-    private static readonly _MaxDelta: number = 0.1;
+    private static _ElapsedTime: number;
+    private static _DeltaTime: number;
+
+    //#region Constants
+    //
+    private static readonly _TIME_SCALE: number = 0.001;
+    private static readonly _MAX_DELTA: number = 0.1;
+    //
+    //#endregion
 
     public static Init(): void {
         TickerManager.Start();
         TickerManager._ElapsedTime = 0;
-        TickerManager.Update();
+        TickerManager._DeltaTime = 0.016;
+        TickerManager._Update();
     }
 
     public static Start() {
@@ -37,25 +44,24 @@ export default class TickerManager {
     }
 
     public static Add(tickable: Tickable) {
-        TickerManager._Tickables.push(tickable);
+        TickerManager._Tickables.add(tickable);
     }
 
     public static Remove(tickable: Tickable) {
-        const index = TickerManager._Tickables.indexOf(tickable);
-        if (index !== -1) TickerManager._Tickables.splice(index, 1);
+        TickerManager._Tickables.delete(tickable);
     }
 
-    private static Update = (): void => {
+    private static readonly _Update = (): void => {
         if (TickerManager._IsRunning) {
             const now = performance.now();
-            TickerManager._DeltaTime = Math.min((now - TickerManager._CurrentTime) * 0.001, TickerManager._MaxDelta);
+            TickerManager._DeltaTime = Math.min((now - TickerManager._CurrentTime) * TickerManager._TIME_SCALE, TickerManager._MAX_DELTA);
             TickerManager._ElapsedTime += TickerManager._DeltaTime;
             TickerManager._CurrentTime = now;
 
             for (const tickable of TickerManager._Tickables) tickable(TickerManager._DeltaTime);
         }
 
-        requestAnimationFrame(TickerManager.Update);
+        requestAnimationFrame(TickerManager._Update);
     }
 
     //#region Getters

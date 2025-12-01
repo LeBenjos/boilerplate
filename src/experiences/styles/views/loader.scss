@@ -20,12 +20,12 @@
         display: flex;
         align-items: center;
         gap: 0.25rem;
-        transition: opacity 0.5s ease-in-out;
         color: $white;
+        transition: opacity 0.5s ease-in-out;
 
         &.ended {
-            transition: opacity 1.5s ease-in-out;
             opacity: 0;
+            transition: opacity 1.5s ease-in-out;
         }
     }
 
@@ -39,11 +39,12 @@
         background-color: $white;
         transform-origin: top left;
         transform: translateY(-50%) scaleX(0);
-        transition: transform 0.3s ease-in-out;
 
         &.ended {
             transform-origin: top right;
-            transition: transform 1.5s ease-in-out;
+            opacity: 0;
+            transform: translateY(-50%) scale(0);
+            transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
         }
     }
 }

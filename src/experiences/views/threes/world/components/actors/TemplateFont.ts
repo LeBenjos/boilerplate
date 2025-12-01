@@ -1,7 +1,7 @@
 import { Mesh, MeshStandardMaterial } from "three";
 import { TextGeometry } from "three/examples/jsm/Addons.js";
 import { AssetId } from "../../../../../constants/experiences/AssetId";
-import ThreeAssetsManager from "../../../../../managers/ThreeAssetsManager";
+import ThreeAssetsManager from "../../../../../managers/threes/ThreeAssetsManager";
 import ActorBase from "./bases/ActorBase";
 
 export default class TemplateFont extends ActorBase {
@@ -14,7 +14,7 @@ export default class TemplateFont extends ActorBase {
         this._geometry = new TextGeometry(
             "Hello boilerplate!",
             {
-                font: ThreeAssetsManager.GetFont(AssetId.FONT_TEMPLATE),
+                font: ThreeAssetsManager.GetFont(AssetId.THREE_FONT_TEMPLATE),
                 size: 0.25,
                 depth: 0.01,
                 curveSegments: 5,

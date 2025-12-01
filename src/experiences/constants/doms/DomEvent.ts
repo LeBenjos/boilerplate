@@ -14,6 +14,9 @@ export const DomEvent = {
     POINTER_DOWN: "pointerdown",
     POINTER_MOVE: "pointermove",
     POINTER_UP: "pointerup",
+    POINTER_ENTER: "pointerenter",
+    POINTER_LEAVE: "pointerleave",
+    POINTER_CANCEL: "pointercancel",
 
     // Touch Events
     TOUCH_START: "touchstart",
@@ -29,6 +32,8 @@ export const DomEvent = {
     // Focus Events
     FOCUS: "focus",
     BLUR: "blur",
+    FOCUS_IN: "focusin",
+    FOCUS_OUT: "focusout",
 
     // Form Events
     CHANGE: "change",
@@ -38,9 +43,13 @@ export const DomEvent = {
 
     // Document Events
     FULLSCREEN_CHANGE: "fullscreenchange",
+    FULLSCREEN_ERROR: "fullscreenerror",
     VISIBILITY_CHANGE: "visibilitychange",
 
     // Window Events
+    DOM_CONTENT_LOADED: "DOMContentLoaded",
+    READY_STATE_CHANGE: "readystatechange",
+    ERROR: "error",
     LOAD: "load",
     UNLOAD: "unload",
     BEFORE_UNLOAD: "beforeunload",
@@ -78,13 +87,6 @@ export const DomEvent = {
     TRANSITION_END: "transitionend",
     TRANSITION_CANCEL: "transitioncancel",
 
-    // Gamepad Events
-    GAMEPAD_CONNECTED: "gamepadconnected", // Quand un gamepad est connecté
-    GAMEPAD_DISCONNECTED: "gamepaddisconnected", // Quand un gamepad est déconnecté
-    GAMEPAD_BUTTON_PRESS: "gamepadbuttonpress", // Quand un bouton est pressé (custom event)
-    GAMEPAD_BUTTON_RELEASE: "gamepadbuttonrelease", // Quand un bouton est relâché (custom event)
-    GAMEPAD_AXIS_MOVE: "gamepadaxismove", // Quand un joystick bouge (custom event)
-
     // Other Events
     BEFORE_PRINT: "beforeprint",
     AFTER_PRINT: "afterprint",
@@ -93,8 +95,6 @@ export const DomEvent = {
     STORAGE: "storage",
     ONLINE: "online",
     OFFLINE: "offline",
-
-    COMPLETE: "complete",
 } as const;
 
 export type DomEvent = typeof DomEvent[keyof typeof DomEvent];

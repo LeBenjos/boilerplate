@@ -1,5 +1,5 @@
 import { Mesh, Object3D, PlaneGeometry } from "three";
-import LoaderMaterial from "../../materials/loaders/LoaderMaterial";
+import LoaderMaterial from "../../materials/threes/loaders/LoaderMaterial";
 
 export default class LoaderThreeView extends Object3D {
     private declare _geometry: PlaneGeometry;

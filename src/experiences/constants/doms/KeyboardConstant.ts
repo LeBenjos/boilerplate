@@ -136,9 +136,6 @@ export const KeyboardConstant = {
         QuestionMark: '?'
     },
 
-    /**
-     * Codes for KeyboardEvent.code
-     */
     Codes: {
         Backspace: 'Backspace',
         Tab: 'Tab',

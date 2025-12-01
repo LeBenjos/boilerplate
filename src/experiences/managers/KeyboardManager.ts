@@ -2,8 +2,8 @@ import { DomEvent } from "../constants/doms/DomEvent";
 import { Action } from "../tools/Action";
 
 export class KeyboardManager {
-    private static _KeyDownsMap = new Map<string, boolean>();
-    private static _CodeDownsMap = new Map<string, boolean>();
+    private static readonly _KeyDownsMap = new Map<string, boolean>();
+    private static readonly _CodeDownsMap = new Map<string, boolean>();
 
     public static readonly OnKeyDown = new Action<[KeyboardEvent]>();
     public static readonly OnKeyUp = new Action<[KeyboardEvent]>();
@@ -25,13 +25,13 @@ export class KeyboardManager {
         window.removeEventListener(DomEvent.KEY_UP, KeyboardManager._OnKeyUp);
     }
 
-    private static _OnKeyDown = (e: KeyboardEvent): void => {
+    private static readonly _OnKeyDown = (e: KeyboardEvent): void => {
         KeyboardManager._KeyDownsMap.set(e.key, true);
         KeyboardManager._CodeDownsMap.set(e.code, true);
         KeyboardManager.OnKeyDown.execute(e);
     };
 
-    private static _OnKeyUp = (e: KeyboardEvent): void => {
+    private static readonly _OnKeyUp = (e: KeyboardEvent): void => {
         KeyboardManager.OnKeyUp.execute(e);
         KeyboardManager._KeyDownsMap.set(e.key, false);
         KeyboardManager._CodeDownsMap.set(e.code, false);
@@ -55,7 +55,7 @@ export class KeyboardManager {
     }
 
     public static IsAvailableForControl(): boolean {
-        const active = document.activeElement;
-        return !(active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || active?.hasAttribute("contenteditable"));
+        const active: HTMLElement = document.activeElement as HTMLElement;
+        return !(active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || active?.isContentEditable);
     }
 }

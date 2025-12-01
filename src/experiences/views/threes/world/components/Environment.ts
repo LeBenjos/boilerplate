@@ -2,7 +2,7 @@ import { DataTexture, DirectionalLight, Object3D } from "three";
 import { AssetId } from "../../../../constants/experiences/AssetId";
 import Experience from "../../../../Experience";
 import DebugManager from "../../../../managers/DebugManager";
-import ThreeAssetsManager from "../../../../managers/ThreeAssetsManager";
+import ThreeAssetsManager from "../../../../managers/threes/ThreeAssetsManager";
 
 interface IEnvironmentMap {
     intensity?: number;
@@ -23,7 +23,7 @@ export default class Environment extends Object3D {
     private _generateEnvironmentMap = (): void => {
         this._environmentMap = {};
         this._environmentMap.intensity = 1;
-        this._environmentMap.texture = ThreeAssetsManager.GetHDR(AssetId.HDR_TEMPLATE);
+        this._environmentMap.texture = ThreeAssetsManager.GetHDR(AssetId.THREE_HDR_TEMPLATE);
         this._environmentMap.texture.needsUpdate = true;
 
         Experience.Scene.environment = this._environmentMap.texture;

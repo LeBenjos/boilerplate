@@ -36,16 +36,16 @@ export default class MouseManager {
         window.removeEventListener(DomEvent.MOUSE_MOVE, this._OnMouseMove);
     }
 
-    private static _OnMouseDown = (event: MouseEvent | TouchEvent): void => {
+    private static readonly _OnMouseDown = (event: MouseEvent | TouchEvent): void => {
         this._OnMouseMove(event);
         this.OnMouseDown.execute();
     }
 
-    private static _OnMouseUp = (event: MouseEvent | TouchEvent): void => {
+    private static readonly _OnMouseUp = (event: MouseEvent | TouchEvent): void => {
         this.OnMouseUp.execute();
     }
 
-    private static _OnMouseMove = (event: MouseEvent | TouchEvent): void => {
+    private static readonly _OnMouseMove = (event: MouseEvent | TouchEvent): void => {
         this._UpdateMousePosition(event);
         this.OnMouseMove.execute();
     }

@@ -1,6 +1,6 @@
 import { Mesh, MeshStandardMaterial, RepeatWrapping, SphereGeometry } from "three";
 import { AssetId } from "../../../../../constants/experiences/AssetId";
-import ThreeAssetsManager from "../../../../../managers/ThreeAssetsManager";
+import ThreeAssetsManager from "../../../../../managers/threes/ThreeAssetsManager";
 import ActorBase from "./bases/ActorBase";
 
 export default class TemplateMesh extends ActorBase {
@@ -12,7 +12,7 @@ export default class TemplateMesh extends ActorBase {
         super();
         this._geometry = new SphereGeometry(1, 64, 64);
 
-        const normalMat = ThreeAssetsManager.GetTexture(AssetId.TEXTURE_TEMPLATE);
+        const normalMat = ThreeAssetsManager.GetTexture(AssetId.THREE_TEXTURE_TEMPLATE);
         normalMat.repeat.set(1.5, 1.5);
         normalMat.wrapS = normalMat.wrapT = RepeatWrapping;
 

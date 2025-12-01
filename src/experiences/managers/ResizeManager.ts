@@ -2,36 +2,38 @@ import { Action } from "../tools/Action";
 import TickerManager from "./TickerManager";
 
 export class ResizeManager {
-  private static _Width: number = 0;
-  private static _Height: number = 0;
-  private static _PixelRatio: number = 0;
+  private static _Width: number;
+  private static _Height: number;
+  private static _PixelRatio: number;
 
   public static readonly OnResize = new Action();
 
+  //#region Constants
+  //
+  private static readonly _MAX_PIXEL_RATIO: number = 2;
+  //
+  //#endregion
+
   public static Init(): void {
     ResizeManager.Reset();
-    ResizeManager.Resize();
-    // window.addEventListener(DomEvent.RESIZE, ResizeManager.Resize);
+    ResizeManager._Resize();
     TickerManager.Add(ResizeManager.Update);
   }
 
   public static Reset(): void {
-    // window.removeEventListener(DomEvent.RESIZE, ResizeManager.Resize);
     TickerManager.Remove(ResizeManager.Update);
   }
 
-  public static Resize = (): void => {
-    if (ResizeManager._Width == window.innerWidth && ResizeManager._Height == window.innerHeight) return;
-
+  private static readonly _Resize = (): void => {
     ResizeManager._Width = window.innerWidth;
     ResizeManager._Height = window.innerHeight;
-    ResizeManager._PixelRatio = Math.min(window.devicePixelRatio, 2);
+    ResizeManager._PixelRatio = Math.min(window.devicePixelRatio, ResizeManager._MAX_PIXEL_RATIO);
 
     ResizeManager.OnResize.execute();
   };
 
-  public static Update = (dt: number): void => {
-    if (ResizeManager._Width != window.innerWidth || ResizeManager._Height != window.innerHeight) ResizeManager.Resize();
+  public static readonly Update = (dt: number): void => {
+    if (ResizeManager._Width !== window.innerWidth || ResizeManager._Height !== window.innerHeight) ResizeManager._Resize();
   }
 
   //#region Getters
