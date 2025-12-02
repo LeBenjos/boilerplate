@@ -1,7 +1,7 @@
 import GUI from "lil-gui";
 import { ThreePerf } from 'three-perf';
 import { KeyboardConstant } from "../constants/doms/KeyboardConstant";
-import Experience from "../Experience";
+import MainThree from "../engine/threes/MainThree";
 import { KeyboardManager } from "./KeyboardManager";
 
 export default class DebugManager {
@@ -41,7 +41,7 @@ export default class DebugManager {
             anchorX: DebugManager._THREE_PERF_ANCHOR_X,
             anchorY: DebugManager._THREE_PERF_ANCHOR_Y,
             domElement: document.body,
-            renderer: Experience.Renderer,
+            renderer: MainThree.Renderer,
             showGraph: false,
         });
     }

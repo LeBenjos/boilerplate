@@ -2,7 +2,7 @@ import { Vector3 } from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import { KeyboardConstant } from "../../constants/doms/KeyboardConstant";
 import { CameraId } from "../../constants/experiences/CameraId";
-import Experience from "../../Experience";
+import MainThree from "../../engine/threes/MainThree";
 import { KeyboardManager } from "../../managers/KeyboardManager";
 import MouseManager from "../../managers/MouseManager";
 import ThreeRaycasterManager from "../../managers/threes/ThreeRaycasterManager";
@@ -22,7 +22,6 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
         this._camera.position.copy(DebugThreeCameraController._DEFAULT_CAMERA_POSITION);
         this._setControls();
         this.disable();
-        console.log("DebugThreeCameraController initialized");
     }
 
     public override enable(): void {
@@ -36,14 +35,14 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
     }
 
     private _setControls(): void {
-        this._controls = new OrbitControls(this._camera, Experience.DomElementContainer);
+        this._controls = new OrbitControls(this._camera, MainThree.DomElementContainer);
         this._controls.enableDamping = true;
         this._controls.dampingFactor = DebugThreeCameraController._CONTROLS_DAMPING_FACTOR;
     }
 
     private readonly _onMouseDown = (): void => {
         if (KeyboardManager.IsKeyDown(DebugThreeCameraController._CONTROLS_CENTER_KEY)) {
-            const intersect = ThreeRaycasterManager.CastFromCameraToMouse(Experience.Scene.children);
+            const intersect = ThreeRaycasterManager.CastFromCameraToMouse(MainThree.Scene.children);
             if (intersect.length > 0) {
                 this._controls.target.copy(intersect[0].point);
                 this._controls.update();

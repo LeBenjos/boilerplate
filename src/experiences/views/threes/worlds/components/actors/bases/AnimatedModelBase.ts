@@ -9,6 +9,12 @@ export default class AnimatedModelBase extends ModelBase {
     private declare _actions: AnimationAction[];
     private declare _currentAction: AnimationAction | null;
 
+    //#region Constants
+    //
+    private static readonly _DEFAULT_ANIMATION_FADE_DURATION: number = 1;
+    //
+    //#endregion
+
     constructor(assetId: AssetId, params: IModelBaseParams = {}) {
         super(assetId, params);
 
@@ -31,14 +37,14 @@ export default class AnimatedModelBase extends ModelBase {
         this._actions.push(action);
     }
 
-    protected _playAnimation = (animationId: AnimationId): void => {
+    protected _playAnimation = (animationId: AnimationId, fadeDuration: number = AnimatedModelBase._DEFAULT_ANIMATION_FADE_DURATION): void => {
         if (!this._actions) return;
         const newAction = this._getAnimationAction(animationId);
         const oldAction = this._currentAction || null;
 
         newAction.reset();
         newAction.play();
-        if (oldAction) newAction.crossFadeFrom(oldAction, 1);
+        if (oldAction) newAction.crossFadeFrom(oldAction, fadeDuration);
         this._currentAction = newAction;
     }
 

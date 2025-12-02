@@ -1,7 +1,7 @@
 import { Object3D, OrthographicCamera, PerspectiveCamera } from "three";
 import type { CameraId } from "../../../constants/experiences/CameraId";
 import { CameraType } from "../../../constants/experiences/CameraType";
-import Experience from "../../../Experience";
+import MainThree from "../../../engine/threes/MainThree";
 import { ResizeManager } from "../../../managers/ResizeManager";
 
 export interface IThreeCameraOptions {
@@ -47,7 +47,7 @@ export default abstract class ThreeCameraControllerBase<T extends IThreeControls
         this._generateContainer();
         this._generateCamera(cameraOptions);
 
-        Experience.Scene.add(this);
+        MainThree.Scene.add(this);
     }
 
     private _generateContainer(): void {
