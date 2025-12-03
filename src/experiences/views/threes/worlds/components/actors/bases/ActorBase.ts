@@ -1,6 +1,6 @@
 import { Object3D } from "three";
 
-export default class ActorBase extends Object3D {
+export default abstract class ActorBase extends Object3D {
     constructor() {
         super();
     }

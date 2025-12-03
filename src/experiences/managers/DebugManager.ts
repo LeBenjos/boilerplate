@@ -1,7 +1,7 @@
 import GUI from "lil-gui";
 import { ThreePerf } from 'three-perf';
 import { KeyboardConstant } from "../constants/doms/KeyboardConstant";
-import MainThree from "../engine/threes/MainThree";
+import MainThree from "../engines/threes/MainThree";
 import { KeyboardManager } from "./KeyboardManager";
 
 export default class DebugManager {

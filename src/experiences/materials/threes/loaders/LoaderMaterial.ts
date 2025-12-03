@@ -28,7 +28,9 @@ export default class LoaderMaterial extends ShaderMaterial {
         LoaderManager.OnFinishLoad.add(this._onFinishLoad);
     }
 
-    private _onFinishLoad = (): void => {
+    private readonly _onFinishLoad = (): void => {
+        gsap.killTweensOf(this.uniforms.uAlpha);
+        this.uniforms.uAlpha.value = 1;
         gsap.to(this.uniforms.uAlpha, {
             value: 0,
             duration: LoaderMaterial._GSAP_DURATION_FADE_OUT,

@@ -1,7 +1,7 @@
 import { Object3D, OrthographicCamera, PerspectiveCamera } from "three";
 import type { CameraId } from "../../../constants/experiences/CameraId";
 import { CameraType } from "../../../constants/experiences/CameraType";
-import MainThree from "../../../engine/threes/MainThree";
+import MainThree from "../../../engines/threes/MainThree";
 import { ResizeManager } from "../../../managers/ResizeManager";
 
 export interface IThreeCameraOptions {

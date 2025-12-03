@@ -13,11 +13,12 @@ import { ResizeManager } from "../../managers/ResizeManager";
 import ThreeCameraControllerManager from "../../managers/threes/ThreeCameraControllerManager";
 import TickerManager from "../../managers/TickerManager";
 import Renderer from "../../renderers/threes/Renderer";
+import DomUtils from "../../Utils/DomUtils";
 import LoaderThreeView from "../../views/threes/loaders/LoaderThreeView";
 import WorldThreeView from "../../views/threes/worlds/WorldThreeView";
 
 export default class MainThree {
-    private static _DomElementContainer: HTMLElement = document.querySelector("#app")!;
+    private static _DomElementContainer: HTMLElement;
     private static _Scene: Scene;
     private static _CameraController: ThreeCameraControllerBase;
     private static _Renderer: Renderer;
@@ -49,6 +50,8 @@ export default class MainThree {
 
     public static Init(): void {
         TickerManager.Add(MainThree.Update);
+
+        MainThree._DomElementContainer = DomUtils.GetApp();
 
         MainThree._GenerateScene();
         MainThree._GenerateLoaders();

@@ -1,6 +1,6 @@
 import { DataTexture, DirectionalLight, Object3D, Vector3 } from "three";
 import { AssetId } from "../../../../constants/experiences/AssetId";
-import MainThree from "../../../../engine/threes/MainThree";
+import MainThree from "../../../../engines/threes/MainThree";
 import DebugManager from "../../../../managers/DebugManager";
 import ThreeAssetsManager from "../../../../managers/threes/ThreeAssetsManager";
 

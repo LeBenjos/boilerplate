@@ -1,5 +1,5 @@
 import InitCommand from "./commands/InitCommand";
-import MainThree from "./engine/threes/MainThree";
+import MainThree from "./engines/threes/MainThree";
 import LoaderManager from "./managers/LoaderManager";
 
 export default class Experience {

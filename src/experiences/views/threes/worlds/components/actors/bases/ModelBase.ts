@@ -11,7 +11,7 @@ export interface IModelBaseParams {
     receiveShadow?: boolean;
 }
 
-export default class ModelBase extends ActorBase {
+export default abstract class ModelBase extends ActorBase {
     protected _assetId: AssetId;
     protected _parameters: IModelBaseParams;
     protected declare _model: Group | Object3D | Mesh;

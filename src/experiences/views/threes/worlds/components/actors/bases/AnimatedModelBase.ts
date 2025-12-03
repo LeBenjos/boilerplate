@@ -4,7 +4,7 @@ import type { AssetId } from "../../../../../../constants/experiences/AssetId";
 import ThreeAssetsManager from "../../../../../../managers/threes/ThreeAssetsManager";
 import ModelBase, { type IModelBaseParams } from "./ModelBase";
 
-export default class AnimatedModelBase extends ModelBase {
+export default abstract class AnimatedModelBase extends ModelBase {
     private declare _mixer: AnimationMixer;
     private declare _actions: AnimationAction[];
     private declare _currentAction: AnimationAction | null;

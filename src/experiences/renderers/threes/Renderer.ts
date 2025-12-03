@@ -1,5 +1,5 @@
 import { ACESFilmicToneMapping, AgXToneMapping, Camera, CineonToneMapping, CustomToneMapping, LinearSRGBColorSpace, LinearToneMapping, NeutralToneMapping, NoToneMapping, PCFSoftShadowMap, ReinhardToneMapping, SRGBColorSpace, WebGLRenderer, type ColorSpace, type ToneMapping, type WebGLRendererParameters } from "three";
-import MainThree from "../../engine/threes/MainThree";
+import MainThree from "../../engines/threes/MainThree";
 import DebugManager from "../../managers/DebugManager";
 import { ResizeManager } from "../../managers/ResizeManager";
 

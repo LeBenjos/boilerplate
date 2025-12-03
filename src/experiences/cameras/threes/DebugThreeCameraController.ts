@@ -2,7 +2,7 @@ import { Vector3 } from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import { KeyboardConstant } from "../../constants/doms/KeyboardConstant";
 import { CameraId } from "../../constants/experiences/CameraId";
-import MainThree from "../../engine/threes/MainThree";
+import MainThree from "../../engines/threes/MainThree";
 import { KeyboardManager } from "../../managers/KeyboardManager";
 import MouseManager from "../../managers/MouseManager";
 import ThreeRaycasterManager from "../../managers/threes/ThreeRaycasterManager";

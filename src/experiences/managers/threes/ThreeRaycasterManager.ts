@@ -1,5 +1,5 @@
 import { Object3D, Raycaster, Vector2, type Intersection, type Object3DEventMap } from "three";
-import MainThree from "../../engine/threes/MainThree";
+import MainThree from "../../engines/threes/MainThree";
 import MouseManager from "../MouseManager";
 
 
