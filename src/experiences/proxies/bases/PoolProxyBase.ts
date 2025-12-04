@@ -4,8 +4,21 @@ export default abstract class PoolProxyBase<T = unknown> {
     protected readonly _pool: Set<T> = new Set<T>();
     private readonly _ctor: Constructor<T>;
 
-    constructor(ctor: Constructor<T>) {
+    //#region Constants
+    //
+    public static readonly DEFAULT_INITIAL_SIZE: number = 0;
+    //
+    //#endregion
+
+    constructor(ctor: Constructor<T>, initialSize: number = PoolProxyBase.DEFAULT_INITIAL_SIZE) {
         this._ctor = ctor;
+        this._prepopulate(initialSize);
+    }
+
+    private _prepopulate(number: number): void {
+        for (let i = 0; i < number; i++) {
+            this._pool.add(new this._ctor());
+        }
     }
 
     public get(): T {
