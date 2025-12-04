@@ -1,5 +1,5 @@
 import { DomEvent } from "../constants/doms/DomEvent";
-import { Action } from "../tools/Action";
+import Action from "../tools/Action";
 
 export default class MouseManager {
     private static _X: number = 0;

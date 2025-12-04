@@ -1,6 +1,6 @@
 import type ThreeCameraControllerBase from "../../cameras/threes/bases/ThreeCameraControllerBase";
 import type { CameraId } from "../../constants/experiences/CameraId";
-import { Action } from "../../tools/Action";
+import Action from "../../tools/Action";
 
 export default class ThreeCameraControllerManager {
     private static readonly _ThreeCameraControllers = new Map<CameraId, ThreeCameraControllerBase>();
@@ -30,12 +30,12 @@ export default class ThreeCameraControllerManager {
         ThreeCameraControllerManager._ActiveThreeCameraController?.disable();
         ThreeCameraControllerManager._ActiveThreeCameraController = threeCameraController;
         ThreeCameraControllerManager._ActiveThreeCameraController.enable();
-        ThreeCameraControllerManager.OnActiveThreeCameraControllerChange.execute(ThreeCameraControllerManager._ActiveThreeCameraController);
+        ThreeCameraControllerManager.OnActiveThreeCameraControllerChange.execute();
     }
 
     //#region Getters
     //
-    public static get ActiveCameraController(): ThreeCameraControllerBase { return ThreeCameraControllerManager._ActiveThreeCameraController; }
+    public static get ActiveThreeCameraController(): ThreeCameraControllerBase { return ThreeCameraControllerManager._ActiveThreeCameraController; }
     //
     //#endregion
 }

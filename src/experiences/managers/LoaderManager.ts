@@ -1,14 +1,12 @@
-import { Action } from "../tools/Action";
+import Action from "../tools/Action";
 import ThreeAssetsManager from "./threes/ThreeAssetsManager";
 
 export default class LoaderManager {
-    private static _LoadingBar: HTMLDivElement = document.querySelector(".loading-bar")!; // move
-    private static _LoadingProgress: HTMLDivElement = document.querySelector(".loading-progress")!; // move
-    private static _LoadingNumber: HTMLSpanElement = LoaderManager._LoadingProgress.querySelector(".loading-number")!; // move
     private static _TotalSize: number = 0;
     private static _LoadedSize: number = 0;
 
     public static OnBeginLoad = new Action();
+    public static OnProgress = new Action();
     public static OnFinishLoad = new Action();
 
     public static Init(): void {
@@ -32,7 +30,6 @@ export default class LoaderManager {
         } else {
             ThreeAssetsManager.LoadAssets();
             LoaderManager.OnBeginLoad.execute();
-            LoaderManager._LoadingProgress.style.opacity = "1"; // move
         }
     }
 
@@ -51,9 +48,7 @@ export default class LoaderManager {
 
     private static _OnProgress = (): void => {
         LoaderManager._RefreshSizes();
-        const progress = LoaderManager._LoadedSize / LoaderManager._TotalSize * 100; // move
-        LoaderManager._LoadingBar.style.transform = `translateY(-50%) scaleX(${progress / 100})`; // move
-        LoaderManager._LoadingNumber.textContent = Math.round(progress).toString(); // move
+        LoaderManager.OnProgress.execute();
     }
 
     private static _RefreshSizes = (): void => {
@@ -72,11 +67,6 @@ export default class LoaderManager {
     }
 
     private static _OnFinishLoad = (): void => {
-        LoaderManager._LoadingBar.style.transform = ''; //  move
-        LoaderManager._LoadingBar.classList.add("ended"); //  move
-        LoaderManager._LoadingProgress.style.opacity = ''; //  move
-        LoaderManager._LoadingProgress.classList.add("ended"); //  move
-
         LoaderManager.OnFinishLoad.execute();
     }
 

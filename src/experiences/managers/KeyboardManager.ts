@@ -1,5 +1,5 @@
 import { DomEvent } from "../constants/doms/DomEvent";
-import { Action } from "../tools/Action";
+import Action from "../tools/Action";
 
 export class KeyboardManager {
     private static readonly _KeyDownsMap = new Map<string, boolean>();

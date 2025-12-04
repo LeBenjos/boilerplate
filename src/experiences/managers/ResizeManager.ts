@@ -1,4 +1,4 @@
-import { Action } from "../tools/Action";
+import Action from "../tools/Action";
 import TickerManager from "./TickerManager";
 
 export class ResizeManager {

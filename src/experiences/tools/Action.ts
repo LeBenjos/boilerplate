@@ -1,25 +1,23 @@
-type FuncType<TArgs extends any[], TResult> = (...args: TArgs) => TResult;
-type ActionType<TArgs extends any[]> = FuncType<TArgs, any>;
+type Listener<TParams extends unknown[]> = (...params: TParams) => unknown;
 
-export class Action<T extends any[]> {
+export default class Action<T extends unknown[] = []> {
+    private _listeners: Set<Listener<T>> = new Set();
 
-    private _funcList = new Set<ActionType<T>>();
-
-    public add(func: ActionType<T>): void {
-        this._funcList.add(func);
+    public add(listener: Listener<T>): void {
+        this._listeners.add(listener);
     }
 
-    public remove(func: ActionType<T>): void {
-        this._funcList.delete(func);
+    public remove(listener: Listener<T>): void {
+        this._listeners.delete(listener);
     }
 
     public removeAll(): void {
-        this._funcList.clear();
+        this._listeners.clear();
     }
 
-    public execute(...args: T): void {
-        for (const func of this._funcList) {
-            func(...args);
+    public execute(...params: T): void {
+        for (const listener of this._listeners) {
+            listener(...params);
         }
     }
 }

@@ -89,7 +89,7 @@ export default class MainThree {
             ThreeCameraControllerManager.Add(new DebugThreeCameraController(MainThree._DEBUG_CAMERA_OPTIONS));
         }
 
-        ThreeCameraControllerManager.OnActiveThreeCameraControllerChange.add(MainThree._OnActiveCameraChange);
+        ThreeCameraControllerManager.OnActiveThreeCameraControllerChange.add(MainThree._OnActiveCameraControllerChange);
     }
 
     private static _GenerateRenderer(): void {
@@ -101,8 +101,8 @@ export default class MainThree {
         MainThree._WorldThreeView = new WorldThreeView();
     }
 
-    private static _OnActiveCameraChange = (): void => {
-        MainThree._CameraController = ThreeCameraControllerManager.ActiveCameraController;
+    private static _OnActiveCameraControllerChange = (): void => {
+        MainThree._CameraController = ThreeCameraControllerManager.ActiveThreeCameraController;
         MainThree._Renderer.setCamera(MainThree._CameraController.camera);
         MainThree._OnResize();
     }

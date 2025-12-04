@@ -2,7 +2,7 @@ import { DataTexture, EquirectangularRefractionMapping, LinearSRGBColorSpace, Re
 import { DRACOLoader, Font, FontLoader, GLTFLoader, HDRLoader, type GLTF } from "three/examples/jsm/Addons.js";
 import type { AssetId } from "../../constants/experiences/AssetId";
 import { AssetType } from "../../constants/experiences/AssetType";
-import { Action } from "../../tools/Action";
+import Action from "../../tools/Action";
 import AssetUtils from "../../Utils/AssetUtils";
 
 export interface IThreeAssetToLoad {
