@@ -1,25 +1,36 @@
-import MainThree from "../../../engine/threes/MainThree";
+import { ViewId } from "../../../constants/experiences/ViewId";
+import LoaderManager from "../../../managers/LoaderManager";
+import ThreeViewBase from "../bases/ThreeViewBase";
 import Environment from "./components/Environment";
 import TemplateFont from "./components/actors/TemplateFont";
 import TemplateMesh from "./components/actors/TemplateMesh";
 import TemplateModel from "./components/actors/TemplateModel";
 import type ActorBase from "./components/actors/bases/ActorBase";
 
-export default class WorldThreeView {
+export default class WorldThreeView extends ThreeViewBase {
     private declare _environment: Environment;
     private readonly _actors: ActorBase[];
 
-    constructor() {
+    constructor(id: ViewId) {
+        super(id);
+
         this._actors = [];
 
+        LoaderManager.OnFinishLoad.add(this._onFinishLoad);
+    }
+
+    private readonly _onFinishLoad = (): void => {
         this._generateEnvironment();
         this._generateActors();
+
+        this._show();
+        LoaderManager.OnFinishLoad.remove(this._onFinishLoad);
     }
 
     private _generateEnvironment(): void {
         this._environment = new Environment();
 
-        MainThree.Scene.add(this._environment);
+        this._container.add(this._environment);
     }
 
     private _generateActors(): void {
@@ -27,7 +38,7 @@ export default class WorldThreeView {
         this._actors.push(new TemplateModel());
         this._actors.push(new TemplateFont());
 
-        for (const actor of this._actors) MainThree.Scene.add(actor);
+        for (const actor of this._actors) this._container.add(actor);
     }
 
     public update(dt: number): void {

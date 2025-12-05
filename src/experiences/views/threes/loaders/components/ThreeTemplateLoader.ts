@@ -1,7 +1,7 @@
 import { Mesh, Object3D, PlaneGeometry } from "three";
 import LoaderMaterial from "../../../../materials/threes/loaders/LoaderMaterial";
 
-export default class TemplateLoader extends Object3D {
+export default class ThreeTemplateLoader extends Object3D {
     private declare _geometry: PlaneGeometry;
     private declare _material: LoaderMaterial;
     private declare _loader: Mesh;
@@ -27,10 +27,10 @@ export default class TemplateLoader extends Object3D {
 
     private _generateGeometry(): void {
         this._geometry = new PlaneGeometry(
-            TemplateLoader.DEFAULT_SIZE_WIDTH,
-            TemplateLoader.DEFAULT_SIZE_HEIGHT,
-            TemplateLoader.DEFAULT_SEGMENTS_WIDTH,
-            TemplateLoader.DEFAULT_SEGMENTS_HEIGHT
+            ThreeTemplateLoader.DEFAULT_SIZE_WIDTH,
+            ThreeTemplateLoader.DEFAULT_SIZE_HEIGHT,
+            ThreeTemplateLoader.DEFAULT_SEGMENTS_WIDTH,
+            ThreeTemplateLoader.DEFAULT_SEGMENTS_HEIGHT
         );
     }
 
@@ -41,4 +41,10 @@ export default class TemplateLoader extends Object3D {
     private _generateMesh(): void {
         this._loader = new Mesh(this._geometry, this._material);
     }
+
+    //#region Getters
+    //
+    public get material(): LoaderMaterial { return this._material; }
+    //
+    //#endregion
 }

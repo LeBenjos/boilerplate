@@ -1,20 +1,30 @@
-import { Object3D } from "three";
-import MainThree from "../../../engine/threes/MainThree";
-import TemplateLoader from "./components/TemplateLoader";
+import { ViewId } from "../../../constants/experiences/ViewId";
+import LoaderManager from "../../../managers/LoaderManager";
+import ThreeViewBase from "../bases/ThreeViewBase";
+import ThreeTemplateLoader from "./components/ThreeTemplateLoader";
 
-export default class LoaderThreeView extends Object3D {
-    private declare _loader: TemplateLoader;
+export default class LoaderThreeView extends ThreeViewBase {
+    private declare _threeLoader: ThreeTemplateLoader;
 
-    constructor() {
-        super();
+    constructor(id: ViewId) {
+        super(id);
 
         this._generateLoader();
 
-        MainThree.Scene.add(this._loader);
+        LoaderManager.OnBeginLoad.add(this._onBeginLoad);
+        this._threeLoader.material.onGsapAnimationComplete.add(this._onGsapAnimationComplete);
+    }
+
+    private readonly _onBeginLoad = (): void => {
+        this._show();
+    }
+
+    private readonly _onGsapAnimationComplete = (): void => {
+        this._hide();
     }
 
     private _generateLoader(): void {
-        this._loader = new TemplateLoader();
-        this.add(this._loader);
+        this._threeLoader = new ThreeTemplateLoader();
+        this._container.add(this._threeLoader);
     }
 }

@@ -6,12 +6,13 @@ import MainThreeCameraController from "../../cameras/threes/MainThreeCameraContr
 import { KeyboardConstant } from "../../constants/doms/KeyboardConstant";
 import { CameraId } from "../../constants/experiences/CameraId";
 import { CameraType } from "../../constants/experiences/CameraType";
+import { ViewId } from "../../constants/experiences/ViewId";
 import DebugManager from "../../managers/DebugManager";
 import { KeyboardManager } from "../../managers/KeyboardManager";
-import LoaderManager from "../../managers/LoaderManager";
 import { ResizeManager } from "../../managers/ResizeManager";
 import ThreeCameraControllerManager from "../../managers/threes/ThreeCameraControllerManager";
 import TickerManager from "../../managers/TickerManager";
+import ViewProxy from "../../proxies/ViewProxy";
 import Renderer from "../../renderers/threes/Renderer";
 import DomUtils from "../../Utils/DomUtils";
 import LoaderThreeView from "../../views/threes/loaders/LoaderThreeView";
@@ -22,8 +23,6 @@ export default class MainThree {
     private static _Scene: Scene;
     private static _CameraController: ThreeCameraControllerBase;
     private static _Renderer: Renderer;
-    private static _LoaderThreeView: LoaderThreeView;
-    private static _WorldThreeView: WorldThreeView;
     private static _DebugWireframeMaterial: MeshStandardMaterial;
 
     //#region Constants
@@ -54,14 +53,13 @@ export default class MainThree {
         MainThree._DomElementContainer = DomUtils.GetApp();
 
         MainThree._GenerateScene();
-        MainThree._GenerateLoaders();
         MainThree._GenerateCameras();
         MainThree._GenerateRenderer();
 
         MainThree._OnResize();
         ResizeManager.OnResize.add(MainThree._OnResize);
 
-        LoaderManager.OnFinishLoad.add(MainThree._GenerateWorld);
+        MainThree._GenerateViews();
 
         if (DebugManager.IsActive) {
             window.experience = MainThree;
@@ -77,8 +75,9 @@ export default class MainThree {
         }
     }
 
-    private static _GenerateLoaders(): void {
-        MainThree._LoaderThreeView = new LoaderThreeView();
+    private static _GenerateViews(): void {
+        ViewProxy.Add(ViewId.THREE_LOADER, LoaderThreeView);
+        ViewProxy.Add(ViewId.THREE_WORLD, WorldThreeView);
     }
 
     private static _GenerateCameras(): void {
@@ -95,10 +94,6 @@ export default class MainThree {
     private static _GenerateRenderer(): void {
         MainThree._Renderer = new Renderer(MainThree._CameraController.camera, { antialias: true });
         MainThree._DomElementContainer.appendChild(MainThree._Renderer.domElement);
-    }
-
-    private static _GenerateWorld(): void {
-        MainThree._WorldThreeView = new WorldThreeView();
     }
 
     private static _OnActiveCameraControllerChange = (): void => {
@@ -131,7 +126,7 @@ export default class MainThree {
 
     public static Update = (dt: number): void => {
         MainThree._CameraController.update(dt);
-        if (MainThree._WorldThreeView) MainThree._WorldThreeView.update(dt);
+        if (ViewProxy.Has(ViewId.THREE_WORLD)) ViewProxy.GetById<WorldThreeView>(ViewId.THREE_WORLD).update(dt);
         MainThree._Renderer.update(dt);
     }
 

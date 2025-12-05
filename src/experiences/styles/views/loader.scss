@@ -1,5 +1,7 @@
 @use '../abstracts/import.scss' as *;
 
+$endedDurationTransition: 1.5s;
+
 .loading-screen {
     position: absolute;
     top: 0;
@@ -14,18 +16,17 @@
         left: 50%;
         transform: translate(-50%, -50%);
         padding-bottom: 2.5rem;
-        opacity: 0;
+        opacity: 1;
         font-size: 2rem;
         color: $white;
         display: flex;
         align-items: center;
         gap: 0.25rem;
         color: $white;
-        transition: opacity 0.5s ease-in-out;
 
         &.ended {
             opacity: 0;
-            transition: opacity 1.5s ease-in-out;
+            transition: opacity $endedDurationTransition ease-in-out;
         }
     }
 
@@ -44,7 +45,7 @@
             transform-origin: top right;
             opacity: 0;
             transform: translateY(-50%) scale(0);
-            transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
+            transition: transform $endedDurationTransition ease-in-out, opacity $endedDurationTransition ease-in-out;
         }
     }
 }

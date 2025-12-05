@@ -8,6 +8,7 @@ import ThreeAssetsManager from "../managers/threes/ThreeAssetsManager";
 import ThreeCameraControllerManager from "../managers/threes/ThreeCameraControllerManager";
 import ThreeRaycasterManager from "../managers/threes/ThreeRaycasterManager";
 import TickerManager from "../managers/TickerManager";
+import ViewProxy from "../proxies/ViewProxy";
 import AssetUtils from "../Utils/AssetUtils";
 
 export default class InitCommand {
@@ -19,7 +20,7 @@ export default class InitCommand {
     }
 
     private static _InitProxies(): void {
-        // 
+        ViewProxy.Init();
     }
 
     private static _InitManagers(): void {
@@ -35,7 +36,7 @@ export default class InitCommand {
     }
 
     private static _InitCommon(): void {
-        // 
+        //
     }
 
     private static _InitThree(): void {
