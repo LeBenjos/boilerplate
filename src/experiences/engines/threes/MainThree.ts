@@ -1,11 +1,9 @@
 import { MeshStandardMaterial, Scene } from "three";
 import type ThreeCameraControllerBase from "../../cameras/threes/bases/ThreeCameraControllerBase";
-import type { IThreeCameraOptions } from "../../cameras/threes/bases/ThreeCameraControllerBase";
 import DebugThreeCameraController from "../../cameras/threes/DebugThreeCameraController";
 import MainThreeCameraController from "../../cameras/threes/MainThreeCameraController";
 import { KeyboardConstant } from "../../constants/doms/KeyboardConstant";
 import { CameraId } from "../../constants/experiences/CameraId";
-import { CameraType } from "../../constants/experiences/CameraType";
 import { ViewId } from "../../constants/experiences/ViewId";
 import DebugManager from "../../managers/DebugManager";
 import { KeyboardManager } from "../../managers/KeyboardManager";
@@ -28,20 +26,6 @@ export default class MainThree {
     //#region Constants
     //
     private static readonly _DEBUG_WIREFRAME_MATERIAL_COLOR: number = 0x3F79F3;
-    private static readonly _MAIN_CAMERA_OPTIONS: IThreeCameraOptions = {
-        type: CameraType.PERSPECTIVE,
-        fov: 75,
-        aspect: window.innerWidth / window.innerHeight,
-        near: 0.1,
-        far: 1000
-    };
-    private static readonly _DEBUG_CAMERA_OPTIONS: IThreeCameraOptions = {
-        type: CameraType.PERSPECTIVE,
-        fov: 75,
-        aspect: window.innerWidth / window.innerHeight,
-        near: 0.1,
-        far: 1000
-    };
     private static readonly _TOGGLE_SWITCH_TO_DEBUG_CAMERA_KEYS: string[] = [KeyboardConstant.Codes.ShiftLeft, KeyboardConstant.Codes.KeyC];
     private static readonly _TOGGLE_WIREFRAME_KEYS: string[] = [KeyboardConstant.Codes.ShiftLeft, KeyboardConstant.Codes.KeyW];
     //
@@ -81,11 +65,11 @@ export default class MainThree {
     }
 
     private static _GenerateCameras(): void {
-        ThreeCameraControllerManager.Add(new MainThreeCameraController(MainThree._MAIN_CAMERA_OPTIONS), true);
+        ThreeCameraControllerManager.Add(new MainThreeCameraController(), true);
         MainThree._CameraController = ThreeCameraControllerManager.Get(CameraId.THREE_MAIN);
 
         if (DebugManager.IsActive) {
-            ThreeCameraControllerManager.Add(new DebugThreeCameraController(MainThree._DEBUG_CAMERA_OPTIONS));
+            ThreeCameraControllerManager.Add(new DebugThreeCameraController());
         }
 
         ThreeCameraControllerManager.OnActiveThreeCameraControllerChange.add(MainThree._OnActiveCameraControllerChange);

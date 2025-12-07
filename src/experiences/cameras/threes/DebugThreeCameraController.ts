@@ -2,6 +2,7 @@ import { Vector3 } from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import { KeyboardConstant } from "../../constants/doms/KeyboardConstant";
 import { CameraId } from "../../constants/experiences/CameraId";
+import { CameraType } from "../../constants/experiences/CameraType";
 import MainThree from "../../engines/threes/MainThree";
 import { KeyboardManager } from "../../managers/KeyboardManager";
 import MouseManager from "../../managers/MouseManager";
@@ -11,13 +12,20 @@ import ThreeCameraControllerBase, { type IThreeCameraOptions } from "./bases/Thr
 export default class DebugThreeCameraController extends ThreeCameraControllerBase<OrbitControls> {
     //#region Constants
     //
+    private static readonly _DEBUG_CAMERA_OPTIONS: IThreeCameraOptions = {
+        type: CameraType.PERSPECTIVE,
+        fov: 75,
+        aspect: window.innerWidth / window.innerHeight,
+        near: 0.1,
+        far: 1000
+    };
     private static readonly _DEFAULT_CAMERA_POSITION: Vector3 = new Vector3(0, 1.5, 3);
     private static readonly _CONTROLS_DAMPING_FACTOR: number = 0.05;
     private static readonly _CONTROLS_CENTER_KEY: string = KeyboardConstant.Codes.ControlLeft;
     //
     //#endregion
 
-    constructor(cameraOption: IThreeCameraOptions) {
+    constructor(cameraOption: IThreeCameraOptions = DebugThreeCameraController._DEBUG_CAMERA_OPTIONS) {
         super(CameraId.THREE_DEBUG, cameraOption);
         this._camera.position.copy(DebugThreeCameraController._DEFAULT_CAMERA_POSITION);
         this._setControls();
