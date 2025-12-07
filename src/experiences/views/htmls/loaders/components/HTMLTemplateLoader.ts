@@ -1,4 +1,4 @@
-import { DomEvent } from "../../../../constants/doms/DomEvent";
+import gsap from "gsap";
 import LoaderManager from "../../../../managers/LoaderManager";
 import Action from "../../../../tools/Action";
 
@@ -8,7 +8,18 @@ export default class HTMLTemplateLoader {
     private declare _loadingProgress: HTMLDivElement;
     private declare _loadingNumber: HTMLSpanElement;
 
-    public onLoadingBarTransitionEnd: Action = new Action();
+    public readonly onLoadingBarGsapAnimationComplete: Action = new Action();
+    public readonly onLoadingProgressGsapAnimationComplete: Action = new Action();
+
+    //#region Constants
+    //
+    private static readonly _GSAP_DURATION_FADE_IN: number = 0.5;
+    private static readonly _GSAP_EASE_FADE_IN: string = "power2.out";
+    private static readonly _GSAP_DURATION_LOADING_BAR_FADE_OUT: number = 1;
+    private static readonly _GSAP_DURATION_FADE_OUT: number = 0.5;
+    private static readonly _GSAP_EASE_FADE_OUT: string = "power2.in";
+    //
+    //#endregion
 
     constructor() {
         this._generateElement();
@@ -33,15 +44,24 @@ export default class HTMLTemplateLoader {
         this._loadingProgress = this._htmlElement.querySelector(".loading-progress")!;
         this._loadingNumber = this._loadingProgress.querySelector(".loading-number")!;
         this._loadingBar = this._htmlElement.querySelector(".loading-bar")!;
-
-        this._loadingBar.addEventListener(DomEvent.TRANSITION_END, this._onLoadingBarTransitionEnd);
     }
 
     private _onBeginLoad = (): void => {
-        this._loadingProgress.classList.remove("ended");
         this._loadingNumber.textContent = Math.round(0).toString();
         this._loadingBar.classList.remove("ended");
         this._loadingBar.style.transform = "translateY(-50%) scaleX(0)";
+        this._loadingNumber.textContent = "0";
+        this._loadingProgress.style.opacity = "0";
+
+        const progressObj = { value: 0 };
+        gsap.to(progressObj, {
+            value: 1,
+            duration: HTMLTemplateLoader._GSAP_DURATION_FADE_IN,
+            ease: HTMLTemplateLoader._GSAP_EASE_FADE_IN,
+            onUpdate: () => {
+                this._loadingProgress.style.opacity = `${progressObj.value}`;
+            }
+        });
     }
 
     private _onProgress = (): void => {
@@ -51,13 +71,40 @@ export default class HTMLTemplateLoader {
     }
 
     private _onFinishLoad = (): void => {
-        this._loadingBar.style.transform = '';
         this._loadingBar.classList.add("ended");
-        this._loadingProgress.classList.add("ended");
+        this._loadingBar.style.transform = "translateY(-50%) scaleX(1)";
+
+        const progressObj = { value: 1 };
+        gsap.to(progressObj, {
+            value: 0,
+            duration: HTMLTemplateLoader._GSAP_DURATION_LOADING_BAR_FADE_OUT,
+            ease: HTMLTemplateLoader._GSAP_EASE_FADE_OUT,
+            onUpdate: () => {
+                this._loadingBar.style.transform = `translateY(-50%) scaleX(${progressObj.value})`;
+            },
+            onComplete: this._onLoadingBarGsapAnimationEndComplete,
+        });
     }
 
-    private readonly _onLoadingBarTransitionEnd = (): void => {
-        this.onLoadingBarTransitionEnd.execute();
+    private _onLoadingBarGsapAnimationEndComplete = (): void => {
+        this._loadingProgress.style.opacity = "1";
+        this._loadingNumber.textContent = "100";
+
+        const progressObj = { value: 1 };
+        gsap.to(progressObj, {
+            value: 0,
+            duration: HTMLTemplateLoader._GSAP_DURATION_FADE_OUT,
+            ease: HTMLTemplateLoader._GSAP_EASE_FADE_OUT,
+            onUpdate: () => {
+                this._loadingProgress.style.opacity = `${progressObj.value}`;
+            },
+            onComplete: this._onLoadingProgressGsapAnimationComplete,
+        });
+        this.onLoadingBarGsapAnimationComplete.execute();
+    }
+
+    private readonly _onLoadingProgressGsapAnimationComplete = (): void => {
+        this.onLoadingProgressGsapAnimationComplete.execute();
     }
 
     //#region 

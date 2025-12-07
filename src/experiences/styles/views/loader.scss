@@ -23,11 +23,6 @@ $endedDurationTransition: 1.5s;
         align-items: center;
         gap: 0.25rem;
         color: $white;
-
-        &.ended {
-            opacity: 0;
-            transition: opacity $endedDurationTransition ease-in-out;
-        }
     }
 
     .loading-bar {
@@ -37,15 +32,13 @@ $endedDurationTransition: 1.5s;
         position: absolute;
         top: 50%;
         left: 0;
+        opacity: 1;
         background-color: $white;
         transform-origin: top left;
         transform: translateY(-50%) scaleX(0);
 
         &.ended {
             transform-origin: top right;
-            opacity: 0;
-            transform: translateY(-50%) scale(0);
-            transition: transform $endedDurationTransition ease-in-out, opacity $endedDurationTransition ease-in-out;
         }
     }
 }

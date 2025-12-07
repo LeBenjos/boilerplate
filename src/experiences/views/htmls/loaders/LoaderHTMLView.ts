@@ -1,10 +1,13 @@
 import { ViewId } from "../../../constants/experiences/ViewId";
 import LoaderManager from "../../../managers/LoaderManager";
+import Action from "../../../tools/Action";
 import HTMLViewBase from "../bases/HTMLViewBase";
 import HTMLTemplateLoader from "./components/HTMLTemplateLoader";
 
 export default class LoaderHTMLView extends HTMLViewBase {
     private declare _HTMLLoader: HTMLTemplateLoader;
+
+    public readonly onLoadingBarGsapAnimationComplete: Action = new Action();
 
     constructor(id: ViewId) {
         super(id);
@@ -12,7 +15,8 @@ export default class LoaderHTMLView extends HTMLViewBase {
         this._generateLoader();
 
         LoaderManager.OnBeginLoad.add(this._onBeginLoad);
-        this._HTMLLoader.onLoadingBarTransitionEnd.add(this._onLoadingBarTransitionEnd);
+        this._HTMLLoader.onLoadingBarGsapAnimationComplete.add(this._onLoadingBarGsapAnimationComplete);
+        this._HTMLLoader.onLoadingProgressGsapAnimationComplete.add(this._onLoadingProgressGsapAnimationComplete);
     }
 
     private _generateLoader(): void {
@@ -24,7 +28,11 @@ export default class LoaderHTMLView extends HTMLViewBase {
         this._show();
     }
 
-    private readonly _onLoadingBarTransitionEnd = (): void => {
+    private readonly _onLoadingBarGsapAnimationComplete = (): void => {
+        this.onLoadingBarGsapAnimationComplete.execute();
+    }
+
+    private readonly _onLoadingProgressGsapAnimationComplete = (): void => {
         this._hide();
     }
 }

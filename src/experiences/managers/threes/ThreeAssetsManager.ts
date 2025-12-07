@@ -4,6 +4,7 @@ import type { AssetId } from "../../constants/experiences/AssetId";
 import { AssetType } from "../../constants/experiences/AssetType";
 import Action from "../../tools/Action";
 import AssetUtils from "../../Utils/AssetUtils";
+import LoaderManager from "../LoaderManager";
 
 export interface IThreeAssetToLoad {
     id: AssetId,
@@ -35,17 +36,17 @@ export interface IThreeModelOption extends IThreeAssetOption { }
 export interface IThreeFontOption extends IThreeAssetOption { }
 
 export default class ThreeAssetsManager {
-    private static _Assets: Map<string, Texture | DataTexture | GLTF | Font> = new Map<string, Texture | GLTF | Font>();
-    private static _ToLoadList: IThreeAssetToLoad[] = [];
+    private static readonly _Assets: Map<string, Texture | DataTexture | GLTF | Font> = new Map<string, Texture | GLTF | Font>();
+    private static readonly _ToLoadList: IThreeAssetToLoad[] = [];
 
-    private static _TextureLoader = new TextureLoader();
-    private static _HDRLoader = new HDRLoader();
-    private static _GltfLoader = new GLTFLoader();
-    private static _DracoLoader = new DRACOLoader();
-    private static _FontLoader = new FontLoader();
+    private static readonly _TextureLoader = new TextureLoader();
+    private static readonly _HDRLoader = new HDRLoader();
+    private static readonly _GltfLoader = new GLTFLoader();
+    private static readonly _DracoLoader = new DRACOLoader();
+    private static readonly _FontLoader = new FontLoader();
 
-    public static OnLoad = new Action();
-    public static OnProgress = new Action();
+    public static readonly OnLoad = new Action();
+    public static readonly OnProgress = new Action();
 
     //#region Constants
     //
@@ -59,7 +60,7 @@ export default class ThreeAssetsManager {
     private static readonly _DEFAULT_HDR_MAPPING: Mapping = EquirectangularRefractionMapping;
     private static readonly _DEFAULT_HDR_COLOR_SPACE: ColorSpace = LinearSRGBColorSpace;
     private static readonly _DEFAULT_LOADED_SIZE: number = 0;
-    private static readonly _DEFAULT_TOTAL_SIZE: number = 0;
+    private static readonly _DEFAULT_TOTAL_SIZE: number = -1;
     private static readonly _DEFAULT_TEXTURE_TOTAL_SIZE: number = 1;
     //
     //#endregion
@@ -67,6 +68,8 @@ export default class ThreeAssetsManager {
     public static Init(): void {
         ThreeAssetsManager._DracoLoader.setDecoderPath(AssetUtils.GetPath(ThreeAssetsManager._DRACO_LOADER_PATH));
         ThreeAssetsManager._GltfLoader.setDRACOLoader(ThreeAssetsManager._DracoLoader);
+        LoaderManager.OnBeginLoad.add(ThreeAssetsManager._OnBenginLoad);
+        LoaderManager.OnFinishLoad.add(ThreeAssetsManager._OnFinishLoad);
     }
 
     public static AddTexture(id: AssetId, path: string, textureOption?: IThreeTextureOption) {
@@ -85,13 +88,17 @@ export default class ThreeAssetsManager {
         ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.FONT, path, option: fontOption, loadedSize: ThreeAssetsManager._DEFAULT_LOADED_SIZE, totalSize: ThreeAssetsManager._DEFAULT_TOTAL_SIZE });
     }
 
-    public static LoadAssets(): void {
+    private static _OnBenginLoad = (): void => {
         for (const asset of ThreeAssetsManager._ToLoadList) {
             if (asset.type === AssetType.TEXTURE) ThreeAssetsManager._LoadTexture(asset);
             else if (asset.type === AssetType.HDR) ThreeAssetsManager._LoadHDR(asset);
             else if (asset.type === AssetType.MODEL) ThreeAssetsManager._LoadModel(asset);
             else if (asset.type === AssetType.FONT) ThreeAssetsManager._LoadFont(asset);
         }
+    }
+
+    public static readonly _OnFinishLoad = (): void => {
+        ThreeAssetsManager._ToLoadList.length = 0;
     }
 
     private static _LoadTexture(asset: IThreeAssetToLoad): void {
@@ -149,7 +156,7 @@ export default class ThreeAssetsManager {
     }
 
     private static _OnProgress(asset: IThreeAssetToLoad, event: ProgressEvent): void {
-        if (!asset.totalSize) asset.totalSize = event.total;
+        if (asset.totalSize === ThreeAssetsManager._DEFAULT_TOTAL_SIZE) asset.totalSize = event.total;
         asset.loadedSize = event.loaded;
         ThreeAssetsManager.OnProgress.execute();
     }
@@ -184,7 +191,7 @@ export default class ThreeAssetsManager {
 
     //#region Getters
     //
-    public static get IsLoaded(): boolean { return ThreeAssetsManager._ToLoadList.every(asset => asset.loadedSize === asset.totalSize) && ThreeAssetsManager._ToLoadList.length === ThreeAssetsManager._Assets.size; }
+    public static get IsLoaded(): boolean { return ThreeAssetsManager._ToLoadList.every(asset => asset.loadedSize === asset.totalSize); }
     public static get TotalSize(): number {
         let totalSize = 0;
         for (const asset of ThreeAssetsManager._ToLoadList) {

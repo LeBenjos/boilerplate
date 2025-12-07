@@ -5,9 +5,9 @@ export default class LoaderManager {
     private static _TotalSize: number = 0;
     private static _LoadedSize: number = 0;
 
-    public static OnBeginLoad = new Action();
-    public static OnProgress = new Action();
-    public static OnFinishLoad = new Action();
+    public static readonly OnBeginLoad = new Action();
+    public static readonly OnProgress = new Action();
+    public static readonly OnFinishLoad = new Action();
 
     public static Init(): void {
         LoaderManager._AddCallbacks();
@@ -28,7 +28,6 @@ export default class LoaderManager {
         if (LoaderManager._CheckIsFinished()) {
             LoaderManager._OnFinishLoad();
         } else {
-            ThreeAssetsManager.LoadAssets();
             LoaderManager.OnBeginLoad.execute();
         }
     }
