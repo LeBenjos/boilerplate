@@ -1,17 +1,17 @@
-import { Mesh, MeshStandardMaterial, type MeshStandardMaterialParameters } from "three";
-import { TextGeometry, type TextGeometryParameters } from "three/examples/jsm/Addons.js";
-import { AssetId } from "../../../../../constants/experiences/AssetId";
-import ThreeAssetsManager from "../../../../../managers/threes/ThreeAssetsManager";
-import ActorBase from "./bases/ActorBase";
+import { Mesh, MeshStandardMaterial, type MeshStandardMaterialParameters } from 'three';
+import { TextGeometry, type TextGeometryParameters } from 'three/examples/jsm/Addons.js';
+import { AssetId } from '../../../../../constants/experiences/AssetId';
+import ThreeAssetsManager from '../../../../../managers/threes/ThreeAssetsManager';
+import ActorBase from './bases/ActorBase';
 
 export default class TemplateFont extends ActorBase {
-    private declare _geometry: TextGeometry;
-    private declare _material: MeshStandardMaterial;
-    private declare _mesh: Mesh;
+    declare private _geometry: TextGeometry;
+    declare private _material: MeshStandardMaterial;
+    declare private _mesh: Mesh;
 
     //#region Constants
     //
-    private static readonly _DEFAULT_TEXT: string = "Hello boilerplate!";
+    private static readonly _DEFAULT_TEXT: string = 'Hello boilerplate!';
     private static readonly _DEFAULT_TEXT_OPTION: TextGeometryParameters = {
         font: null!,
         size: 0.25,
@@ -42,13 +42,10 @@ export default class TemplateFont extends ActorBase {
     }
 
     private _generateGeometry(): void {
-        this._geometry = new TextGeometry(
-            TemplateFont._DEFAULT_TEXT,
-            {
-                ...TemplateFont._DEFAULT_TEXT_OPTION,
-                font: ThreeAssetsManager.GetFont(AssetId.THREE_FONT_TEMPLATE)
-            }
-        );
+        this._geometry = new TextGeometry(TemplateFont._DEFAULT_TEXT, {
+            ...TemplateFont._DEFAULT_TEXT_OPTION,
+            font: ThreeAssetsManager.GetFont(AssetId.THREE_FONT_TEMPLATE),
+        });
         this._geometry.center();
     }
 

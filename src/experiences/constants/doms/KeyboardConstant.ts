@@ -133,7 +133,7 @@ export const KeyboardConstant = {
         Quote2: '"',
         AngleBracketLeft: '<',
         AngleBracketRight: '>',
-        QuestionMark: '?'
+        QuestionMark: '?',
     },
 
     Codes: {
@@ -243,8 +243,8 @@ export const KeyboardConstant = {
         BracketLeft: 'BracketLeft',
         Backslash: 'Backslash',
         BracketRight: 'BracketRight',
-        Quote: 'Quote'
-    }
+        Quote: 'Quote',
+    },
 } as const;
 
-export type KeyboardConstant = typeof KeyboardConstant[keyof typeof KeyboardConstant];
+export type KeyboardConstant = (typeof KeyboardConstant)[keyof typeof KeyboardConstant];

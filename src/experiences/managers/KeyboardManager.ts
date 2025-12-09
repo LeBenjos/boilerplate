@@ -1,5 +1,5 @@
-import { DomEvent } from "../constants/doms/DomEvent";
-import Action from "../tools/Action";
+import { DomEvent } from '../constants/doms/DomEvent';
+import Action from '../tools/Action';
 
 export class KeyboardManager {
     private static readonly _KeyDownsMap = new Map<string, boolean>();
@@ -14,13 +14,13 @@ export class KeyboardManager {
         KeyboardManager._AddCallbacks();
     }
 
-    private static _AddCallbacks() {
+    private static _AddCallbacks(): void {
         KeyboardManager._RemoveCallbacks();
         window.addEventListener(DomEvent.KEY_DOWN, KeyboardManager._OnKeyDown);
         window.addEventListener(DomEvent.KEY_UP, KeyboardManager._OnKeyUp);
     }
 
-    private static _RemoveCallbacks() {
+    private static _RemoveCallbacks(): void {
         window.removeEventListener(DomEvent.KEY_DOWN, KeyboardManager._OnKeyDown);
         window.removeEventListener(DomEvent.KEY_UP, KeyboardManager._OnKeyUp);
     }
@@ -46,16 +46,20 @@ export class KeyboardManager {
 
     public static IsAnyKeyDown(names: string[]): boolean {
         if (!KeyboardManager.IsAvailableForControl()) return false;
-        return names.some(name => KeyboardManager.IsKeyDown(name));
+        return names.some((name) => KeyboardManager.IsKeyDown(name));
     }
 
     public static AreAllKeysDown(names: string[]): boolean {
         if (!KeyboardManager.IsAvailableForControl()) return false;
-        return names.every(name => KeyboardManager.IsKeyDown(name));
+        return names.every((name) => KeyboardManager.IsKeyDown(name));
     }
 
     public static IsAvailableForControl(): boolean {
         const active: HTMLElement = document.activeElement as HTMLElement;
-        return !(active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || active?.isContentEditable);
+        return !(
+            active instanceof HTMLInputElement ||
+            active instanceof HTMLTextAreaElement ||
+            active?.isContentEditable
+        );
     }
 }

@@ -1,13 +1,13 @@
-import { AnimationAction, AnimationMixer } from "three";
-import type { AnimationId } from "../../../../../../constants/experiences/AnimationId";
-import type { AssetId } from "../../../../../../constants/experiences/AssetId";
-import ThreeAssetsManager from "../../../../../../managers/threes/ThreeAssetsManager";
-import ModelBase, { type IModelBaseParams } from "./ModelBase";
+import { AnimationAction, AnimationMixer } from 'three';
+import type { AnimationId } from '../../../../../../constants/experiences/AnimationId';
+import type { AssetId } from '../../../../../../constants/experiences/AssetId';
+import ThreeAssetsManager from '../../../../../../managers/threes/ThreeAssetsManager';
+import ModelBase, { type IModelBaseParams } from './ModelBase';
 
 export default abstract class AnimatedModelBase extends ModelBase {
-    private declare _mixer: AnimationMixer;
-    private declare _actions: AnimationAction[];
-    private declare _currentAction: AnimationAction | null;
+    declare private _mixer: AnimationMixer;
+    declare private _actions: AnimationAction[];
+    declare private _currentAction: AnimationAction | null;
 
     //#region Constants
     //
@@ -37,16 +37,19 @@ export default abstract class AnimatedModelBase extends ModelBase {
         this._actions.push(action);
     }
 
-    protected _playAnimation = (animationId: AnimationId, fadeDuration: number = AnimatedModelBase._DEFAULT_ANIMATION_FADE_DURATION): void => {
+    protected _playAnimation = (
+        animationId: AnimationId,
+        fadeDuration: number = AnimatedModelBase._DEFAULT_ANIMATION_FADE_DURATION
+    ): void => {
         if (!this._actions) return;
         const newAction = this._getAnimationAction(animationId);
-        const oldAction = this._currentAction || null;
+        const oldAction = this._currentAction ?? null;
 
         newAction.reset();
         newAction.play();
         if (oldAction) newAction.crossFadeFrom(oldAction, fadeDuration);
         this._currentAction = newAction;
-    }
+    };
 
     private _getAnimationAction = (animationId: AnimationId): AnimationAction => {
         for (const action of this._actions) {
@@ -55,7 +58,7 @@ export default abstract class AnimatedModelBase extends ModelBase {
             }
         }
         throw new Error(`Animation action not found for animationId: ${animationId}`);
-    }
+    };
 
     public update(dt: number): void {
         super.update(dt);

@@ -1,8 +1,8 @@
-import { DataTexture, DirectionalLight, Object3D, Vector3 } from "three";
-import { AssetId } from "../../../../constants/experiences/AssetId";
-import MainThree from "../../../../engines/threes/MainThree";
-import DebugManager from "../../../../managers/DebugManager";
-import ThreeAssetsManager from "../../../../managers/threes/ThreeAssetsManager";
+import { DataTexture, DirectionalLight, Object3D, Vector3 } from 'three';
+import { AssetId } from '../../../../constants/experiences/AssetId';
+import MainThree from '../../../../engines/threes/MainThree';
+import DebugManager from '../../../../managers/DebugManager';
+import ThreeAssetsManager from '../../../../managers/threes/ThreeAssetsManager';
 
 interface IEnvironmentMap {
     intensity?: number;
@@ -10,8 +10,8 @@ interface IEnvironmentMap {
 }
 
 export default class Environment extends Object3D {
-    public declare _environmentMap: IEnvironmentMap;
-    private declare _sunLight: DirectionalLight;
+    declare private _environmentMap: IEnvironmentMap;
+    declare private _sunLight: DirectionalLight;
 
     //#region Constants
     //
@@ -42,30 +42,36 @@ export default class Environment extends Object3D {
         MainThree.Scene.environmentIntensity = this._environmentMap.intensity!;
 
         if (DebugManager.IsActive) {
-            const environmentFolder = DebugManager.Gui.addFolder("Environment");
-            environmentFolder.add(this._environmentMap, "intensity", 0, 10, 0.01).onChange(() => {
+            const environmentFolder = DebugManager.Gui.addFolder('Environment');
+            environmentFolder.add(this._environmentMap, 'intensity', 0, 10, 0.01).onChange(() => {
                 MainThree.Scene.environmentIntensity = this._environmentMap.intensity!;
             });
         }
-    }
+    };
 
     private _generateSunLight(): void {
-        this._sunLight = new DirectionalLight(Environment._DEFAULT_SUN_LIGHT_COLOR, Environment._DEFAULT_SUN_LIGHT_INTENSITY);
+        this._sunLight = new DirectionalLight(
+            Environment._DEFAULT_SUN_LIGHT_COLOR,
+            Environment._DEFAULT_SUN_LIGHT_INTENSITY
+        );
         this._sunLight.castShadow = true;
         this._sunLight.shadow.camera.far = Environment._DEFAULT_SUN_SHADOW_CAMERA_FAR;
-        this._sunLight.shadow.mapSize.set(Environment._DEFAULT_SUN_SHADOW_MAP_SIZE, Environment._DEFAULT_SUN_SHADOW_MAP_SIZE);
+        this._sunLight.shadow.mapSize.set(
+            Environment._DEFAULT_SUN_SHADOW_MAP_SIZE,
+            Environment._DEFAULT_SUN_SHADOW_MAP_SIZE
+        );
         this._sunLight.shadow.normalBias = Environment._DEFAULT_SUN_SHADOW_NORMAL_BIAS;
         this._sunLight.position.copy(Environment._DEFAULT_SUN_POSITION);
         this.add(this._sunLight);
 
         if (DebugManager.IsActive) {
-            const sunLightFolder = DebugManager.Gui.addFolder("Sun Light");
-            sunLightFolder.add(this._sunLight, "intensity", 0, 10, 0.01).name("intensity");
-            sunLightFolder.add(this._sunLight.position, "x", -5, 5, 0.01).name("positionX");
-            sunLightFolder.add(this._sunLight.position, "y", -5, 5, 0.01).name("positionY");
-            sunLightFolder.add(this._sunLight.position, "z", -5, 5, 0.01).name("positionZ");
+            const sunLightFolder = DebugManager.Gui.addFolder('Sun Light');
+            sunLightFolder.add(this._sunLight, 'intensity', 0, 10, 0.01).name('intensity');
+            sunLightFolder.add(this._sunLight.position, 'x', -5, 5, 0.01).name('positionX');
+            sunLightFolder.add(this._sunLight.position, 'y', -5, 5, 0.01).name('positionY');
+            sunLightFolder.add(this._sunLight.position, 'z', -5, 5, 0.01).name('positionZ');
         }
     }
 
-    public update(dt: number): void { }
+    public update(_dt: number): void {}
 }

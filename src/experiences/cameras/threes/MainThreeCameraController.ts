@@ -1,7 +1,7 @@
-import { Vector3 } from "three";
-import { CameraId } from "../../constants/experiences/CameraId";
-import { CameraType } from "../../constants/experiences/CameraType";
-import ThreeCameraControllerBase, { type IThreeCameraOptions } from "./bases/ThreeCameraControllerBase";
+import { Vector3 } from 'three';
+import { CameraId } from '../../constants/experiences/CameraId';
+import { CameraType } from '../../constants/experiences/CameraType';
+import ThreeCameraControllerBase, { type IThreeCameraOptions } from './bases/ThreeCameraControllerBase';
 
 export default class MainThreeCameraController extends ThreeCameraControllerBase {
     //#region Constants
@@ -11,7 +11,7 @@ export default class MainThreeCameraController extends ThreeCameraControllerBase
         fov: 75,
         aspect: window.innerWidth / window.innerHeight,
         near: 0.1,
-        far: 1000
+        far: 1000,
     };
     private static readonly _DEFAULT_CONTAINER_POSITION: Vector3 = new Vector3(0, 1.5, 3);
     //

@@ -1,13 +1,13 @@
-import { DomEvent } from "../constants/doms/DomEvent";
-import Action from "../tools/Action";
+import { DomEvent } from '../constants/doms/DomEvent';
+import Action from '../tools/Action';
 
 export default class MouseManager {
-    private static _X: number = 0;
-    private static _Y: number = 0;
-    private static _NormalizedX: number = 0;
-    private static _NormalizedY: number = 0;
-    private static _CentralX: number = 0;
-    private static _CentralY: number = 0;
+    private static _X = 0;
+    private static _Y = 0;
+    private static _NormalizedX = 0;
+    private static _NormalizedY = 0;
+    private static _CentralX = 0;
+    private static _CentralY = 0;
 
     public static readonly OnMouseDown = new Action();
     public static readonly OnMouseUp = new Action();
@@ -39,29 +39,29 @@ export default class MouseManager {
     private static readonly _OnMouseDown = (event: MouseEvent | TouchEvent): void => {
         this._OnMouseMove(event);
         this.OnMouseDown.execute();
-    }
+    };
 
-    private static readonly _OnMouseUp = (event: MouseEvent | TouchEvent): void => {
+    private static readonly _OnMouseUp = (_event: MouseEvent | TouchEvent): void => {
         this.OnMouseUp.execute();
-    }
+    };
 
     private static readonly _OnMouseMove = (event: MouseEvent | TouchEvent): void => {
         this._UpdateMousePosition(event);
         this.OnMouseMove.execute();
-    }
+    };
 
     private static _UpdateMousePosition(event: Event): void {
         const { x, y } = this._GetMousePosition(event);
         this._X = x;
         this._Y = y;
         this._NormalizedX = this._X / window.innerWidth;
-        this._NormalizedY = 1 - (this._Y / window.innerHeight);
+        this._NormalizedY = 1 - this._Y / window.innerHeight;
         this._CentralX = this._NormalizedX * 2 - 1;
         this._CentralY = this._NormalizedY * 2 - 1;
         this.OnMouseMove.execute();
     }
 
-    private static _GetMousePosition(e: Event): { x: number, y: number } {
+    private static _GetMousePosition(e: Event): { x: number; y: number } {
         if (e instanceof MouseEvent) {
             return { x: e.clientX, y: e.clientY };
         }
@@ -77,12 +77,24 @@ export default class MouseManager {
 
     //#region Getters
     //
-    public static get X(): number { return this._X; }
-    public static get Y(): number { return this._Y; }
-    public static get NormalizedX(): number { return this._NormalizedX; }
-    public static get NormalizedY(): number { return this._NormalizedY; }
-    public static get CentralX(): number { return this._CentralX; }
-    public static get CentralY(): number { return this._CentralY; }
+    public static get X(): number {
+        return this._X;
+    }
+    public static get Y(): number {
+        return this._Y;
+    }
+    public static get NormalizedX(): number {
+        return this._NormalizedX;
+    }
+    public static get NormalizedY(): number {
+        return this._NormalizedY;
+    }
+    public static get CentralX(): number {
+        return this._CentralX;
+    }
+    public static get CentralY(): number {
+        return this._CentralY;
+    }
     //
     //#endregion
 }

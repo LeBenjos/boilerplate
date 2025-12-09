@@ -1,5 +1,3 @@
-export const AnimationId = {
+export const AnimationId = {} as const;
 
-} as const;
-
-export type AnimationId = typeof AnimationId[keyof typeof AnimationId];
+export type AnimationId = (typeof AnimationId)[keyof typeof AnimationId];

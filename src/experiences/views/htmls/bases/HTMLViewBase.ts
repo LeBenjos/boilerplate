@@ -1,7 +1,7 @@
-import { DomEvent } from "../../../constants/doms/DomEvent";
-import type { ViewId } from "../../../constants/experiences/ViewId";
-import DomUtils from "../../../utils/DomUtils";
-import ViewBase from "../../bases/ViewBase";
+import { DomEvent } from '../../../constants/doms/DomEvent';
+import type { ViewId } from '../../../constants/experiences/ViewId';
+import DomUtils from '../../../utils/DomUtils';
+import ViewBase from '../../bases/ViewBase';
 
 export default abstract class HTMLViewBase extends ViewBase {
     private readonly _parentElement: HTMLElement;
@@ -10,8 +10,8 @@ export default abstract class HTMLViewBase extends ViewBase {
     constructor(id: ViewId, parentElement: HTMLElement = DomUtils.GetApp()) {
         super(id);
         this._parentElement = parentElement;
-        this._htmlContainer = document.createElement("div");
-        this._htmlContainer.classList.add("view-html-container");
+        this._htmlContainer = document.createElement('div');
+        this._htmlContainer.classList.add('view-html-container');
 
         this._htmlContainer.addEventListener(DomEvent.ANIMATION_END, this._onAnimationEnd);
     }
@@ -19,23 +19,23 @@ export default abstract class HTMLViewBase extends ViewBase {
     protected override _show(): void {
         super._show();
         this._parentElement.appendChild(this._htmlContainer);
-        this._htmlContainer.classList.remove("hide");
+        this._htmlContainer.classList.remove('hide');
         requestAnimationFrame(this._onShow);
     }
 
     private readonly _onShow = (): void => {
-        this._htmlContainer.classList.add("show");
-    }
+        this._htmlContainer.classList.add('show');
+    };
 
     protected override _hide(): void {
         super._hide();
-        this._htmlContainer.classList.remove("show");
-        this._htmlContainer.classList.add("hide");
+        this._htmlContainer.classList.remove('show');
+        this._htmlContainer.classList.add('hide');
     }
 
     private readonly _onAnimationEnd = (event: AnimationEvent): void => {
-        if (event.animationName === "hideView") {
+        if (event.animationName === 'hideView') {
             this._parentElement.removeChild(this._htmlContainer);
         }
-    }
+    };
 }

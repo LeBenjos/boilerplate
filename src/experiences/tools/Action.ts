@@ -1,7 +1,7 @@
 type Listener<TParams extends unknown[]> = (...params: TParams) => unknown;
 
 export default class Action<T extends unknown[] = []> {
-    private _listeners: Set<Listener<T>> = new Set();
+    private _listeners = new Set<Listener<T>>();
 
     public add(listener: Listener<T>): void {
         this._listeners.add(listener);

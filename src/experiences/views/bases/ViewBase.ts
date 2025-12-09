@@ -1,4 +1,4 @@
-import type { ViewId } from "../../constants/experiences/ViewId";
+import type { ViewId } from '../../constants/experiences/ViewId';
 
 export default class ViewBase {
     private readonly _id: ViewId;
@@ -17,7 +17,9 @@ export default class ViewBase {
 
     //#region Getters
     //
-    public get id(): ViewId { return this._id; }
+    public get id(): ViewId {
+        return this._id;
+    }
     //
     //#endregion
 }

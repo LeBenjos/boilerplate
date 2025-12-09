@@ -6,11 +6,10 @@ export default defineConfig({
     server: {
         host: true,
     },
-    build:
-    {
+    build: {
         outDir: './dist',
         emptyOutDir: true,
-        sourcemap: true
+        sourcemap: true,
     },
     plugins: [glsl()],
 });

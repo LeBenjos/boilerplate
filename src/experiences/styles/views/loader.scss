@@ -3,10 +3,9 @@
 $outroFadeOutDuration: 1.5s;
 
 body {
-
-    >#app,
-    >#root {
-        >#loader {
+    > #app,
+    > #root {
+        > #loader {
             .view-html-container {
                 &.hide {
                     animation-duration: $outroFadeOutDuration;
@@ -14,7 +13,6 @@ body {
             }
         }
     }
-
 }
 
 #loader {
@@ -62,7 +60,6 @@ body {
                 @keyframes outBar {
                     0% {
                         transform: translateY(-50%) scaleX(1);
-
                     }
 
                     100% {

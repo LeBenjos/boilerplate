@@ -1,7 +1,7 @@
-import { Object3D, Scene } from "three";
-import type { ViewId } from "../../../constants/experiences/ViewId";
-import MainThree from "../../../engines/threes/MainThree";
-import ViewBase from "../../bases/ViewBase";
+import { Object3D, Scene } from 'three';
+import type { ViewId } from '../../../constants/experiences/ViewId';
+import MainThree from '../../../engines/threes/MainThree';
+import ViewBase from '../../bases/ViewBase';
 
 export default abstract class ThreeViewBase extends ViewBase {
     protected _scene: Scene;

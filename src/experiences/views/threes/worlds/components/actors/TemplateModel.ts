@@ -1,7 +1,7 @@
-import { Vector3 } from "three";
-import { AssetId } from "../../../../../constants/experiences/AssetId";
-import DebugManager from "../../../../../managers/DebugManager";
-import ModelBase from "./bases/ModelBase";
+import { Vector3 } from 'three';
+import { AssetId } from '../../../../../constants/experiences/AssetId';
+import DebugManager from '../../../../../managers/DebugManager';
+import ModelBase from './bases/ModelBase';
 
 export default class TemplateModel extends ModelBase {
     //#region Constants
@@ -19,8 +19,8 @@ export default class TemplateModel extends ModelBase {
         this.position.copy(TemplateModel._DEFAULT_POSITION);
 
         if (DebugManager.IsActive) {
-            const templateModelFolder = DebugManager.Gui.addFolder("Template Model");
-            templateModelFolder.add(this.position, "y", -1, 1, 0.01);
+            const templateModelFolder = DebugManager.Gui.addFolder('Template Model');
+            templateModelFolder.add(this.position, 'y', -1, 1, 0.01);
         }
     }
 

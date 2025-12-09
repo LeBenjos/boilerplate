@@ -1,7 +1,6 @@
-import { Object3D, Raycaster, Vector2, type Intersection, type Object3DEventMap } from "three";
-import MainThree from "../../engines/threes/MainThree";
-import MouseManager from "../MouseManager";
-
+import { Object3D, Raycaster, Vector2, type Intersection, type Object3DEventMap } from 'three';
+import MainThree from '../../engines/threes/MainThree';
+import MouseManager from '../MouseManager';
 
 export default class ThreeRaycasterManager {
     private static readonly _Raycaster = new Raycaster();
@@ -10,8 +9,14 @@ export default class ThreeRaycasterManager {
         //
     }
 
-    public static CastFromCameraToMouse(objects: Object3D[], recursive: boolean = true): Intersection<Object3D<Object3DEventMap>>[] {
-        ThreeRaycasterManager._Raycaster.setFromCamera(new Vector2(MouseManager.CentralX, MouseManager.CentralY), MainThree.CameraController.camera);
+    public static CastFromCameraToMouse(
+        objects: Object3D[],
+        recursive = true
+    ): Intersection<Object3D<Object3DEventMap>>[] {
+        ThreeRaycasterManager._Raycaster.setFromCamera(
+            new Vector2(MouseManager.CentralX, MouseManager.CentralY),
+            MainThree.CameraController.camera
+        );
         const intersects = ThreeRaycasterManager._Raycaster.intersectObjects(objects, recursive);
         return intersects;
     }

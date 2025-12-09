@@ -1,5 +1,5 @@
-import { Camera, LinearSRGBColorSpace, NoToneMapping, Scene, type WebGLRendererParameters } from "three";
-import WebGLRendererBase from "./bases/WebGLRendererBase";
+import { Camera, LinearSRGBColorSpace, NoToneMapping, Scene, type WebGLRendererParameters } from 'three';
+import WebGLRendererBase from './bases/WebGLRendererBase';
 
 export default class LoaderRenderer extends WebGLRendererBase {
     //#region Constants
@@ -9,7 +9,7 @@ export default class LoaderRenderer extends WebGLRendererBase {
     private static readonly _DEFAULT_TONE_MAPPING_EXPOSURE = 1;
     private static readonly _DEFAULT_CLEAR_COLOR = 0x000000;
     private static readonly _DEFAULT_CLEAR_ALPHA = 0;
-    // 
+    //
     //#endregion
 
     constructor(scene: Scene, camera: Camera, parameters: WebGLRendererParameters = {}) {

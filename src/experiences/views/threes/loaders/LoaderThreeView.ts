@@ -1,11 +1,11 @@
-import { ViewId } from "../../../constants/experiences/ViewId";
-import MainThree from "../../../engines/threes/MainThree";
-import LoaderManager from "../../../managers/LoaderManager";
-import ThreeViewBase from "../bases/ThreeViewBase";
-import ThreeTemplateLoader from "./components/ThreeTemplateLoader";
+import { ViewId } from '../../../constants/experiences/ViewId';
+import MainThree from '../../../engines/threes/MainThree';
+import LoaderManager from '../../../managers/LoaderManager';
+import ThreeViewBase from '../bases/ThreeViewBase';
+import ThreeTemplateLoader from './components/ThreeTemplateLoader';
 
 export default class LoaderThreeView extends ThreeViewBase {
-    private declare _threeLoader: ThreeTemplateLoader;
+    declare private _threeLoader: ThreeTemplateLoader;
 
     constructor(id: ViewId) {
         super(id, MainThree.LoaderScene);
@@ -33,9 +33,9 @@ export default class LoaderThreeView extends ThreeViewBase {
 
     private readonly _onBeginLoad = (): void => {
         this._show();
-    }
+    };
 
     private readonly _onFinishLoad = (): void => {
         this._hide();
-    }
+    };
 }

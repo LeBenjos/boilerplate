@@ -1,9 +1,9 @@
-import Action from "../tools/Action";
-import ThreeAssetsManager from "./threes/ThreeAssetsManager";
+import Action from '../tools/Action';
+import ThreeAssetsManager from './threes/ThreeAssetsManager';
 
 export default class LoaderManager {
-    private static _TotalSize: number = 0;
-    private static _LoadedSize: number = 0;
+    private static _TotalSize = 0;
+    private static _LoadedSize = 0;
 
     public static readonly OnBeginLoad = new Action();
     public static readonly OnProgress = new Action();
@@ -24,7 +24,7 @@ export default class LoaderManager {
         ThreeAssetsManager.OnProgress.remove(LoaderManager._OnProgress);
     }
 
-    public static async LoadAllAssets(): Promise<void> {
+    public static LoadAllAssets(): void {
         if (LoaderManager._CheckIsFinished()) return;
         else LoaderManager.OnBeginLoad.execute();
     }
@@ -32,42 +32,48 @@ export default class LoaderManager {
     private static _OnLoad = (): void => {
         LoaderManager._RefreshSizes();
         if (LoaderManager._CheckIsFinished()) LoaderManager._OnFinishLoad();
-    }
+    };
 
     private static _CheckIsFinished = (): boolean => {
         if (!ThreeAssetsManager.IsLoaded) return false;
         return true;
-    }
+    };
 
     private static _OnProgress = (): void => {
         LoaderManager._RefreshSizes();
         LoaderManager.OnProgress.execute();
-    }
+    };
 
     private static _RefreshSizes = (): void => {
         LoaderManager._RefreshTotalSize();
         LoaderManager._RefreshLoadedSize();
-    }
+    };
 
     private static _RefreshTotalSize = (): void => {
         LoaderManager._TotalSize = 0;
         LoaderManager._TotalSize += ThreeAssetsManager.TotalSize;
-    }
+    };
 
     private static _RefreshLoadedSize = (): void => {
         LoaderManager._LoadedSize = 0;
         LoaderManager._LoadedSize += ThreeAssetsManager.LoadedSize;
-    }
+    };
 
     private static _OnFinishLoad = (): void => {
         LoaderManager.OnFinishLoad.execute();
-    }
+    };
 
     //#region Getters
     //
-    public static get IsLoaded(): boolean { return LoaderManager._CheckIsFinished(); }
-    public static get TotalSize(): number { return LoaderManager._TotalSize; }
-    public static get LoadedSize(): number { return LoaderManager._LoadedSize; }
+    public static get IsLoaded(): boolean {
+        return LoaderManager._CheckIsFinished();
+    }
+    public static get TotalSize(): number {
+        return LoaderManager._TotalSize;
+    }
+    public static get LoadedSize(): number {
+        return LoaderManager._LoadedSize;
+    }
     //
     //#endregion
 }

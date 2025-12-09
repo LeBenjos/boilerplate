@@ -1,4 +1,4 @@
-import type { Experience } from "./experience"; // adjust the path
+import type { Experience } from './experience';
 
 declare global {
     interface Window {
@@ -6,4 +6,4 @@ declare global {
     }
 }
 
-export { };
+export {};

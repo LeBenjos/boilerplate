@@ -1,5 +1,5 @@
-import { Camera, Scene, WebGLRenderer, type WebGLRendererParameters } from "three";
-import { ResizeManager } from "../../../managers/ResizeManager";
+import { Camera, Scene, WebGLRenderer, type WebGLRendererParameters } from 'three';
+import { ResizeManager } from '../../../managers/ResizeManager';
 
 export default abstract class WebGLRendererBase extends WebGLRenderer {
     private readonly _scene: Scene;
@@ -14,7 +14,7 @@ export default abstract class WebGLRendererBase extends WebGLRenderer {
         this.resize();
     }
 
-    public setCamera(camera: Camera) {
+    public setCamera(camera: Camera): void {
         this._camera = camera;
     }
 
@@ -23,7 +23,7 @@ export default abstract class WebGLRendererBase extends WebGLRenderer {
         this.setPixelRatio(ResizeManager.PixelRatio);
     }
 
-    public update(dt: number): void {
+    public update(_dt: number): void {
         this.render(this._scene, this._camera);
     }
 }

@@ -1,13 +1,13 @@
-import { Vector3 } from "three";
-import { OrbitControls } from "three/examples/jsm/Addons.js";
-import { KeyboardConstant } from "../../constants/doms/KeyboardConstant";
-import { CameraId } from "../../constants/experiences/CameraId";
-import { CameraType } from "../../constants/experiences/CameraType";
-import MainThree from "../../engines/threes/MainThree";
-import { KeyboardManager } from "../../managers/KeyboardManager";
-import MouseManager from "../../managers/MouseManager";
-import ThreeRaycasterManager from "../../managers/threes/ThreeRaycasterManager";
-import ThreeCameraControllerBase, { type IThreeCameraOptions } from "./bases/ThreeCameraControllerBase";
+import { Vector3 } from 'three';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
+import { KeyboardConstant } from '../../constants/doms/KeyboardConstant';
+import { CameraId } from '../../constants/experiences/CameraId';
+import { CameraType } from '../../constants/experiences/CameraType';
+import MainThree from '../../engines/threes/MainThree';
+import { KeyboardManager } from '../../managers/KeyboardManager';
+import MouseManager from '../../managers/MouseManager';
+import ThreeRaycasterManager from '../../managers/threes/ThreeRaycasterManager';
+import ThreeCameraControllerBase, { type IThreeCameraOptions } from './bases/ThreeCameraControllerBase';
 
 export default class DebugThreeCameraController extends ThreeCameraControllerBase<OrbitControls> {
     //#region Constants
@@ -17,7 +17,7 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
         fov: 75,
         aspect: window.innerWidth / window.innerHeight,
         near: 0.1,
-        far: 1000
+        far: 1000,
     };
     private static readonly _DEFAULT_CAMERA_POSITION: Vector3 = new Vector3(0, 1.5, 3);
     private static readonly _CONTROLS_DAMPING_FACTOR: number = 0.05;
@@ -56,5 +56,5 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
                 this._controls.update();
             }
         }
-    }
+    };
 }

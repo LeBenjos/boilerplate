@@ -1,14 +1,14 @@
-import { ViewId } from "../../../constants/experiences/ViewId";
-import LoaderManager from "../../../managers/LoaderManager";
-import ThreeViewBase from "../bases/ThreeViewBase";
-import Environment from "./components/Environment";
-import TemplateFont from "./components/actors/TemplateFont";
-import TemplateMesh from "./components/actors/TemplateMesh";
-import TemplateModel from "./components/actors/TemplateModel";
-import type ActorBase from "./components/actors/bases/ActorBase";
+import { ViewId } from '../../../constants/experiences/ViewId';
+import LoaderManager from '../../../managers/LoaderManager';
+import ThreeViewBase from '../bases/ThreeViewBase';
+import Environment from './components/Environment';
+import TemplateFont from './components/actors/TemplateFont';
+import TemplateMesh from './components/actors/TemplateMesh';
+import TemplateModel from './components/actors/TemplateModel';
+import type ActorBase from './components/actors/bases/ActorBase';
 
 export default class WorldThreeView extends ThreeViewBase {
-    private declare _environment: Environment;
+    declare private _environment: Environment;
     private readonly _actors: ActorBase[];
 
     constructor(id: ViewId) {
@@ -24,7 +24,7 @@ export default class WorldThreeView extends ThreeViewBase {
         this._generateActors();
 
         this._show();
-    }
+    };
 
     private _generateEnvironment(): void {
         if (this._environment) return;

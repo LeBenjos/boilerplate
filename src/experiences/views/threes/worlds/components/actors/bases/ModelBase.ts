@@ -1,9 +1,9 @@
-import { Mesh, Object3D, type Group } from "three";
-import { SkeletonUtils } from "three/examples/jsm/Addons.js";
-import type { AssetId } from "../../../../../../constants/experiences/AssetId";
-import type { Object3DId } from "../../../../../../constants/experiences/Object3dId";
-import ThreeAssetsManager from "../../../../../../managers/threes/ThreeAssetsManager";
-import ActorBase from "./ActorBase";
+import { Mesh, Object3D, type Group } from 'three';
+import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
+import type { AssetId } from '../../../../../../constants/experiences/AssetId';
+import type { Object3DId } from '../../../../../../constants/experiences/Object3dId';
+import ThreeAssetsManager from '../../../../../../managers/threes/ThreeAssetsManager';
+import ActorBase from './ActorBase';
 
 export interface IModelBaseParams {
     object3DId?: Object3DId;
@@ -14,7 +14,7 @@ export interface IModelBaseParams {
 export default abstract class ModelBase extends ActorBase {
     protected _assetId: AssetId;
     protected _parameters: IModelBaseParams;
-    protected declare _model: Group | Object3D | Mesh;
+    declare protected _model: Group | Object3D | Mesh;
 
     constructor(assetId: AssetId, params: IModelBaseParams = {}) {
         super();
@@ -28,9 +28,9 @@ export default abstract class ModelBase extends ActorBase {
         const originalModel = ThreeAssetsManager.GetModel(this._assetId).scene;
         const model = SkeletonUtils.clone(originalModel);
 
-        this._model = this._parameters.object3DId ?
-            model.getObjectByName(this._parameters.object3DId) ?? model :
-            model;
+        this._model = this._parameters.object3DId
+            ? (model.getObjectByName(this._parameters.object3DId) ?? model)
+            : model;
 
         this._model.traverse((child) => {
             if (child instanceof Mesh) {

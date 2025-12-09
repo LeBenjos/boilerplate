@@ -6,11 +6,11 @@ export default abstract class PoolProxyBase<T = unknown> {
 
     //#region Constants
     //
-    public static readonly DEFAULT_INITIAL_SIZE: number = 0;
+    private static readonly _DEFAULT_INITIAL_SIZE: number = 0;
     //
     //#endregion
 
-    constructor(ctor: Constructor<T>, initialSize: number = PoolProxyBase.DEFAULT_INITIAL_SIZE) {
+    constructor(ctor: Constructor<T>, initialSize: number = PoolProxyBase._DEFAULT_INITIAL_SIZE) {
         this._ctor = ctor;
         this._prepopulate(initialSize);
     }

@@ -1,12 +1,12 @@
-import { Mesh, MeshStandardMaterial, RepeatWrapping, SphereGeometry, type MeshStandardMaterialParameters } from "three";
-import { AssetId } from "../../../../../constants/experiences/AssetId";
-import ThreeAssetsManager from "../../../../../managers/threes/ThreeAssetsManager";
-import ActorBase from "./bases/ActorBase";
+import { Mesh, MeshStandardMaterial, RepeatWrapping, SphereGeometry, type MeshStandardMaterialParameters } from 'three';
+import { AssetId } from '../../../../../constants/experiences/AssetId';
+import ThreeAssetsManager from '../../../../../managers/threes/ThreeAssetsManager';
+import ActorBase from './bases/ActorBase';
 
 export default class TemplateMesh extends ActorBase {
-    private declare _geometry: SphereGeometry;
-    private declare _material: MeshStandardMaterial;
-    private declare _mesh: Mesh;
+    declare private _geometry: SphereGeometry;
+    declare private _material: MeshStandardMaterial;
+    declare private _mesh: Mesh;
 
     //#region Constants
     //
