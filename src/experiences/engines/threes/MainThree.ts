@@ -15,7 +15,7 @@ import ViewProxy from "../../proxies/ViewProxy";
 import WebGLRendererBase from "../../renderers/threes/bases/WebGLRendererBase";
 import LoaderRenderer from "../../renderers/threes/LoaderRenderer";
 import Renderer from "../../renderers/threes/Renderer";
-import DomUtils from "../../Utils/DomUtils";
+import DomUtils from "../../utils/DomUtils";
 import LoaderThreeView from "../../views/threes/loaders/LoaderThreeView";
 import WorldThreeView from "../../views/threes/worlds/WorldThreeView";
 

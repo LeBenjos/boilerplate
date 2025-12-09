@@ -9,7 +9,7 @@ import ThreeCameraControllerManager from "../managers/threes/ThreeCameraControll
 import ThreeRaycasterManager from "../managers/threes/ThreeRaycasterManager";
 import TickerManager from "../managers/TickerManager";
 import ViewProxy from "../proxies/ViewProxy";
-import AssetUtils from "../Utils/AssetUtils";
+import AssetUtils from "../utils/AssetUtils";
 
 export default class InitCommand {
     public static Init(): void {

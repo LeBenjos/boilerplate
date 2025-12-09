@@ -1,6 +1,6 @@
 import { ViewId } from "../../../constants/experiences/ViewId";
 import LoaderManager from "../../../managers/LoaderManager";
-import DomUtils from "../../../Utils/DomUtils";
+import DomUtils from "../../../utils/DomUtils";
 import HTMLViewBase from "../bases/HTMLViewBase";
 import HTMLTemplateLoader from "./components/HTMLTemplateLoader";
 

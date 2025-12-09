@@ -1,6 +1,6 @@
 import { DomEvent } from "../../../constants/doms/DomEvent";
 import type { ViewId } from "../../../constants/experiences/ViewId";
-import DomUtils from "../../../Utils/DomUtils";
+import DomUtils from "../../../utils/DomUtils";
 import ViewBase from "../../bases/ViewBase";
 
 export default abstract class HTMLViewBase extends ViewBase {
