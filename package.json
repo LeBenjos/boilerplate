@@ -1,7 +1,7 @@
 {
   "name": "boilerplate",
   "private": true,
-  "version": "1.0.18",
+  "version": "1.0.19",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,18 +10,18 @@
   },
   "devDependencies": {
     "@types/howler": "^2.2.12",
-    "@types/three": "^0.180.0",
-    "sass-embedded": "^1.93.2",
+    "@types/three": "^0.181.0",
+    "sass-embedded": "^1.93.3",
     "three-perf": "^1.0.11",
     "typescript": "~5.9.3",
-    "vite": "^7.1.7",
-    "vite-plugin-glsl": "^1.5.4"
+    "vite": "^7.2.7",
+    "vite-plugin-glsl": "^1.5.5"
   },
   "dependencies": {
     "@dimforge/rapier3d": "^0.19.3",
-    "gsap": "^3.13.0",
+    "gsap": "^3.14.1",
     "howler": "^2.2.4",
     "lil-gui": "^0.21.0",
-    "three": "^0.180.0"
+    "three": "^0.181.2"
   }
 }

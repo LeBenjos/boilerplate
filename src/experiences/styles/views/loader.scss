@@ -2,6 +2,21 @@
 
 $endedDurationTransition: 1.5s;
 
+body {
+
+    >#app,
+    >#root {
+        >#loader {
+            .view-html-container {
+                &.hide {
+                    animation-duration: $endedDurationTransition;
+                }
+            }
+        }
+    }
+
+}
+
 #loader {
     z-index: 999999;
 
