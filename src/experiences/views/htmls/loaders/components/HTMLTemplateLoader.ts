@@ -37,7 +37,7 @@ export default class HTMLTemplateLoader {
 
     public show(): void {
         this._loadingNumber.textContent = "0";
-        this._loadingBar.style.transform = "translateY(-50%) scaleX(0)";
+        this._loadingBar.style.transform = "";
         this._loadingBar.classList.remove("ended");
     }
 
