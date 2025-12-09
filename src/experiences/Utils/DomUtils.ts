@@ -11,4 +11,18 @@ export default class DomUtils {
 
         return app;
     }
+
+    public static GetLoader(): HTMLDivElement {
+        const loader = document.querySelector("#loader") as HTMLDivElement;
+
+        if (!loader) {
+            const app = DomUtils.GetApp();
+            const newLoader = document.createElement("div");
+            newLoader.id = "loader";
+            app.appendChild(newLoader);
+            return newLoader;
+        }
+
+        return loader;
+    }
 }

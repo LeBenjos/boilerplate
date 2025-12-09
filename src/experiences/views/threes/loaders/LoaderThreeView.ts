@@ -1,4 +1,5 @@
 import { ViewId } from "../../../constants/experiences/ViewId";
+import MainThree from "../../../engines/threes/MainThree";
 import LoaderManager from "../../../managers/LoaderManager";
 import ThreeViewBase from "../bases/ThreeViewBase";
 import ThreeTemplateLoader from "./components/ThreeTemplateLoader";
@@ -7,24 +8,34 @@ export default class LoaderThreeView extends ThreeViewBase {
     private declare _threeLoader: ThreeTemplateLoader;
 
     constructor(id: ViewId) {
-        super(id);
+        super(id, MainThree.LoaderScene);
 
         this._generateLoader();
 
         LoaderManager.OnBeginLoad.add(this._onBeginLoad);
-        this._threeLoader.material.onGsapAnimationComplete.add(this._onGsapAnimationComplete);
+        LoaderManager.OnFinishLoad.add(this._onFinishLoad);
+    }
+
+    private _generateLoader(): void {
+        this._threeLoader = new ThreeTemplateLoader();
+
+        this._container.add(this._threeLoader);
+        this._scene.add(this._container);
+    }
+
+    protected override _show(): void {
+        this._threeLoader.material.show();
+    }
+
+    protected override _hide(): void {
+        this._threeLoader.material.hide();
     }
 
     private readonly _onBeginLoad = (): void => {
         this._show();
     }
 
-    private readonly _onGsapAnimationComplete = (): void => {
+    private readonly _onFinishLoad = (): void => {
         this._hide();
-    }
-
-    private _generateLoader(): void {
-        this._threeLoader = new ThreeTemplateLoader();
-        this._container.add(this._threeLoader);
     }
 }

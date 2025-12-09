@@ -25,19 +25,13 @@ export default class LoaderManager {
     }
 
     public static async LoadAllAssets(): Promise<void> {
-        if (LoaderManager._CheckIsFinished()) {
-            LoaderManager._OnFinishLoad();
-        } else {
-            LoaderManager.OnBeginLoad.execute();
-        }
+        if (LoaderManager._CheckIsFinished()) return;
+        else LoaderManager.OnBeginLoad.execute();
     }
 
     private static _OnLoad = (): void => {
         LoaderManager._RefreshSizes();
-
-        if (LoaderManager._CheckIsFinished()) {
-            LoaderManager._OnFinishLoad();
-        }
+        if (LoaderManager._CheckIsFinished()) LoaderManager._OnFinishLoad();
     }
 
     private static _CheckIsFinished = (): boolean => {
@@ -71,7 +65,7 @@ export default class LoaderManager {
 
     //#region Getters
     //
-    public static get IsLoaded(): boolean { return LoaderManager._LoadedSize === LoaderManager._TotalSize && LoaderManager._TotalSize > 0; }
+    public static get IsLoaded(): boolean { return LoaderManager._CheckIsFinished(); }
     public static get TotalSize(): number { return LoaderManager._TotalSize; }
     public static get LoadedSize(): number { return LoaderManager._LoadedSize; }
     //

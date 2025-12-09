@@ -1,21 +1,41 @@
+import { DomEvent } from "../../../constants/doms/DomEvent";
 import type { ViewId } from "../../../constants/experiences/ViewId";
 import DomUtils from "../../../Utils/DomUtils";
 import ViewBase from "../../bases/ViewBase";
 
 export default abstract class HTMLViewBase extends ViewBase {
-    protected declare _htmlContainer: HTMLDivElement;
+    private readonly _parentElement: HTMLElement;
+    protected readonly _htmlContainer: HTMLDivElement;
 
-    constructor(id: ViewId) {
+    constructor(id: ViewId, parentElement: HTMLElement = DomUtils.GetApp()) {
         super(id);
+        this._parentElement = parentElement;
+        this._htmlContainer = document.createElement("div");
+        this._htmlContainer.classList.add("view-html-container");
+
+        this._htmlContainer.addEventListener(DomEvent.ANIMATION_END, this._onAnimationEnd);
     }
 
     protected override _show(): void {
         super._show();
-        DomUtils.GetApp().appendChild(this._htmlContainer);
+        this._parentElement.appendChild(this._htmlContainer);
+        this._htmlContainer.classList.remove("hide");
+        requestAnimationFrame(this._onShow);
+    }
+
+    private readonly _onShow = (): void => {
+        this._htmlContainer.classList.add("show");
     }
 
     protected override _hide(): void {
         super._hide();
-        DomUtils.GetApp().removeChild(this._htmlContainer);
+        this._htmlContainer.classList.remove("show");
+        this._htmlContainer.classList.add("hide");
+    }
+
+    private readonly _onAnimationEnd = (event: AnimationEvent): void => {
+        if (event.animationName === "hideView") {
+            this._parentElement.removeChild(this._htmlContainer);
+        }
     }
 }

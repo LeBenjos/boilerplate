@@ -2,43 +2,49 @@
 
 $endedDurationTransition: 1.5s;
 
-.loading-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100dvw;
-    height: 100dvh;
+#loader {
+    z-index: 999999;
 
-    .loading-progress {
-        z-index: 2;
+    .loading-screen {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding-bottom: 2.5rem;
-        opacity: 1;
-        font-size: 2rem;
-        color: $white;
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        color: $white;
-    }
-
-    .loading-bar {
-        z-index: 1;
-        width: 100dvw;
-        height: 0.25rem;
-        position: absolute;
-        top: 50%;
+        top: 0;
         left: 0;
-        opacity: 1;
-        background-color: $white;
-        transform-origin: top left;
-        transform: translateY(-50%) scaleX(0);
+        width: 100dvw;
+        height: 100dvh;
 
-        &.ended {
-            transform-origin: top right;
+        .loading-progress {
+            z-index: 2;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding-bottom: 2.5rem;
+            opacity: 1;
+            font-size: 2rem;
+            color: $white;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: $white;
+        }
+
+        .loading-bar {
+            z-index: 1;
+            width: 100dvw;
+            height: 0.25rem;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            opacity: 1;
+            background-color: $white;
+            transform-origin: top left;
+            transform: translateY(-50%) scaleX(0);
+
+            &.ended {
+                transform-origin: top right;
+                transition: transform $endedDurationTransition ease-in-out;
+                transform: translateY(-50%) scaleX(0);
+            }
         }
     }
 }

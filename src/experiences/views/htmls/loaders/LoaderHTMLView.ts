@@ -1,38 +1,34 @@
 import { ViewId } from "../../../constants/experiences/ViewId";
 import LoaderManager from "../../../managers/LoaderManager";
-import Action from "../../../tools/Action";
+import DomUtils from "../../../Utils/DomUtils";
 import HTMLViewBase from "../bases/HTMLViewBase";
 import HTMLTemplateLoader from "./components/HTMLTemplateLoader";
 
 export default class LoaderHTMLView extends HTMLViewBase {
     private declare _HTMLLoader: HTMLTemplateLoader;
 
-    public readonly onLoadingBarGsapAnimationComplete: Action = new Action();
-
     constructor(id: ViewId) {
-        super(id);
+        super(id, DomUtils.GetLoader());
 
         this._generateLoader();
 
         LoaderManager.OnBeginLoad.add(this._onBeginLoad);
-        this._HTMLLoader.onLoadingBarGsapAnimationComplete.add(this._onLoadingBarGsapAnimationComplete);
-        this._HTMLLoader.onLoadingProgressGsapAnimationComplete.add(this._onLoadingProgressGsapAnimationComplete);
+        LoaderManager.OnFinishLoad.add(this._onFinishLoad);
     }
 
     private _generateLoader(): void {
         this._HTMLLoader = new HTMLTemplateLoader();
-        this._htmlContainer = this._HTMLLoader.htmlElement;
+        this._htmlContainer.appendChild(this._HTMLLoader.htmlElement);
+        DomUtils.GetLoader().appendChild(this._htmlContainer);
     }
 
     private readonly _onBeginLoad = (): void => {
         this._show();
+        this._HTMLLoader.show();
     }
 
-    private readonly _onLoadingBarGsapAnimationComplete = (): void => {
-        this.onLoadingBarGsapAnimationComplete.execute();
-    }
-
-    private readonly _onLoadingProgressGsapAnimationComplete = (): void => {
+    private readonly _onFinishLoad = (): void => {
+        this._HTMLLoader.hide();
         this._hide();
     }
 }

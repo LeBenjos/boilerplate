@@ -24,16 +24,17 @@ export default class WorldThreeView extends ThreeViewBase {
         this._generateActors();
 
         this._show();
-        LoaderManager.OnFinishLoad.remove(this._onFinishLoad);
     }
 
     private _generateEnvironment(): void {
+        if (this._environment) return;
         this._environment = new Environment();
 
         this._container.add(this._environment);
     }
 
     private _generateActors(): void {
+        if (this._actors.length > 0) return;
         this._actors.push(new TemplateMesh());
         this._actors.push(new TemplateModel());
         this._actors.push(new TemplateFont());

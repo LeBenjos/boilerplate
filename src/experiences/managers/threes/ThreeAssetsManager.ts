@@ -38,6 +38,7 @@ export interface IThreeFontOption extends IThreeAssetOption { }
 export default class ThreeAssetsManager {
     private static readonly _Assets: Map<string, Texture | DataTexture | GLTF | Font> = new Map<string, Texture | GLTF | Font>();
     private static readonly _ToLoadList: IThreeAssetToLoad[] = [];
+    private static _ExpectedAssetsCount: number = 0;
 
     private static readonly _TextureLoader = new TextureLoader();
     private static readonly _HDRLoader = new HDRLoader();
@@ -68,27 +69,45 @@ export default class ThreeAssetsManager {
     public static Init(): void {
         ThreeAssetsManager._DracoLoader.setDecoderPath(AssetUtils.GetPath(ThreeAssetsManager._DRACO_LOADER_PATH));
         ThreeAssetsManager._GltfLoader.setDRACOLoader(ThreeAssetsManager._DracoLoader);
-        LoaderManager.OnBeginLoad.add(ThreeAssetsManager._OnBenginLoad);
+        ThreeAssetsManager._AddCallbacks();
+    }
+
+    private static _AddCallbacks(): void {
+        ThreeAssetsManager._RemoveCallbacks();
+        LoaderManager.OnBeginLoad.add(ThreeAssetsManager._OnBeginLoad);
         LoaderManager.OnFinishLoad.add(ThreeAssetsManager._OnFinishLoad);
+    }
+
+    private static _RemoveCallbacks(): void {
+        LoaderManager.OnBeginLoad.remove(ThreeAssetsManager._OnBeginLoad);
+        LoaderManager.OnFinishLoad.remove(ThreeAssetsManager._OnFinishLoad);
     }
 
     public static AddTexture(id: AssetId, path: string, textureOption?: IThreeTextureOption) {
         ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.TEXTURE, path, option: textureOption, loadedSize: ThreeAssetsManager._DEFAULT_LOADED_SIZE, totalSize: ThreeAssetsManager._DEFAULT_TEXTURE_TOTAL_SIZE });
+        ThreeAssetsManager._ExpectedAssetsCount++;
     }
 
     public static AddHDR(id: AssetId, path: string, hdrOption?: IThreeHDROption) {
         ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.HDR, path, option: hdrOption, loadedSize: ThreeAssetsManager._DEFAULT_LOADED_SIZE, totalSize: ThreeAssetsManager._DEFAULT_TOTAL_SIZE });
+        ThreeAssetsManager._ExpectedAssetsCount++;
     }
 
     public static AddModel(id: AssetId, path: string, modelOption?: IThreeModelOption) {
         ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.MODEL, path, option: modelOption, loadedSize: ThreeAssetsManager._DEFAULT_LOADED_SIZE, totalSize: ThreeAssetsManager._DEFAULT_TOTAL_SIZE });
+        ThreeAssetsManager._ExpectedAssetsCount++;
     }
 
     public static AddFont(id: AssetId, path: string, fontOption?: IThreeFontOption) {
         ThreeAssetsManager._ToLoadList.push({ id, type: AssetType.FONT, path, option: fontOption, loadedSize: ThreeAssetsManager._DEFAULT_LOADED_SIZE, totalSize: ThreeAssetsManager._DEFAULT_TOTAL_SIZE });
+        ThreeAssetsManager._ExpectedAssetsCount++;
     }
 
-    private static _OnBenginLoad = (): void => {
+    private static _OnBeginLoad = (): void => {
+        if (ThreeAssetsManager._ToLoadList.length === 0) {
+            ThreeAssetsManager.OnLoad.execute();
+            return;
+        }
         for (const asset of ThreeAssetsManager._ToLoadList) {
             if (asset.type === AssetType.TEXTURE) ThreeAssetsManager._LoadTexture(asset);
             else if (asset.type === AssetType.HDR) ThreeAssetsManager._LoadHDR(asset);
@@ -191,7 +210,7 @@ export default class ThreeAssetsManager {
 
     //#region Getters
     //
-    public static get IsLoaded(): boolean { return ThreeAssetsManager._ToLoadList.every(asset => asset.loadedSize === asset.totalSize); }
+    public static get IsLoaded(): boolean { return ThreeAssetsManager._Assets.size === ThreeAssetsManager._ExpectedAssetsCount; }
     public static get TotalSize(): number {
         let totalSize = 0;
         for (const asset of ThreeAssetsManager._ToLoadList) {

@@ -1,11 +1,8 @@
-import { ACESFilmicToneMapping, AgXToneMapping, Camera, CineonToneMapping, CustomToneMapping, LinearSRGBColorSpace, LinearToneMapping, NeutralToneMapping, NoToneMapping, PCFSoftShadowMap, ReinhardToneMapping, SRGBColorSpace, WebGLRenderer, type ColorSpace, type ToneMapping, type WebGLRendererParameters } from "three";
-import MainThree from "../../engines/threes/MainThree";
+import { ACESFilmicToneMapping, AgXToneMapping, Camera, CineonToneMapping, CustomToneMapping, LinearSRGBColorSpace, LinearToneMapping, NeutralToneMapping, NoToneMapping, PCFSoftShadowMap, ReinhardToneMapping, Scene, SRGBColorSpace, type ColorSpace, type ToneMapping, type WebGLRendererParameters } from "three";
 import DebugManager from "../../managers/DebugManager";
-import { ResizeManager } from "../../managers/ResizeManager";
+import WebGLRendererBase from "./bases/WebGLRendererBase";
 
-export default class Renderer extends WebGLRenderer {
-    private _camera: Camera;
-
+export default class Renderer extends WebGLRendererBase {
     //#region Constants
     //
     private static readonly _DEFAULT_TONE_MAPPING = CineonToneMapping;
@@ -17,18 +14,14 @@ export default class Renderer extends WebGLRenderer {
     // 
     //#endregion
 
-    constructor(camera: Camera, parameters: WebGLRendererParameters) {
-        super(parameters);
+    constructor(scene: Scene, camera: Camera, parameters: WebGLRendererParameters = {}) {
+        super(scene, camera, parameters);
         this.toneMapping = Renderer._DEFAULT_TONE_MAPPING;
         this.toneMappingExposure = Renderer._DEFAULT_TONE_MAPPING_EXPOSURE;
         this.outputColorSpace = Renderer._DEFAULT_OUTPUT_COLOR_SPACE;
         this.shadowMap.enabled = true;
         this.shadowMap.type = Renderer._DEFAULT_SHADOW_MAP_TYPE;
         this.setClearColor(Renderer._DEFAULT_CLEAR_COLOR, Renderer._DEFAULT_CLEAR_ALPHA);
-
-        this._camera = camera;
-
-        this.resize();
 
         if (DebugManager.IsActive) {
             const rendererFolder = DebugManager.Gui.addFolder("Renderer");
@@ -42,19 +35,10 @@ export default class Renderer extends WebGLRenderer {
         }
     }
 
-    public setCamera(camera: Camera) {
-        this._camera = camera;
-    }
-
-    public resize(): void {
-        this.setSize(ResizeManager.Width, ResizeManager.Height);
-        this.setPixelRatio(ResizeManager.PixelRatio);
-    }
-
-    public update(dt: number): void {
+    public override update(dt: number): void {
         const isDebug = DebugManager.IsActive;
         if (isDebug) DebugManager.BeginThreePerf();
-        this.render(MainThree.Scene, this._camera);
+        super.update(dt);
         if (isDebug) DebugManager.EndThreePerf();
     }
 }
