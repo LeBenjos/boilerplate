@@ -13,7 +13,8 @@
     "scripts": {
         "build": "tsc",
         "dev": "tsc --watch",
-        "prepublishOnly": "npm run build"
+        "sync": "./sync-templates.sh",
+        "prepublishOnly": "npm run sync && npm run build"
     },
     "keywords": [
         "three.js",

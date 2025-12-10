@@ -3,6 +3,17 @@ import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
+    {
+        ignores: [
+            '**/dist/**',
+            '**/build/**',
+            '**/node_modules/**',
+            '**/*.min.js',
+            '**/*.js.map',
+            '**/*.d.ts',
+            'packages/cli/template-*/**',
+        ],
+    },
     eslint.configs.recommended,
     ...tseslint.configs.recommendedTypeChecked,
     ...tseslint.configs.stylisticTypeChecked,

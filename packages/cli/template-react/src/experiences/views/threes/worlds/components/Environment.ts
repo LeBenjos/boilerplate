@@ -1,0 +1,77 @@
+import { DataTexture, DirectionalLight, Object3D, Vector3 } from 'three';
+import { AssetId } from '../../../../constants/experiences/AssetId';
+import MainThree from '../../../../engines/threes/MainThree';
+import DebugManager from '../../../../managers/DebugManager';
+import ThreeAssetsManager from '../../../../managers/threes/ThreeAssetsManager';
+
+interface IEnvironmentMap {
+    intensity?: number;
+    texture?: DataTexture;
+}
+
+export default class Environment extends Object3D {
+    declare private _environmentMap: IEnvironmentMap;
+    declare private _sunLight: DirectionalLight;
+
+    //#region Constants
+    //
+    private static readonly _DEFAULT_ENVIRONMENT_MAP_INTENSITY: number = 1;
+    private static readonly _DEFAULT_SUN_LIGHT_COLOR: number = 0xffffff;
+    private static readonly _DEFAULT_SUN_LIGHT_INTENSITY: number = 10;
+    private static readonly _DEFAULT_SUN_SHADOW_CAMERA_FAR: number = 15;
+    private static readonly _DEFAULT_SUN_SHADOW_MAP_SIZE: number = 1024;
+    private static readonly _DEFAULT_SUN_SHADOW_NORMAL_BIAS: number = 0.05;
+    private static readonly _DEFAULT_SUN_POSITION: Vector3 = new Vector3(0, 2, 1);
+    //
+    //#endregion
+
+    constructor() {
+        super();
+
+        this._generateEnvironmentMap();
+        this._generateSunLight();
+    }
+
+    private _generateEnvironmentMap = (): void => {
+        this._environmentMap = {};
+        this._environmentMap.intensity = Environment._DEFAULT_ENVIRONMENT_MAP_INTENSITY;
+        this._environmentMap.texture = ThreeAssetsManager.GetHDR(AssetId.THREE_HDR_TEMPLATE);
+        this._environmentMap.texture.needsUpdate = true;
+
+        MainThree.Scene.environment = this._environmentMap.texture;
+        MainThree.Scene.environmentIntensity = this._environmentMap.intensity!;
+
+        if (DebugManager.IsActive) {
+            const environmentFolder = DebugManager.Gui.addFolder('Environment');
+            environmentFolder.add(this._environmentMap, 'intensity', 0, 10, 0.01).onChange(() => {
+                MainThree.Scene.environmentIntensity = this._environmentMap.intensity!;
+            });
+        }
+    };
+
+    private _generateSunLight(): void {
+        this._sunLight = new DirectionalLight(
+            Environment._DEFAULT_SUN_LIGHT_COLOR,
+            Environment._DEFAULT_SUN_LIGHT_INTENSITY
+        );
+        this._sunLight.castShadow = true;
+        this._sunLight.shadow.camera.far = Environment._DEFAULT_SUN_SHADOW_CAMERA_FAR;
+        this._sunLight.shadow.mapSize.set(
+            Environment._DEFAULT_SUN_SHADOW_MAP_SIZE,
+            Environment._DEFAULT_SUN_SHADOW_MAP_SIZE
+        );
+        this._sunLight.shadow.normalBias = Environment._DEFAULT_SUN_SHADOW_NORMAL_BIAS;
+        this._sunLight.position.copy(Environment._DEFAULT_SUN_POSITION);
+        this.add(this._sunLight);
+
+        if (DebugManager.IsActive) {
+            const sunLightFolder = DebugManager.Gui.addFolder('Sun Light');
+            sunLightFolder.add(this._sunLight, 'intensity', 0, 10, 0.01).name('intensity');
+            sunLightFolder.add(this._sunLight.position, 'x', -5, 5, 0.01).name('positionX');
+            sunLightFolder.add(this._sunLight.position, 'y', -5, 5, 0.01).name('positionY');
+            sunLightFolder.add(this._sunLight.position, 'z', -5, 5, 0.01).name('positionZ');
+        }
+    }
+
+    public update(_dt: number): void {}
+}

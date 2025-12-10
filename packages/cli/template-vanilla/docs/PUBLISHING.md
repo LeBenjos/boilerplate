@@ -1,21 +1,46 @@
 # 📦 Publishing Guide
 
-## First Publish
+## Workflow Overview
+
+**Develop at root** → **Sync templates** → **Git push** → **npm publish**
+
+## Complete Workflow
 
 ```bash
-npm login
+# 1. Sync root to vanilla template (if common files modified)
+rsync -av --exclude='node_modules' --exclude='.git' --exclude='packages' --exclude='improvements.md' ./ packages/cli/template-vanilla/
+
+# 2. Sync vanilla to react (common files only)
 cd packages/cli
-npm run build
-npm publish --access public
-```
+npm run sync
 
-## Updates
+# 3. Git commit and push
+cd ../..
+git add .
+git commit -m "Update boilerplate"
+git push
 
-```bash
+# 4. Publish to npm
 cd packages/cli
 npm version patch  # or minor/major
 npm publish --access public
 ```
+
+## What to Edit Where
+
+### Common Files (edit at root)
+
+- `src/experiences/` - Three.js code
+- `public/` - Assets
+- Config files (tsconfig, eslint, prettier)
+
+### React-Specific Files (edit in template-react)
+
+- `src/main.tsx`
+- `src/App.tsx`
+- `package.json`
+- `vite.config.ts`
+- `index.html`
 
 ## Version Types
 
@@ -23,8 +48,10 @@ npm publish --access public
 - `minor` → 1.0.0 → 1.1.0 (new features)
 - `major` → 1.0.0 → 2.0.0 (breaking changes)
 
-## Test Before Publishing
+## First Publish
 
 ```bash
-npm pack --dry-run
+npm login
+cd packages/cli
+npm publish --access public
 ```
