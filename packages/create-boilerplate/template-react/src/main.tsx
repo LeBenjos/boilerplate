@@ -1,5 +1,10 @@
-import ReactDOM from 'react-dom/client';
-import './experiences/styles/style.scss';
-import MainReact from './experiences/engines/reacts/MainReact';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(<MainReact />);
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)

@@ -1,8 +1,6 @@
 export const ViewType = {
-    REACT: 'react',
-    THREE: 'three',
-    VUE: 'vue',
-    HTML: 'html',
+    HTML: 'HTML',
+    THREE: 'THREE',
 } as const;
 
 export type ViewType = (typeof ViewType)[keyof typeof ViewType];
