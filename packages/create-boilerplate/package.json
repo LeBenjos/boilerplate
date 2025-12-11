@@ -1,7 +1,7 @@
 {
     "name": "@benjos/create-boilerplate",
-    "version": "1.0.3",
-    "description": "CLI to scaffold Three.js projects with Vanilla/React/Vue support",
+    "version": "1.3.1",
+    "description": "CLI to scaffold Three.js projects with framework support",
     "type": "module",
     "bin": {
         "create-boilerplate": "./dist/index.js"
