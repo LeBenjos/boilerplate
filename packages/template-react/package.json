@@ -1,7 +1,7 @@
 {
-    "name": "boilerplate",
+    "name": "template-react",
     "private": true,
-    "version": "1.3.3",
+    "version": "1.3.4",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -12,13 +12,29 @@
         "format": "prettier --write .",
         "format:check": "prettier --check ."
     },
+    "dependencies": {
+        "@dimforge/rapier3d": "^0.19.3",
+        "gsap": "^3.14.2",
+        "howler": "^2.2.4",
+        "lil-gui": "^0.21.0",
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3",
+        "three": "^0.182.0"
+    },
     "devDependencies": {
         "@eslint/js": "^9.39.2",
         "@types/howler": "^2.2.12",
+        "@types/node": "^25.0.3",
+        "@types/react": "^19.2.7",
+        "@types/react-dom": "^19.2.3",
         "@types/three": "^0.182.0",
+        "@vitejs/plugin-react": "^5.1.2",
         "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.4",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-refresh": "^0.4.26",
+        "globals": "^16.5.0",
         "prettier": "^3.7.4",
         "sass-embedded": "^1.97.1",
         "three-perf": "^1.0.11",
@@ -26,14 +42,5 @@
         "typescript-eslint": "^8.50.1",
         "vite": "^7.3.0",
         "vite-plugin-glsl": "^1.5.5"
-    },
-    "dependencies": {
-        "@benjos/cookware": "^1.0.0",
-        "@benjos/spices": "^1.0.1",
-        "@dimforge/rapier3d": "^0.19.3",
-        "gsap": "^3.14.2",
-        "howler": "^2.2.4",
-        "lil-gui": "^0.21.0",
-        "three": "^0.182.0"
     }
 }

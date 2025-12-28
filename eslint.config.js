@@ -11,7 +11,7 @@ export default tseslint.config(
             '**/*.min.js',
             '**/*.js.map',
             '**/*.d.ts',
-            'packages/create-boilerplate/template-*/**',
+            'packages/template-*/**',
         ],
     },
     eslint.configs.recommended,

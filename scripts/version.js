@@ -63,32 +63,32 @@ try {
     console.log('\n📦 Installation des dépendances à la racine...');
     runCommand('npm install', ROOT_DIR);
 
-    // 4. Mettre à jour packages/create-boilerplate/package.json
-    const createBoilerplatePath = join(ROOT_DIR, 'packages/create-boilerplate/package.json');
-    console.log('\n📝 Mise à jour de packages/create-boilerplate/package.json...');
+    // 4. Mettre à jour packages/package.json
+    const createBoilerplatePath = join(ROOT_DIR, 'packages/package.json');
+    console.log('\n📝 Mise à jour de packages/package.json...');
     updatePackageVersion(createBoilerplatePath, newVersion);
 
-    // 5. npm install dans packages/create-boilerplate
-    console.log('\n📦 Installation des dépendances dans packages/create-boilerplate...');
-    runCommand('npm install', join(ROOT_DIR, 'packages/create-boilerplate'));
+    // 5. npm install dans packages/package.json
+    console.log('\n📦 Installation des dépendances dans packages/package.json...');
+    runCommand('npm install', join(ROOT_DIR, 'packages'));
 
     // 6. Mettre à jour template-react
-    const templateReactPath = join(ROOT_DIR, 'packages/create-boilerplate/template-react/package.json');
+    const templateReactPath = join(ROOT_DIR, 'packages/template-react/package.json');
     console.log('\n📝 Mise à jour de template-react/package.json...');
     updatePackageVersion(templateReactPath, newVersion);
 
     // 7. npm install dans template-react
     console.log('\n📦 Installation des dépendances dans template-react...');
-    runCommand('npm install', join(ROOT_DIR, 'packages/create-boilerplate/template-react'));
+    runCommand('npm install', join(ROOT_DIR, 'packages/template-react'));
 
     // 8. Mettre à jour template-vanilla
-    const templateVanillaPath = join(ROOT_DIR, 'packages/create-boilerplate/template-vanilla/package.json');
+    const templateVanillaPath = join(ROOT_DIR, 'packages/template-vanilla/package.json');
     console.log('\n📝 Mise à jour de template-vanilla/package.json...');
     updatePackageVersion(templateVanillaPath, newVersion);
 
     // 9. npm install dans template-vanilla
     console.log('\n📦 Installation des dépendances dans template-vanilla...');
-    runCommand('npm install', join(ROOT_DIR, 'packages/create-boilerplate/template-vanilla'));
+    runCommand('npm install', join(ROOT_DIR, 'packages/template-vanilla'));
 
     console.log(`\n✅ Toutes les versions ont été mises à jour vers ${newVersion} !`);
     console.log('\n💡 N\'oubliez pas de commit et push vos changements.');
