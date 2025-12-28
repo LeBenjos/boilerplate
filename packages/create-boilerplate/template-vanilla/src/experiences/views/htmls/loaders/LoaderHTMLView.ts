@@ -1,6 +1,6 @@
+import { DomUtils } from '@benjos/cookware';
 import { ViewId } from '../../../constants/experiences/ViewId';
 import LoaderManager from '../../../managers/LoaderManager';
-import DomUtils from '../../../utils/DomUtils';
 import HTMLViewBase from '../bases/HTMLViewBase';
 import HTMLTemplateLoader from './components/HTMLTemplateLoader';
 
@@ -8,7 +8,7 @@ export default class LoaderHTMLView extends HTMLViewBase {
     declare private _htmlLoader: HTMLTemplateLoader;
 
     constructor(id: ViewId) {
-        super(id, DomUtils.GetLoader());
+        super(id, DomUtils.getLoader());
 
         this._generateLoader();
 
@@ -19,7 +19,7 @@ export default class LoaderHTMLView extends HTMLViewBase {
     private _generateLoader(): void {
         this._htmlLoader = new HTMLTemplateLoader();
         this._htmlContainer.appendChild(this._htmlLoader.htmlElement);
-        DomUtils.GetLoader().appendChild(this._htmlContainer);
+        DomUtils.getLoader().appendChild(this._htmlContainer);
     }
 
     private readonly _onBeginLoad = (): void => {

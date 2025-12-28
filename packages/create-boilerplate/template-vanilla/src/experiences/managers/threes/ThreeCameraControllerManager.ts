@@ -1,6 +1,6 @@
+import { Action } from '@benjos/cookware';
 import type ThreeCameraControllerBase from '../../cameras/threes/bases/ThreeCameraControllerBase';
 import type { CameraId } from '../../constants/experiences/CameraId';
-import Action from '../../tools/Action';
 
 export default class ThreeCameraControllerManager {
     private static readonly _ThreeCameraControllers = new Map<CameraId, ThreeCameraControllerBase>();

@@ -1,3 +1,4 @@
+import { Action, AssetUtils } from '@benjos/cookware';
 import {
     DataTexture,
     EquirectangularRefractionMapping,
@@ -12,8 +13,6 @@ import {
 import { DRACOLoader, Font, FontLoader, GLTFLoader, HDRLoader, type GLTF } from 'three/examples/jsm/Addons.js';
 import type { AssetId } from '../../constants/experiences/AssetId';
 import { AssetType } from '../../constants/experiences/AssetType';
-import Action from '../../tools/Action';
-import AssetUtils from '../../utils/AssetUtils';
 import LoaderManager from '../LoaderManager';
 
 export interface IThreeAssetToLoad {
@@ -25,7 +24,7 @@ export interface IThreeAssetToLoad {
     totalSize: number;
 }
 
-export interface IThreeAssetOption {}
+export interface IThreeAssetOption { }
 
 export interface IThreeTextureOption extends IThreeAssetOption {
     colorSpace?: ColorSpace;
@@ -41,9 +40,9 @@ export interface IThreeHDROption extends IThreeAssetOption {
     colorSpace?: ColorSpace;
 }
 
-export interface IThreeModelOption extends IThreeAssetOption {}
+export interface IThreeModelOption extends IThreeAssetOption { }
 
-export interface IThreeFontOption extends IThreeAssetOption {}
+export interface IThreeFontOption extends IThreeAssetOption { }
 
 export default class ThreeAssetsManager {
     private static readonly _Assets: Map<string, Texture | DataTexture | GLTF | Font> = new Map<
@@ -80,7 +79,7 @@ export default class ThreeAssetsManager {
     //#endregion
 
     public static Init(): void {
-        ThreeAssetsManager._DracoLoader.setDecoderPath(AssetUtils.GetPath(ThreeAssetsManager._DRACO_LOADER_PATH));
+        ThreeAssetsManager._DracoLoader.setDecoderPath(AssetUtils.getPath(ThreeAssetsManager._DRACO_LOADER_PATH));
         ThreeAssetsManager._GltfLoader.setDRACOLoader(ThreeAssetsManager._DracoLoader);
         ThreeAssetsManager._AddCallbacks();
     }

@@ -1,5 +1,5 @@
-import { DomEvent } from '../constants/doms/DomEvent';
-import Action from '../tools/Action';
+import { Action } from '@benjos/cookware';
+import { DomEvent } from '@benjos/spices';
 
 export default class MouseManager {
     private static _X = 0;

@@ -1,6 +1,6 @@
+import { KeyboardConstant } from '@benjos/spices';
 import { Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import { KeyboardConstant } from '../../constants/doms/KeyboardConstant';
 import { CameraId } from '../../constants/experiences/CameraId';
 import { CameraType } from '../../constants/experiences/CameraType';
 import MainThree from '../../engines/threes/MainThree';
@@ -21,7 +21,7 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
     };
     private static readonly _DEFAULT_CAMERA_POSITION: Vector3 = new Vector3(0, 1.5, 3);
     private static readonly _CONTROLS_DAMPING_FACTOR: number = 0.05;
-    private static readonly _CONTROLS_CENTER_KEY: string = KeyboardConstant.Codes.ControlLeft;
+    private static readonly _CONTROLS_CENTER_KEY: string = KeyboardConstant.CODES.CONTROL_LEFT;
     //
     //#endregion
 

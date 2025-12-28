@@ -1,9 +1,10 @@
+import { DomUtils } from '@benjos/cookware';
+import { KeyboardConstant } from '@benjos/spices';
 import { MeshStandardMaterial, Scene } from 'three';
 import type ThreeCameraControllerBase from '../../cameras/threes/bases/ThreeCameraControllerBase';
 import DebugThreeCameraController from '../../cameras/threes/DebugThreeCameraController';
 import LoaderThreeCameraController from '../../cameras/threes/LoaderThreeCameraController';
 import MainThreeCameraController from '../../cameras/threes/MainThreeCameraController';
-import { KeyboardConstant } from '../../constants/doms/KeyboardConstant';
 import { CameraId } from '../../constants/experiences/CameraId';
 import { ViewId } from '../../constants/experiences/ViewId';
 import DebugManager from '../../managers/DebugManager';
@@ -15,7 +16,6 @@ import ViewProxy from '../../proxies/ViewProxy';
 import WebGLRendererBase from '../../renderers/threes/bases/WebGLRendererBase';
 import LoaderRenderer from '../../renderers/threes/LoaderRenderer';
 import Renderer from '../../renderers/threes/Renderer';
-import DomUtils from '../../utils/DomUtils';
 import LoaderThreeView from '../../views/threes/loaders/LoaderThreeView';
 import WorldThreeView from '../../views/threes/worlds/WorldThreeView';
 
@@ -33,12 +33,12 @@ export default class MainThree {
     //
     private static readonly _DEBUG_WIREFRAME_MATERIAL_COLOR: number = 0x3f79f3;
     private static readonly _TOGGLE_SWITCH_TO_DEBUG_CAMERA_KEYS: string[] = [
-        KeyboardConstant.Codes.ShiftLeft,
-        KeyboardConstant.Codes.KeyC,
+        KeyboardConstant.CODES.SHIFT_LEFT,
+        KeyboardConstant.CODES.KEY_C,
     ];
     private static readonly _TOGGLE_WIREFRAME_KEYS: string[] = [
-        KeyboardConstant.Codes.ShiftLeft,
-        KeyboardConstant.Codes.KeyW,
+        KeyboardConstant.CODES.SHIFT_LEFT,
+        KeyboardConstant.CODES.KEY_W,
     ];
     //
     //#endregion
@@ -46,8 +46,8 @@ export default class MainThree {
     public static Init(): void {
         TickerManager.Add(MainThree.Update);
 
-        MainThree._DomElementContainer = DomUtils.GetApp();
-        MainThree._LoaderDomElementContainer = DomUtils.GetLoader();
+        MainThree._DomElementContainer = DomUtils.getApp();
+        MainThree._LoaderDomElementContainer = DomUtils.getLoader();
 
         MainThree._GenerateScenes();
         MainThree._GenerateCameras();

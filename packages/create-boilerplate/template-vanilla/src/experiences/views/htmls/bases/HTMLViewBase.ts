@@ -1,14 +1,14 @@
-import { DomEvent } from '../../../constants/doms/DomEvent';
+import { DomUtils } from '@benjos/cookware';
+import { DomEvent } from '@benjos/spices';
 import type { ViewId } from '../../../constants/experiences/ViewId';
 import { ViewType } from '../../../constants/experiences/ViewType';
-import DomUtils from '../../../utils/DomUtils';
 import ViewBase from '../../bases/ViewBase';
 
 export default abstract class HTMLViewBase extends ViewBase {
     private readonly _parentElement: HTMLElement;
     protected readonly _htmlContainer: HTMLDivElement;
 
-    constructor(id: ViewId, parentElement: HTMLElement = DomUtils.GetApp()) {
+    constructor(id: ViewId, parentElement: HTMLElement = DomUtils.getApp()) {
         super(id, ViewType.HTML);
         this._parentElement = parentElement;
         this._htmlContainer = document.createElement('div');

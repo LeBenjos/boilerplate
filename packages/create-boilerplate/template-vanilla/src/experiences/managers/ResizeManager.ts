@@ -1,4 +1,4 @@
-import Action from '../tools/Action';
+import { Action } from '@benjos/cookware';
 import TickerManager from './TickerManager';
 
 export class ResizeManager {

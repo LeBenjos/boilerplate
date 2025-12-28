@@ -1,6 +1,6 @@
+import { KeyboardConstant } from '@benjos/spices';
 import GUI from 'lil-gui';
 import { ThreePerf } from 'three-perf';
-import { KeyboardConstant } from '../constants/doms/KeyboardConstant';
 import MainThree from '../engines/threes/MainThree';
 import { KeyboardManager } from './KeyboardManager';
 
@@ -16,8 +16,8 @@ export default class DebugManager {
     private static readonly _THREE_PERF_ANCHOR_X: 'left' | 'right' = 'left';
     private static readonly _THREE_PERF_ANCHOR_Y: 'top' | 'bottom' = 'bottom';
     private static readonly _TOGGLE_HIDDEN_KEYS: string[] = [
-        KeyboardConstant.Codes.ShiftLeft,
-        KeyboardConstant.Codes.KeyH,
+        KeyboardConstant.CODES.SHIFT_LEFT,
+        KeyboardConstant.CODES.KEY_H,
     ];
     //
     //#endregion

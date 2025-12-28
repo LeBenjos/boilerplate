@@ -1,4 +1,4 @@
-import Action from '../tools/Action';
+import { Action } from '@benjos/cookware';
 import ThreeAssetsManager from './threes/ThreeAssetsManager';
 
 export default class LoaderManager {
